@@ -177,5 +177,50 @@ public class Usuario implements Serializable
 
 
     // agregar metodos jsjsj
+    // TODO
+    void registrarse(String email, String passw, String nombre, String paterno, String materno, String nombre_user)
+    {
+
+    }
+
+    void login(String email, String passw)
+    {
+
+    }
+
+    void subir_foto(Multimedia img)
+    {
+
+    }
+
+    String actualizar_rep(int puntos)
+    {
+        return "TODOOO aaa";
+    }
+
+    String actualizar_rango(List medallas)
+    {
+        return "TODOO";
+    }
+
+    int actualizar_puntos(int puntos_nuevos)
+    {
+        return 1;
+    }
+
+    int cont_post()
+    {
+        return 1;
+    }
+
+    String hashing()
+    {
+        return "todo";
+    }
+
+    boolean verificar_cuenta(String email)
+    {
+        return false;
+    }
 
 }
