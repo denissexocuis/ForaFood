@@ -177,5 +177,5 @@ public class Usuario implements Serializable
 
 
     // agregar metodos jsjsj
-    
+
 }
