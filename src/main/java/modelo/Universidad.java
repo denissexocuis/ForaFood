@@ -9,6 +9,10 @@ public class Universidad implements Serializable
     private int ID_Universidad;
     private String nombre_uni;
 
+    public Universidad()
+    {
+    }
+
     private int fk_ubicacion;
 
     public int getID_Universidad()
@@ -44,7 +48,7 @@ public class Universidad implements Serializable
     // metodos
 
     // TODO
-    
+
     List listar_facultades()
     {
         return null;
