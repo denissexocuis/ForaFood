@@ -1,0 +1,7 @@
+{
+  "_id": { "$oid": "662e0011f1a2b3c4d5e6f711" },
+  "url": "https://forafood.uv/img/local01.jpg",
+  "fecha_subida": { "$date": "2026-04-28T09:00:00Z" },
+  "fk_usuario": { "$oid": "662e0001f1a2b3c4d5e6f701" },
+  "fk_establecimiento": { "$oid": "662e0006f1a2b3c4d5e6f706" }
+}

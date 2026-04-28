@@ -1,0 +1,5 @@
+{
+  "_id": { "$oid": "662e0003f1a2b3c4d5e6f703" },
+  "nombre_uni": "Universidad Veracruzana",
+  "fk_ubicacion": { "$oid": "662e0004f1a2b3c4d5e6f704" }
+}

@@ -1,10 +1,10 @@
 {
-  "_id": 102,
+  "_id": { "$oid": "662e0004f1a2b3c4d5e6f704" },
   "colonia": "Zona Universitaria",
   "CP": 91000,
-  "num_exterior": 15,
+  "num_exterior": 10,
   "calle": "Circuito Universitario",
   "latitud": 19.5212,
   "longitud": -96.9154,
-  "fk_ciudad": 1
+  "fk_ciudad": { "$oid": "662e0005f1a2b3c4d5e6f705" }
 }

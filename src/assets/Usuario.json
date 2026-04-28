@@ -1,5 +1,5 @@
 {
-  "_id": { "$oid": "662d5f1a4f1a2b3c4d5e6f01" },
+  "_id": { "$oid": "662e0001f1a2b3c4d5e6f701" },
   "nombre_user": "denisse_lx",
   "nombre": "Martha Denisse",
   "paterno" : "Lara",
@@ -12,6 +12,6 @@
   "reputacion": 4.8,
   "terminos_aceptados": true,
   "medallas": ["Cazador de Menús", "Estudiante Verificado"],
-  "fk_ubicacion": { "$oid": "662d5f1a4f1a2b3c4d5e6f0b" },
-  "fk_universidad": { "$oid": "662d5f1a4f1a2b3c4d5e6f0a" }
+  "fk_ubicacion": { "$oid": "662e0004f1a2b3c4d5e6f704" },
+  "fk_universidad": { "$oid": "662e0003f1a2b3c4d5e6f703" }
 }

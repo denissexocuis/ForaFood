@@ -1,0 +1,7 @@
+{
+  "_id": { "$oid": "662e0008f1a2b3c4d5e6f708" },
+  "descripcion": "Mole con arroz y frijoles",
+  "precio": 75.0,
+  "es_vigente": true,
+  "fk_establecimiento": { "$oid": "662e0006f1a2b3c4d5e6f706" }
+}
