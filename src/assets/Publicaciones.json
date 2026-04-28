@@ -1,0 +1,12 @@
+{
+  "_id": { "$oid": "662d5f1a4f1a2b3c4d5e6f05" },
+  "texto_publicacion": "¡La comida corrida de hoy incluye postre gratis si enseñas tu credencial!",
+  "puntuacion": 5.0,
+  "fecha": "2026-04-27T10:30:00Z",
+  "es_comentario": false,
+  "url_imagen": "https://cdn.forafood.com/img/post_1001.jpg",
+  "es_validada": true,
+  "cant_estrellas": 5,
+  "fk_usuario": { "$oid": "662d5f1a4f1a2b3c4d5e6f01" },
+  "fk_estab": { "$oid": "662d5f1a4f1a2b3c4d5e6f09" }
+}

@@ -11,7 +11,7 @@ public class Establecimiento implements Serializable
     private float calificacion;
     private boolean descuento_estudiante;
 
-    private int fk_ubicacion, fk_multimetia, fk_metodo_pago;
+    private int fk_ubicacion, fk_multimedia, fk_metodo_pago;
 
     public Establecimiento()
     {}
@@ -96,14 +96,14 @@ public class Establecimiento implements Serializable
         this.fk_ubicacion = fk_ubicacion;
     }
 
-    public int getFk_multimetia()
+    public int getFk_multimedia()
     {
-        return fk_multimetia;
+        return fk_multimedia;
     }
 
-    public void setFk_multimetia(int fk_multimetia)
+    public void setFk_multimedia(int fk_multimedia)
     {
-        this.fk_multimetia = fk_multimetia;
+        this.fk_multimedia = fk_multimedia;
     }
 
     public int getFk_metodo_pago()

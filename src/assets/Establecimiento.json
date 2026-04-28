@@ -1,0 +1,12 @@
+{
+  "_id": 501,
+  "nombre_estab": "Tacos El Inge",
+  "calificacion": 4.5,
+  "descuento_estudiante": true,
+  "horario_servicio": "08:00 - 18:00",
+  "descripcion": "Tacos económicos y rápidos cerca de la facultad de ingeniería.",
+  "rango_precios": "$",
+  "fk_ubicacion": 102,
+  "fk_multimedia": 201,
+  "fk_metodo_pago": 301
+}

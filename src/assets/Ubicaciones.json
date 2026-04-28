@@ -1,0 +1,10 @@
+{
+  "_id": 102,
+  "colonia": "Zona Universitaria",
+  "CP": 91000,
+  "num_exterior": 15,
+  "calle": "Circuito Universitario",
+  "latitud": 19.5212,
+  "longitud": -96.9154,
+  "fk_ciudad": 1
+}
