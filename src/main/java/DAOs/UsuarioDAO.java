@@ -7,9 +7,12 @@ package DAOs;
 
 
 import com.mongodb.client.MongoCollection;
+import modelo.Multimedia;
 import modelo.Usuario;
 
 import org.bson.Document;
+
+import java.util.List;
 
 public class UsuarioDAO implements CRUD<Usuario>
 {
@@ -21,16 +24,58 @@ public class UsuarioDAO implements CRUD<Usuario>
 
     private final MongoCollection<Document> collection = ConexionMongo.seleccionar_coleccion("Usuario");
 
+    // métodos principales
     void registrarse(String email, String passw, String nombre, String paterno, String materno, String nombre_user)
     {
 
     }
 
-    // para el CRUD
+    void login(String email, String passw)
+    {
+
+    }
+
+    void subir_foto(Multimedia img)
+    {
+
+    }
+
+    String actualizar_rep(int puntos)
+    {
+        return "TODOOO aaa";
+    }
+
+    String actualizar_rango(List medallas)
+    {
+        return "TODOO";
+    }
+
+    int actualizar_puntos(int puntos_nuevos)
+    {
+        return 1;
+    }
+
+    int cont_post()
+    {
+        return 1;
+    }
+
+    String hashing()
+    {
+        return "todo";
+    }
+
+    boolean verificar_cuenta(String email)
+    {
+        return false;
+    }
+
+
+    // métodos CRUD
     @Override
     public void insertOne(Usuario user)
     {
-        // aqui pedí ayuda de una IA porque busqué en varias paginas y me daban cosas bien bizarras T.T, no sabía como hacerle el insert D:
+        // para lo de abajo pedí ayuda de una IA porque busqué en varias paginas y me daban cosas bien bizarras T.T, no sabía como hacerle el insert D:
         Document doc = new Document()
                 .append("nombre_user", user.getNombre_user())
                 .append("email", user.getEmail())
