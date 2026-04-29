@@ -1,15 +1,25 @@
 package modelo;
 
+import org.bson.types.ObjectId;
+
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
 
+
 // JabaBean
+
+// remember that a javabean is like a container for data :D
+// implements Serializable to allow data to be transferred across network or JVMs
+
 public class Usuario implements Serializable
 {
     private static final long serialVersionUID = 1L;
-    private int ID_Usuario, cant_post, puntos;
+    @Id
+    private ObjectId ID_Usuario;
+    private int cant_post, puntos;
     private float reputacion;
     private String nombre_user, nombre, paterno, materno,
                     email, passw_hash, rango;
@@ -25,12 +35,12 @@ public class Usuario implements Serializable
 
     // setters y getters
 
-    public int getID_Usuario()
+    public ObjectId getID_Usuario()
     {
         return ID_Usuario;
     }
 
-    public void setID_Usuario(int ID_Usuario)
+    public void setID_Usuario(ObjectId ID_Usuario)
     {
         this.ID_Usuario = ID_Usuario;
     }
@@ -178,10 +188,7 @@ public class Usuario implements Serializable
 
     // agregar metodos jsjsj
     // TODO
-    void registrarse(String email, String passw, String nombre, String paterno, String materno, String nombre_user)
-    {
 
-    }
 
     void login(String email, String passw)
     {

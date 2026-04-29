@@ -1,4 +1,6 @@
 package modelo;
+import org.bson.types.ObjectId;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -6,7 +8,7 @@ import java.util.List;
 public class Universidad implements Serializable
 {
     private static final long serialVersionUID = 1L;
-    private int ID_Universidad;
+    private ObjectId ID_Universidad;
     private String nombre_uni;
 
     public Universidad()
@@ -15,12 +17,12 @@ public class Universidad implements Serializable
 
     private int fk_ubicacion;
 
-    public int getID_Universidad()
+    public ObjectId getID_Universidad()
     {
         return ID_Universidad;
     }
 
-    public void setID_Universidad(int ID_Universidad)
+    public void setID_Universidad(ObjectId ID_Universidad)
     {
         this.ID_Universidad = ID_Universidad;
     }
