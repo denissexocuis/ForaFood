@@ -11,6 +11,7 @@ import modelo.Multimedia;
 import modelo.Usuario;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -86,9 +87,9 @@ public class UsuarioDAO implements CRUD<Usuario>
     }
 
     @Override
-    public void findOne(Usuario user)
+    public Document findOne(ObjectId user)
     {
-
+        return collection.find(new Document("_id", user)).first();
     }
 
     @Override
@@ -98,7 +99,7 @@ public class UsuarioDAO implements CRUD<Usuario>
     }
 
     @Override
-    public void deleteOne(Usuario user)
+    public void deleteOne(ObjectId id)
     {
 
     }

@@ -6,7 +6,7 @@ public class Publicacion implements Serializable
 {
     private static final long serialVersionUID = 1L;
     private int ID_Publicacion, cant_estrellas;
-    private String texto_publicacion, url_imagen;
+    private String texto_publicacion, url_imagen, titulo;
     private float puntuacion;
     private Date fecha;
     private boolean es_comentario, es_valida;
@@ -54,6 +54,16 @@ public class Publicacion implements Serializable
     public void setUrl_imagen(String url_imagen)
     {
         this.url_imagen = url_imagen;
+    }
+
+    public String getTitulo()
+    {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo)
+    {
+        this.titulo = titulo;
     }
 
     public float getPuntuacion()
@@ -114,22 +124,5 @@ public class Publicacion implements Serializable
     public void setFk_establecimiento(int fk_establecimiento)
     {
         this.fk_establecimiento = fk_establecimiento;
-    }
-
-    // metodosss, TODO
-
-    void validar(int voto_estudiante)
-    {
-
-    }
-
-    void votar_contenido(int cant_estrellas)
-    {
-
-    }
-
-    void generar_reporte(String motivo)
-    {
-
     }
 }
