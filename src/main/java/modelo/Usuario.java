@@ -18,7 +18,7 @@ public class Usuario implements Serializable
 {
     private static final long serialVersionUID = 1L;
     @Id
-    private ObjectId ID_Usuario;
+    private ObjectId ID_Usuario; // https://dzone.com/articles/using-morphia-map-java-objects
     private int cant_post, puntos;
     private float reputacion;
     private String nombre_user, nombre, paterno, materno,

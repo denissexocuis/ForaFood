@@ -1,3 +1,6 @@
 https://medium.com/@rintoprie/building-a-simple-web-application-with-java-servlet-jsp-and-hibernate-in-2025-e93f17d0ddcc
 
 https://foojay.io/today/abstracting-data-access-in-java-with-the-dao-pattern/
+
+Abstracting Data Access in Java With the DAO Pattern
+https://foojay.io/today/abstracting-data-access-in-java-with-the-dao-pattern/
