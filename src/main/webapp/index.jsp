@@ -1,199 +1,82 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html lang="es">
 
-<html>
-
-<!-- EL DISEÑO LO SAQUÉ DE PLANTILLAS :D -->
+<!-- me inspiré de varias plantillas -->
 <!-- https://plantillashtmlgratis.com/en/home/ -->
 <!-- https://github.com/Dendroculus/Login-Page-Templates-->
 
+
+<!-- nota: uso de IA aquí -->
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>ForaFood</title>
+
+    <!-- bootstrap   -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+
+    <!-- archivo css -->
     <link rel="stylesheet" href="css/style.css">
+
     <!-- fevicon -->
     <link rel="icon" type="image/png" href="img/diet.png">
 
-    <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-
     <!-- fonts style -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet" />
-    <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet" />
-    <!-- responsive style -->
-    <link href="css/responsive.css" rel="stylesheet" />
-
-    <!-- esto sacado de otra plantilla, veggie-master :D -->
-    <link rel="stylesheet" href="css/app.css">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.7.1/slick.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.7.1/slick-theme.css" />
-    <script src="https://unpkg.com/scrollreveal@4.0.0-beta.6"></script>
 </head>
 
-<body>
+<body class="bg-white">
 
-<header class="site-header">
-    <div class="container">
-        <div class="header-content">
-            <div class="top-menu  scroll-reveal">
-                <div class="menu">
-                    <div class="title-bar" data-responsive-toggle="main-nav" data-hide-for="medium">
-                        <button class="menu-icon dark" type="button" data-toggle="main-nav"></button>
-                        <div class="title-bar-title">Menu</div>
-                    </div>
-
-                    <nav id="main-nav" data-animate="menu-in menu-out">
-                        <ul class="main-navigation">
-                            <li><a class="m-active" href="#" data-text="Home">Home</a></li>
-                            <li><a class="m-anim" href="#specials-grid" data-text="Specials">Specials</a></li>
-                            <li><a class="m-anim" href="#about-us" data-text="About">About</a></li>
-                            <li><a class="m-anim" href="#main-menu" data-text="Menu Cart">Menu Cart</a></li>
-                            <li><a class="m-anim" href="#contact-us" data-text="Contact">Contact</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
+<header class="navbar-flotante">
+    <div class="container-fluid px-5">
+        <nav class="minimal-nav ms-auto"> <ul class="d-flex list-unstyled gap-4 mb-0">
+            <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link" href="#descubrir">Descubrir</a></li>
+            <li class="nav-item"><a class="nav-link" href="#acerca">Acerca</a></li>
+            <li class="nav-item"><a class="nav-link" href="#iniciar_sesion">Iniciar Sesión</a></li>
+            <li class="nav-item"><a class="nav-link" href="#registrarse">Registrarse</a></li>
+        </ul>
+        </nav>
     </div>
-
-    <div class="slider">
-        <div class="a-slide slide1">
-            <div class="container">
-                <div class="bottom-section scroll-reveal" data-origin="right" data-distance="20%">
-                    <h1 class="header-txt">Veggie gram fava bean leek dandelion silver beet eggplant bush tomato</h1>
-                    <div class="divider">
-                        <?xml version="1.0" encoding="utf-8"?>
-                        <!-- aqui poner una imagen jejej -->
-                        <!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1930 255.5" style="enable-background:new 0 0 1930 255.5;" xml:space="preserve">
-                                <style type="text/css">
-                                    .st0{fill:none;stroke:#3c3c3c;stroke-width:10;stroke-linecap:square;stroke-miterlimit:10;}
-                                </style>
-                            <polyline class="st0" points="1224,171.8 1181.3,171.8 1139.2,129.6 1065,203.9 970.5,110.4 876,203.6 801.8,129.4 759.7,171.5
-                                    717,171.5 "/>
-                            <polyline class="st0" points="5,131.5 757.3,131.5 801.8,176.1 885.9,91.9 868.3,74.2 831.5,111 870.4,149.9 970.2,50.2 1070,149.9
-                                    1108.8,111 1072.1,74.2 1054.4,91.9 1138.5,176.1 1183.1,131.5 1925,131.5 "/>
-                            <rect x="921.9" y="26.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 231.426 707.2043)" class="st0" width="95" height="95"/>
-                            <rect x="921.9" y="99.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 179.8072 728.5855)" class="st0" width="95" height="95"/>
-                            <rect x="940.3" y="178.1" transform="matrix(0.7071 -0.7071 0.7071 0.7071 137.3893 746.1556)" class="st0" width="58.2" height="58.2"/>
-
-                        </svg>
-                    </div>
-                    <!--.divider-->
-
-                </div>
-                <!--.bottom-section-->
-            </div>
-        </div>
-        <div class="a-slide slide2">
-            <div class="container">
-                <div class="bottom-section">
-                    <h1 class="header-txt">Dandelion cucumber earthnut pea peanut soko zucchini</h1>
-                    <div class="divider">
-                        <?xml version="1.0" encoding="utf-8"?>
-                        <!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1930 255.5" style="enable-background:new 0 0 1930 255.5;" xml:space="preserve">
-                                <style type="text/css">
-                                    .st0{fill:none;stroke:#3c3c3c;stroke-width:10;stroke-linecap:square;stroke-miterlimit:10;}
-                                </style>
-                            <polyline class="st0" points="1224,171.8 1181.3,171.8 1139.2,129.6 1065,203.9 970.5,110.4 876,203.6 801.8,129.4 759.7,171.5
-                                    717,171.5 "/>
-                            <polyline class="st0" points="5,131.5 757.3,131.5 801.8,176.1 885.9,91.9 868.3,74.2 831.5,111 870.4,149.9 970.2,50.2 1070,149.9
-                                    1108.8,111 1072.1,74.2 1054.4,91.9 1138.5,176.1 1183.1,131.5 1925,131.5 "/>
-                            <rect x="921.9" y="26.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 231.426 707.2043)" class="st0" width="95" height="95"/>
-                            <rect x="921.9" y="99.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 179.8072 728.5855)" class="st0" width="95" height="95"/>
-                            <rect x="940.3" y="178.1" transform="matrix(0.7071 -0.7071 0.7071 0.7071 137.3893 746.1556)" class="st0" width="58.2" height="58.2"/>
-                                </svg>
-                    </div>
-                    <!--.divider-->
-                </div>
-                <!--.bottom-section-->
-            </div>
-        </div>
-    </div>
-
-    <div class="slider">
-        <div class="a-slide slide1">
-            <div class="container">
-                <div class="bottom-section scroll-reveal" data-origin="right" data-distance="20%">
-                    <h1 class="header-txt">Veggie gram fava bean leek dandelion silver beet eggplant bush tomato</h1>
-                    <div class="divider">
-                        <?xml version="1.0" encoding="utf-8"?>
-                        <!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1930 255.5" style="enable-background:new 0 0 1930 255.5;" xml:space="preserve">
-                                <style type="text/css">
-                                    .st0{fill:none;stroke:#3c3c3c;stroke-width:10;stroke-linecap:square;stroke-miterlimit:10;}
-                                </style>
-                            <polyline class="st0" points="1224,171.8 1181.3,171.8 1139.2,129.6 1065,203.9 970.5,110.4 876,203.6 801.8,129.4 759.7,171.5
-                                    717,171.5 "/>
-                            <polyline class="st0" points="5,131.5 757.3,131.5 801.8,176.1 885.9,91.9 868.3,74.2 831.5,111 870.4,149.9 970.2,50.2 1070,149.9
-                                    1108.8,111 1072.1,74.2 1054.4,91.9 1138.5,176.1 1183.1,131.5 1925,131.5 "/>
-                            <rect x="921.9" y="26.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 231.426 707.2043)" class="st0" width="95" height="95"/>
-                            <rect x="921.9" y="99.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 179.8072 728.5855)" class="st0" width="95" height="95"/>
-                            <rect x="940.3" y="178.1" transform="matrix(0.7071 -0.7071 0.7071 0.7071 137.3893 746.1556)" class="st0" width="58.2" height="58.2"/>
-                                </svg>
-                    </div>
-                    <!--.divider-->
-
-                </div>
-                <!--.bottom-section-->
-            </div>
-        </div>
-        <div class="a-slide slide2">
-            <div class="container">
-                <div class="bottom-section">
-                    <h1 class="header-txt">Dandelion cucumber earthnut pea peanut soko zucchini</h1>
-                    <div class="divider">
-                        <?xml version="1.0" encoding="utf-8"?>
-                        <!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1930 255.5" style="enable-background:new 0 0 1930 255.5;" xml:space="preserve">
-                                <style type="text/css">
-                                    .st0{fill:none;stroke:#3c3c3c;stroke-width:10;stroke-linecap:square;stroke-miterlimit:10;}
-                                </style>
-                            <polyline class="st0" points="1224,171.8 1181.3,171.8 1139.2,129.6 1065,203.9 970.5,110.4 876,203.6 801.8,129.4 759.7,171.5
-                                    717,171.5 "/>
-                            <polyline class="st0" points="5,131.5 757.3,131.5 801.8,176.1 885.9,91.9 868.3,74.2 831.5,111 870.4,149.9 970.2,50.2 1070,149.9
-                                    1108.8,111 1072.1,74.2 1054.4,91.9 1138.5,176.1 1183.1,131.5 1925,131.5 "/>
-                            <rect x="921.9" y="26.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 231.426 707.2043)" class="st0" width="95" height="95"/>
-                            <rect x="921.9" y="99.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 179.8072 728.5855)" class="st0" width="95" height="95"/>
-                            <rect x="940.3" y="178.1" transform="matrix(0.7071 -0.7071 0.7071 0.7071 137.3893 746.1556)" class="st0" width="58.2" height="58.2"/>
-                                </svg>
-                    </div>
-                    <!--.divider-->
-                </div>
-                <!--.bottom-section-->
-            </div>
-        </div>
-    </div>
-
 </header>
 
-    <!-- end slider section -->
+<div id="sliderForaFood" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3500">
+    <div class="carousel-inner">
 
-        <!-- scripts de veggie-master -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/what-input/5.0.2/what-input.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.js"></script>
-        <script src="js/app.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.7.1/slick.js"></script>
-        <script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+        <div class="carousel-item active">
+            <div class="container-fluid p-0">
+                <div class="row g-0 vh-100 align-items-center">
+                    <div class="col-md-6 d-flex justify-content-center align-items-center bg-white layout-imagen">
+                        <img src="img/calabazas.png" class="img-fluid hero-img" alt="ForaFood Specials">
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-center align-items-center bg-white px-5 text-center">
+                        <h1 class="hero-titulo">Dandelion cucumber earthnut pea peanut soko zucchini</h1>
+                        <div class="divisor-ornamento my-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <script type="text/javascript">
-            $('.slider').slick({
-                infinite: true,
-                autoplay: true,
-                autoplaySpeed: 3500,
-                arrows: false,
-                fade: true,
-                cssEase: 'linear'
-            });
+        <div class="carousel-item">
+            <div class="container-fluid p-0">
+                <div class="row g-0 vh-100 align-items-center">
+                    <div class="col-md-6 d-flex justify-content-center align-items-center bg-white layout-imagen">
+                        <img src="img/desayuno.png" class="img-fluid hero-img" alt="ForaFood Breakfast">
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-center align-items-center bg-white px-5 text-center">
+                        <h1 class="hero-titulo">Veggie gram fava bean leek dandelion silver beet eggplant</h1>
+                        <div class="divisor-ornamento my-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        </script>
+    </div>
+</div>
 
-        <script>
-            $(window).on('load', function() {
-                $("#preloader").fadeOut();
-            });
-        </script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
