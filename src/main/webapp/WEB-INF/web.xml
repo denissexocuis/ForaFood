@@ -2,6 +2,15 @@
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
+<!-- a lo que voy entendiendo, todo comienza desde aquí
+  el usuario selecciona la URL y el web.xml lo manda a un servlet correspondiente
+
+  sin embargo
+
+  A partir de las versiones modernas de Java (Java EE 6 / Jakarta EE en adelante),
+  el archivo web.xml es 100% opcional.
+ -->
+
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
 </web-app>

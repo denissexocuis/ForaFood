@@ -77,7 +77,7 @@ public class UsuarioDAO implements CRUD<Usuario>
     {
         // para lo de abajo pedí ayuda de una IA porque busqué en varias paginas y me daban cosas bien bizarras T.T, no sabía como hacerle el insert D:
 
-        //esta es la información que se pedirá para el registro :D 
+        //esta es la información que se pedirá para el registro :D
         Document doc = new Document()
                 .append("nombre_user", user.getNombre_user())
                 .append("email", user.getEmail())
