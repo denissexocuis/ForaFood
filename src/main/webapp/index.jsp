@@ -21,166 +21,179 @@
     <link href="css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="css/responsive.css" rel="stylesheet" />
+
+    <!-- esto sacado de otra plantilla, veggie-master :D -->
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.7.1/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.7.1/slick-theme.css" />
+    <script src="https://unpkg.com/scrollreveal@4.0.0-beta.6"></script>
 </head>
 
 <body>
 
+<header class="site-header">
+    <div class="container">
+        <div class="header-content">
+            <div class="top-menu  scroll-reveal">
+                <div class="menu">
+                    <div class="title-bar" data-responsive-toggle="main-nav" data-hide-for="medium">
+                        <button class="menu-icon dark" type="button" data-toggle="main-nav"></button>
+                        <div class="title-bar-title">Menu</div>
+                    </div>
 
-<div class="hero_area">
-    <!-- header section strats -->
-    <header class="header_section">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
-                <a class="navbar-brand" href="index.html">
-                    <img src="images/logo.png" alt="" /><span>
-              ForaFood
-            </span>
-                </a>
-
-    <!-- slider section -->
-    <section class=" slider_section position-relative">
-        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="slider_item-box">
-                        <div class="slider_item-container">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="slider_item-detail">
-                                            <div>
-                                                <h1>
-                                                    Welcome to <br />
-                                                    Our Fruits Shop
-                                                </h1>
-                                                <p>
-                                                    There are many variations of passages of Lorem
-                                                    Ipsum available, but the majority have suffered
-                                                    alteration in some form, by injected humour, or
-                                                    randomised words which don't look even slightly
-                                                    believable.
-                                                </p>
-                                                <div class="d-flex">
-                                                    <a href="" class="text-uppercase custom_orange-btn mr-3">
-                                                        Shop Now
-                                                    </a>
-                                                    <a href="" class="text-uppercase custom_dark-btn">
-                                                        Contact Us
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="slider_img-box">
-                                            <div>
-                                                <img src="images/slide-img.png" alt="" class="" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <nav id="main-nav" data-animate="menu-in menu-out">
+                        <ul class="main-navigation">
+                            <li><a class="m-active" href="#" data-text="Home">Home</a></li>
+                            <li><a class="m-anim" href="#specials-grid" data-text="Specials">Specials</a></li>
+                            <li><a class="m-anim" href="#about-us" data-text="About">About</a></li>
+                            <li><a class="m-anim" href="#main-menu" data-text="Menu Cart">Menu Cart</a></li>
+                            <li><a class="m-anim" href="#contact-us" data-text="Contact">Contact</a></li>
+                        </ul>
+                    </nav>
                 </div>
-                <div class="carousel-item">
-                    <div class="slider_item-box">
-                        <div class="slider_item-container">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="slider_item-detail">
-                                            <div>
-                                                <h1>
-                                                    Welcome to <br />
-                                                    Our Fruits Shop
-                                                </h1>
-                                                <p>
-                                                    There are many variations of passages of Lorem
-                                                    Ipsum available, but the majority have suffered
-                                                    alteration in some form, by injected humour, or
-                                                    randomised words which don't look even slightly
-                                                    believable.
-                                                </p>
-                                                <div class="d-flex">
-                                                    <a href="" class="text-uppercase custom_orange-btn mr-3">
-                                                        Shop Now
-                                                    </a>
-                                                    <a href="" class="text-uppercase custom_dark-btn">
-                                                        Contact Us
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="slider_img-box">
-                                            <div>
-                                                <img src="images/slide-img.png" alt="" class="" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="slider_item-box">
-                        <div class="slider_item-container">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="slider_item-detail">
-                                            <div>
-                                                <h1>
-                                                    Welcome to <br />
-                                                    Our Fruits Shop
-                                                </h1>
-                                                <p>
-                                                    There are many variations of passages of Lorem
-                                                    Ipsum available, but the majority have suffered
-                                                    alteration in some form, by injected humour, or
-                                                    randomised words which don't look even slightly
-                                                    believable.
-                                                </p>
-                                                <div class="d-flex">
-                                                    <a href="" class="text-uppercase custom_orange-btn mr-3">
-                                                        Shop Now
-                                                    </a>
-                                                    <a href="" class="text-uppercase custom_dark-btn">
-                                                        Contact Us
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="slider_img-box">
-                                            <div>
-                                                <img src="images/slide-img.png" alt="" class="" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="custom_carousel-control">
-                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                    <span class="sr-only">Next</span>
-                </a>
             </div>
         </div>
-    </section>
+    </div>
+
+    <div class="slider">
+        <div class="a-slide slide1">
+            <div class="container">
+                <div class="bottom-section scroll-reveal" data-origin="right" data-distance="20%">
+                    <h1 class="header-txt">Veggie gram fava bean leek dandelion silver beet eggplant bush tomato</h1>
+                    <div class="divider">
+                        <?xml version="1.0" encoding="utf-8"?>
+                        <!-- aqui poner una imagen jejej -->
+                        <!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1930 255.5" style="enable-background:new 0 0 1930 255.5;" xml:space="preserve">
+                                <style type="text/css">
+                                    .st0{fill:none;stroke:#3c3c3c;stroke-width:10;stroke-linecap:square;stroke-miterlimit:10;}
+                                </style>
+                            <polyline class="st0" points="1224,171.8 1181.3,171.8 1139.2,129.6 1065,203.9 970.5,110.4 876,203.6 801.8,129.4 759.7,171.5
+                                    717,171.5 "/>
+                            <polyline class="st0" points="5,131.5 757.3,131.5 801.8,176.1 885.9,91.9 868.3,74.2 831.5,111 870.4,149.9 970.2,50.2 1070,149.9
+                                    1108.8,111 1072.1,74.2 1054.4,91.9 1138.5,176.1 1183.1,131.5 1925,131.5 "/>
+                            <rect x="921.9" y="26.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 231.426 707.2043)" class="st0" width="95" height="95"/>
+                            <rect x="921.9" y="99.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 179.8072 728.5855)" class="st0" width="95" height="95"/>
+                            <rect x="940.3" y="178.1" transform="matrix(0.7071 -0.7071 0.7071 0.7071 137.3893 746.1556)" class="st0" width="58.2" height="58.2"/>
+
+                        </svg>
+                    </div>
+                    <!--.divider-->
+
+                </div>
+                <!--.bottom-section-->
+            </div>
+        </div>
+        <div class="a-slide slide2">
+            <div class="container">
+                <div class="bottom-section">
+                    <h1 class="header-txt">Dandelion cucumber earthnut pea peanut soko zucchini</h1>
+                    <div class="divider">
+                        <?xml version="1.0" encoding="utf-8"?>
+                        <!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1930 255.5" style="enable-background:new 0 0 1930 255.5;" xml:space="preserve">
+                                <style type="text/css">
+                                    .st0{fill:none;stroke:#3c3c3c;stroke-width:10;stroke-linecap:square;stroke-miterlimit:10;}
+                                </style>
+                            <polyline class="st0" points="1224,171.8 1181.3,171.8 1139.2,129.6 1065,203.9 970.5,110.4 876,203.6 801.8,129.4 759.7,171.5
+                                    717,171.5 "/>
+                            <polyline class="st0" points="5,131.5 757.3,131.5 801.8,176.1 885.9,91.9 868.3,74.2 831.5,111 870.4,149.9 970.2,50.2 1070,149.9
+                                    1108.8,111 1072.1,74.2 1054.4,91.9 1138.5,176.1 1183.1,131.5 1925,131.5 "/>
+                            <rect x="921.9" y="26.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 231.426 707.2043)" class="st0" width="95" height="95"/>
+                            <rect x="921.9" y="99.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 179.8072 728.5855)" class="st0" width="95" height="95"/>
+                            <rect x="940.3" y="178.1" transform="matrix(0.7071 -0.7071 0.7071 0.7071 137.3893 746.1556)" class="st0" width="58.2" height="58.2"/>
+                                </svg>
+                    </div>
+                    <!--.divider-->
+                </div>
+                <!--.bottom-section-->
+            </div>
+        </div>
+    </div>
+
+    <div class="slider">
+        <div class="a-slide slide1">
+            <div class="container">
+                <div class="bottom-section scroll-reveal" data-origin="right" data-distance="20%">
+                    <h1 class="header-txt">Veggie gram fava bean leek dandelion silver beet eggplant bush tomato</h1>
+                    <div class="divider">
+                        <?xml version="1.0" encoding="utf-8"?>
+                        <!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1930 255.5" style="enable-background:new 0 0 1930 255.5;" xml:space="preserve">
+                                <style type="text/css">
+                                    .st0{fill:none;stroke:#3c3c3c;stroke-width:10;stroke-linecap:square;stroke-miterlimit:10;}
+                                </style>
+                            <polyline class="st0" points="1224,171.8 1181.3,171.8 1139.2,129.6 1065,203.9 970.5,110.4 876,203.6 801.8,129.4 759.7,171.5
+                                    717,171.5 "/>
+                            <polyline class="st0" points="5,131.5 757.3,131.5 801.8,176.1 885.9,91.9 868.3,74.2 831.5,111 870.4,149.9 970.2,50.2 1070,149.9
+                                    1108.8,111 1072.1,74.2 1054.4,91.9 1138.5,176.1 1183.1,131.5 1925,131.5 "/>
+                            <rect x="921.9" y="26.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 231.426 707.2043)" class="st0" width="95" height="95"/>
+                            <rect x="921.9" y="99.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 179.8072 728.5855)" class="st0" width="95" height="95"/>
+                            <rect x="940.3" y="178.1" transform="matrix(0.7071 -0.7071 0.7071 0.7071 137.3893 746.1556)" class="st0" width="58.2" height="58.2"/>
+                                </svg>
+                    </div>
+                    <!--.divider-->
+
+                </div>
+                <!--.bottom-section-->
+            </div>
+        </div>
+        <div class="a-slide slide2">
+            <div class="container">
+                <div class="bottom-section">
+                    <h1 class="header-txt">Dandelion cucumber earthnut pea peanut soko zucchini</h1>
+                    <div class="divider">
+                        <?xml version="1.0" encoding="utf-8"?>
+                        <!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1930 255.5" style="enable-background:new 0 0 1930 255.5;" xml:space="preserve">
+                                <style type="text/css">
+                                    .st0{fill:none;stroke:#3c3c3c;stroke-width:10;stroke-linecap:square;stroke-miterlimit:10;}
+                                </style>
+                            <polyline class="st0" points="1224,171.8 1181.3,171.8 1139.2,129.6 1065,203.9 970.5,110.4 876,203.6 801.8,129.4 759.7,171.5
+                                    717,171.5 "/>
+                            <polyline class="st0" points="5,131.5 757.3,131.5 801.8,176.1 885.9,91.9 868.3,74.2 831.5,111 870.4,149.9 970.2,50.2 1070,149.9
+                                    1108.8,111 1072.1,74.2 1054.4,91.9 1138.5,176.1 1183.1,131.5 1925,131.5 "/>
+                            <rect x="921.9" y="26.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 231.426 707.2043)" class="st0" width="95" height="95"/>
+                            <rect x="921.9" y="99.7" transform="matrix(0.7071 -0.7071 0.7071 0.7071 179.8072 728.5855)" class="st0" width="95" height="95"/>
+                            <rect x="940.3" y="178.1" transform="matrix(0.7071 -0.7071 0.7071 0.7071 137.3893 746.1556)" class="st0" width="58.2" height="58.2"/>
+                                </svg>
+                    </div>
+                    <!--.divider-->
+                </div>
+                <!--.bottom-section-->
+            </div>
+        </div>
+    </div>
+
+</header>
 
     <!-- end slider section -->
-</div>
+
+        <!-- scripts de veggie-master -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/what-input/5.0.2/what-input.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.js"></script>
+        <script src="js/app.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.7.1/slick.js"></script>
+        <script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+
+        <script type="text/javascript">
+            $('.slider').slick({
+                infinite: true,
+                autoplay: true,
+                autoplaySpeed: 3500,
+                arrows: false,
+                fade: true,
+                cssEase: 'linear'
+            });
+
+        </script>
+
+        <script>
+            $(window).on('load', function() {
+                $("#preloader").fadeOut();
+            });
+        </script>
 
 </body>
 </html>

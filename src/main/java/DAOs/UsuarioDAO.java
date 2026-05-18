@@ -5,7 +5,6 @@ package DAOs;
 // https://foojay.io/today/abstracting-data-access-in-java-with-the-dao-pattern/
 
 
-
 import com.mongodb.client.MongoCollection;
 import modelo.Multimedia;
 import modelo.Usuario;
@@ -77,6 +76,8 @@ public class UsuarioDAO implements CRUD<Usuario>
     public void insertOne(Usuario user)
     {
         // para lo de abajo pedí ayuda de una IA porque busqué en varias paginas y me daban cosas bien bizarras T.T, no sabía como hacerle el insert D:
+
+        //esta es la información que se pedirá para el registro :D 
         Document doc = new Document()
                 .append("nombre_user", user.getNombre_user())
                 .append("email", user.getEmail())
