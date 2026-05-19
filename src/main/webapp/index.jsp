@@ -1,11 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+
 <!DOCTYPE html>
 <html lang="es">
 
 <!-- me inspiré de varias plantillas -->
 <!-- https://plantillashtmlgratis.com/en/home/ -->
 <!-- https://github.com/Dendroculus/Login-Page-Templates-->
-
 
 <!-- nota: uso de IA aquí -->
 <head>
@@ -35,8 +36,8 @@
             <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
             <li class="nav-item"><a class="nav-link" href="#descubrir">Descubrir</a></li>
             <li class="nav-item"><a class="nav-link" href="#acerca">Acerca</a></li>
-            <li class="nav-item"><a class="nav-link" href="#iniciar_sesion">Iniciar Sesión</a></li>
-            <li class="nav-item"><a class="nav-link" href="#registrarse">Registrarse</a></li>
+            <li class="nav-item"><a class="nav-link" href="login.jsp">Iniciar Sesión</a></li>
+            <li class="nav-item"><a class="nav-link" href="registro.jsp">Registrarse</a></li>
         </ul>
         </nav>
     </div>

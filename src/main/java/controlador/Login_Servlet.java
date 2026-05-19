@@ -9,13 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/registro") // remplazar al web.xml
-public class Registro_Servlet extends HttpServlet
+@WebServlet("/login") // remplazar al web.xml
+public class Login_Servlet extends HttpServlet
 {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        request.getSession().invalidate();
-        response.sendRedirect("index.jsp");
+        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 }
