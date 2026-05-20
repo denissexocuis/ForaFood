@@ -7,11 +7,13 @@ package DAOs;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import java.util.List;
+
 public interface CRUD<T>
 {
     void insertOne(T object);
     Document findOne(ObjectId object);
-    void find(T object);
+    List<Document> findAll();
     void deleteOne(ObjectId object);
     void updateOne(T object);
 }

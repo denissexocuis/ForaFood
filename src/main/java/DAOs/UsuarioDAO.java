@@ -94,9 +94,9 @@ public class UsuarioDAO implements CRUD<Usuario>
     }
 
     @Override
-    public void find(Usuario user)
+    public List<Document> findAll()
     {
-
+        return null;
     }
 
     @Override

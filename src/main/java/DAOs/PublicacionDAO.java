@@ -6,6 +6,8 @@ import modelo.Publicacion;
 import org.bson.types.ObjectId;
 import org.bson.Document;
 
+import java.util.List;
+
 public class PublicacionDAO implements  CRUD<Publicacion>
 {
     private final com.mongodb.client.MongoCollection<Document> collection = ConexionMongo.seleccionar_coleccion("Publicacion");
@@ -65,9 +67,9 @@ public class PublicacionDAO implements  CRUD<Publicacion>
     }
 
     @Override
-    public void find(Publicacion object)
+    public List<Document> findAll()
     {
-
+        return null;
     }
 
 }
