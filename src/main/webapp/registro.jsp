@@ -30,7 +30,7 @@
 
 <body class="bg-white">
 
-<section class="vh-100" style="background-color: #9A616D;">
+<section class="vh-100" style="background-color: #1c7430;">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col col-xl-10">
@@ -51,18 +51,35 @@
 
                                     <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Registro</h5>
 
-                                    <div data-mdb-input-init class="form-outline mb-4">
+                                    <div data-mdb-input-init class="form-outline mb-2">
                                         <input type="email" id="form2Example17" class="form-control form-control-lg" />
-                                        <label class="form-label" for="form2Example17">Email address</label>
+                                        <label class="form-label" for="form2Example17">Nombre de usuario</label>
                                     </div>
 
-                                    <div data-mdb-input-init class="form-outline mb-4">
+                                    <div data-mdb-input-init class="form-outline mb-2">
                                         <input type="password" id="form2Example27" class="form-control form-control-lg" />
-                                        <label class="form-label" for="form2Example27">Password</label>
+                                        <label class="form-label" for="form2Example27">Email</label>
                                     </div>
+
+                                    <div data-mdb-input-init class="form-outline mb-2">
+                                        <input type="password" id="form2Example27" class="form-control form-control-lg" />
+                                        <label class="form-label" for="form2Example27">Contraseña</label>
+                                    </div>
+
+                                    <div data-mdb-input-init class="form-outline mb-2">
+                                        <input type="password" id="form2Example27" class="form-control form-control-lg" />
+                                        <label class="form-label" for="form2Example27">Universidad</label>
+                                    </div>
+
+                                    <select class="form-select" aria-label="Default select example">
+                                        <option selected>Open this select menu</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
 
                                     <div class="pt-1 mb-4">
-                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="button">Login</button>
+                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="button">Siguiente</button>
                                     </div>
 
                                     <a class="small text-muted" href="#!">Forgot password?</a>
