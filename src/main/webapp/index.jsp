@@ -37,7 +37,7 @@
             <li class="nav-item"><a class="nav-link" href="#descubrir">Descubrir</a></li>
             <li class="nav-item"><a class="nav-link" href="#acerca">Acerca</a></li>
             <li class="nav-item"><a class="nav-link" href="login.jsp">Iniciar Sesión</a></li>
-            <li class="nav-item"><a class="nav-link" href="registro.jsp">Registrarse</a></li>
+            <li class="nav-item"><a class="nav-link" href="registro">Registrarse</a></li>
         </ul>
         </nav>
     </div>

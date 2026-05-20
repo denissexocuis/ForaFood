@@ -1,6 +1,17 @@
 # Flujo del proceso
 ### Esto me sirve de guía y para entender el funcionamiento
 
+Fuentes de información que me ayudaron más:
+https://medium.com/@rintoprie/building-a-simple-web-application-with-java-servlet-jsp-and-hibernate-in-2025-e93f17d0ddcc
+
+https://medium.com/@tejveersing1322/java-servlets-and-jsp-building-dynamic-web-applications-92e5b34b3ef0
+
+https://www.ibm.com/docs/es/i/7.4.0?topic=java-jsp-servlet-programming
+
+https://www.geeksforgeeks.org/java/introduction-java-servlets/
+
+Incluso cursito de youtube: https://www.youtube.com/watch?v=0FpLve7ffoY&list=PLfu_Bpi_zcDOn8ajnuLY6g1C6hc_eeDFl
+
 _Nota: me ayudé con IA para que me ayudara con la explicación._
 
 ##### ¿Qué es TomCat?

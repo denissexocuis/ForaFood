@@ -71,12 +71,40 @@
                                         <label class="form-label" for="form2Example27">Universidad</label>
                                     </div>
 
-                                    <select class="form-select" aria-label="Default select example">
-                                        <option selected>Open this select menu</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
+
+                                    <form action="registro" method="post">
+
+                                        <label for="uniSelect" class="form-label text-muted">Universidad</label>
+
+                                        <select id="uniSelect" name="txtUniversidad" class="form-select">
+                                            <option selected disabled>Elige tu universidad...</option>
+
+                                            <%
+                                                // 1. AQUÍ SE PONE LA LÍNEA MÁGICA 📍
+                                                // Sacamos la lista que el Servlet dejó en la canasta (request)
+                                                // Asegúrate de que el nombre entre comillas sea EXACTAMENTE el mismo que pusiste en el setAttribute del Servlet
+                                                java.util.List<org.bson.Document> universidades = (java.util.List<org.bson.Document>) request.getAttribute("lista_universidades");
+
+                                                // 2. Validamos que la lista no venga vacía por si acaso
+                                                if (universidades != null) {
+                                                    // 3. Recorremos cada documento de la lista
+                                                    for (org.bson.Document uni : universidades) {
+
+                                                        // Extraemos los datos del documento de Mongo
+                                                        // Asumiendo que tus campos en Mongo se llaman "id_uni" y "nombre" (cámbialos por los tuyos reales)
+                                                        String idUni = uni.get("_id").toString();
+                                                        String nombreUni = uni.getString("nombre");
+                                            %>
+                                            <option value="<%= idUni %>"><%= nombreUni %></option>
+                                            <%
+                                                    } // Cerramos el for
+                                                } // Cerramos el if
+                                            %>
+
+                                        </select>
+
+                                        <button type="submit" class="btn btn-dark mt-3 w-100">Registrarme</button>
+                                    </form>
 
                                     <div class="pt-1 mb-4">
                                         <button data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-lg btn-block" type="button">Siguiente</button>
