@@ -80,7 +80,6 @@
                                             <option selected disabled>Elige tu universidad...</option>
 
                                             <%
-                                                // 1. AQUÍ SE PONE LA LÍNEA MÁGICA 📍
                                                 // Sacamos la lista que el Servlet dejó en la canasta (request)
                                                 // Asegúrate de que el nombre entre comillas sea EXACTAMENTE el mismo que pusiste en el setAttribute del Servlet
                                                 java.util.List<org.bson.Document> universidades = (java.util.List<org.bson.Document>) request.getAttribute("lista_universidades");
@@ -93,7 +92,7 @@
                                                         // Extraemos los datos del documento de Mongo
                                                         // Asumiendo que tus campos en Mongo se llaman "id_uni" y "nombre" (cámbialos por los tuyos reales)
                                                         String idUni = uni.get("_id").toString();
-                                                        String nombreUni = uni.getString("nombre");
+                                                        String nombreUni = uni.getString("nombre_uni");
                                             %>
                                             <option value="<%= idUni %>"><%= nombreUni %></option>
                                             <%

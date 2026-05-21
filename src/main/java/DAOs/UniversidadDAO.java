@@ -17,7 +17,6 @@ public class UniversidadDAO implements CRUD<Universidad>
     //this.collection = database.getCollection("Usuario");
 
 
-
     @Override
     public void insertOne(Universidad object)
     {
@@ -39,14 +38,19 @@ public class UniversidadDAO implements CRUD<Universidad>
         try
         {
             // hice una funcion solo para seleccionar la coleccion ya asi rapido  y no tener que estar haciendo eso a cada rato sjdfjsdf
-            MongoCollection<Document> collection = ConexionMongo.seleccionar_coleccion("Universidad"); //esto no fue ia
+            // esto no fue ia ;)
+            MongoCollection<Document> collection = ConexionMongo.seleccionar_coleccion("Universidad");
+            //System.out.println("ya busque la coleccion, es: " + collection);
 
-            // aquí usé IA D:
+            // aquí si, usé IA D:
                 // 1. Jalamos todos los documentos de la colección
             FindIterable<Document> documentos = collection.find();
 
+            System.out.println("sou un documento xd " + documentos);
+
                 // 2. Los recorremos con un for-each limpio de Java (Mongo se encarga de cerrarlo internamente)
-            for (Document doc : documentos) {
+            for (Document doc : documentos)
+            {
                 lista_unis.add(doc);
             }
         }

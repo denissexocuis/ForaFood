@@ -20,10 +20,11 @@ public class Registro_Servlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        System.out.println("estoy buscando unis");
         UniversidadDAO universidad = new UniversidadDAO();
         // regresar una lista de documentos de todas las universidades
+        System.out.println("servlet Registro");
         List<Document> lista_unis = universidad.findAll();
+        System.out.println("hice findAll");
 
         // mandar la lista a jsp
         request.setAttribute("lista_universidades", lista_unis);
