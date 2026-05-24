@@ -1,6 +1,8 @@
 # Flujo del proceso
 ### Esto me sirve de guía y para entender el funcionamiento
 
+Check framework AAA
+
 Fuentes de información que me ayudaron más:
 https://medium.com/@rintoprie/building-a-simple-web-application-with-java-servlet-jsp-and-hibernate-in-2025-e93f17d0ddcc
 

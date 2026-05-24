@@ -32,7 +32,7 @@ public class UniversidadDAO implements CRUD<Universidad>
     @Override
     public List<Document> findAll()
     {
-        System.out.println("soy findAll");
+        //System.out.println("soy findAll"); // esto para depurar :)
         List<Document> lista_unis = new ArrayList<>();
 
         try
@@ -44,15 +44,15 @@ public class UniversidadDAO implements CRUD<Universidad>
 
             // aquí si, usé IA D:
                 // 1. Jalamos todos los documentos de la colección
-            FindIterable<Document> documentos = collection.find();
+            //FindIterable<Document> documentos = collection.find();
 
-            System.out.println("sou un documento xd " + documentos);
+            //System.out.println("sou un documento xd " + documentos);
 
                 // 2. Los recorremos con un for-each limpio de Java (Mongo se encarga de cerrarlo internamente)
-            for (Document doc : documentos)
-            {
-                lista_unis.add(doc);
-            }
+            //for (Document doc : documentos)
+            //{
+            //    lista_unis.add(doc);
+            //}
         }
         catch (Exception e)
         {

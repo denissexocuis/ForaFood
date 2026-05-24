@@ -22,9 +22,7 @@ public class Registro_Servlet extends HttpServlet
     {
         UniversidadDAO universidad = new UniversidadDAO();
         // regresar una lista de documentos de todas las universidades
-        System.out.println("servlet Registro");
         List<Document> lista_unis = universidad.findAll();
-        System.out.println("hice findAll");
 
         // mandar la lista a jsp
         request.setAttribute("lista_universidades", lista_unis);
