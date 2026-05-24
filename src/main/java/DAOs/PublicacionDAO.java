@@ -2,6 +2,7 @@ package DAOs;
 
 // el usuario se podrá registrar y asi jejejse
 
+import com.mongodb.client.MongoCollection;
 import modelo.Publicacion;
 import org.bson.types.ObjectId;
 import org.bson.Document;
@@ -10,8 +11,7 @@ import java.util.List;
 
 public class PublicacionDAO implements  CRUD<Publicacion>
 {
-    private final com.mongodb.client.MongoCollection<Document> collection = ConexionMongo.seleccionar_coleccion("Publicacion");
-
+    private MongoCollection<Document> collection = ConexionMongo.getDatabase().getCollection("Publicacion");
     // metodosss, TODO
 
     void validar(int voto_estudiante)

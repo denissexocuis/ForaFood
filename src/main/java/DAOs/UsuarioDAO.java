@@ -20,9 +20,10 @@ public class UsuarioDAO implements CRUD<Usuario>
     //MongoDatabase database = ConexionMongo.getDb();
     //this.collection = database.getCollection("Usuario");
 
-    // hice una funcion solo para seleccionar la coleccion ya asi rapido  y no tener que estar haciendo eso a cada rato sjdfjsdf
+    // hice una funcion solo para seleccionar la coleccion ya asi rapido  y no tener que estar haciendo eso a cada rato sjdfjsdf ->>>> me di cuenta que esto no era necesario, entendí bien los métodos del mongo en java jejejej, upsi
 
-    private final MongoCollection<Document> collection = ConexionMongo.seleccionar_coleccion("Usuario");
+    //private final MongoCollection<Document> collection = ConexionMongo.seleccionar_coleccion("Usuario");
+    private MongoCollection<Document> collection = ConexionMongo.getDatabase().getCollection("Usuario");
 
     // métodos principales
     void registrarse(String email, String passw, String nombre, String paterno, String materno, String nombre_user)
