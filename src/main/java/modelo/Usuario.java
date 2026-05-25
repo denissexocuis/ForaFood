@@ -26,7 +26,7 @@ public class Usuario implements Serializable
     private boolean terminos_aceptados;
     private List<String> medallas = new ArrayList<>();
 
-    private int fk_ubicacion, fk_universidad;
+    private ObjectId fk_ubicacion, fk_universidad;
 
     //* constructor vacío para un jb
     public Usuario()
@@ -34,9 +34,14 @@ public class Usuario implements Serializable
     }
 
     //* constructor vacío para insertar a mongo :D, nomas lo necesario
-    public Usuario(ObjectId id, String nombre_user, String email, String passw_hash, String universidad)
+    public Usuario(String nombre_user, String email, String passw_hash, String universidad)
     {
         // TODO: por ahora solo es String universidad, falta buscar el Object ID de la universidad :D
+        this.ID_Usuario = new ObjectId();
+        this.nombre_user = nombre_user;
+        this.email = email;
+        this.passw_hash = passw_hash;
+        this.fk_universidad = new ObjectId(); //* esto solo es temporal
     }
 
     // setters y getters
@@ -171,22 +176,22 @@ public class Usuario implements Serializable
         this.medallas = medallas;
     }
 
-    public int getFk_ubicacion()
+    public ObjectId getFk_ubicacion()
     {
         return fk_ubicacion;
     }
 
-    public void setFk_ubicacion(int fk_ubicacion)
+    public void setFk_ubicacion(ObjectId fk_ubicacion)
     {
         this.fk_ubicacion = fk_ubicacion;
     }
 
-    public int getFk_universidad()
+    public ObjectId getFk_universidad()
     {
         return fk_universidad;
     }
 
-    public void setFk_universidad(int fk_universidad)
+    public void setFk_universidad(ObjectId fk_universidad)
     {
         this.fk_universidad = fk_universidad;
     }

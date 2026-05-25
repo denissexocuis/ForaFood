@@ -27,11 +27,12 @@ public class Registro_Servlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        //? mandar correo de verificación, este bloque lo saqué de ia
-        String accion = request.getParameter("accion");
 
+        //? mandar correo de verificación y verificarcodigo, estos dos los saqué de ia
+        String accion = request.getParameter("accion");
         if (accion != null && accion.equals("mandarCodigo"))
         {
+            System.out.println("[ServletRegistro GET] mandando codigo...");
             String correo = request.getParameter("correo");
 
             // * generar código de 6 dígitos
@@ -55,6 +56,7 @@ public class Registro_Servlet extends HttpServlet
         }
         if (accion != null && accion.equals("verificarCodigo"))
         {
+            System.out.println("[ServletRegistro GET] verificando codigou");
             int codigoIngresado = Integer.parseInt(request.getParameter("codigo"));
             int codigoGuardado = (int) request.getSession().getAttribute("codigoVerificacion");
 
@@ -70,11 +72,11 @@ public class Registro_Servlet extends HttpServlet
         }
 
         //? cargar página de registro normal
+        System.out.println("[ServletRegistro GET] obteniendo dominios y universidades...");
         UniversidadDAO universidad = new UniversidadDAO();
         //* regresar una lista de documentos de todas las universidades
         List<Document> lista_unis = universidad.findAll();
         //System.out.println(lista_unis);
-
         //* mandar la lista a jsp
         request.setAttribute("lista_universidades", lista_unis);
 
@@ -86,13 +88,15 @@ public class Registro_Servlet extends HttpServlet
         }
         //* mandar la lista de dominios a jsp
         request.setAttribute("lista_dominios", lista_dominios);
-
+        System.out.println("[ServletRegistro GET] Mandando lista dominios y universidades...");
         request.getRequestDispatcher("registro.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        System.out.println("[ServletRegistro POST] Insertando usuario....");
+
         String nombre_user = request.getParameter("nombreUsuario");
         String email = request.getParameter("email");
         String pwd = request.getParameter("pwd");
@@ -102,14 +106,11 @@ public class Registro_Servlet extends HttpServlet
         //! hasheando contraseña jejej
         String passw_hash = BCrypt.hashpw(pwd, BCrypt.gensalt());
 
-        // TODO
-        ObjectId id = new ObjectId(); //* para generar un nuevo objectID
-        Usuario usuario = new Usuario(id, nombre_user, email, passw_hash, universidad, correoInstitucional);
+        // TODO: Buscar objectid de universidad e insertarlo 
+        Usuario usuario = new Usuario(nombre_user, email, passw_hash, universidad);
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        usuarioDAO.insertOne();
-
-        //usuarioDAO.insertar(nombreUsuario, email, pwdHash, universidad, correoInstitucional);
+        usuarioDAO.insertOne(usuario);
 
         response.sendRedirect("home.jsp");
     }
