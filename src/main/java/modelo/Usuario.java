@@ -28,9 +28,15 @@ public class Usuario implements Serializable
 
     private int fk_ubicacion, fk_universidad;
 
-    // método vacío para un jb
+    //* constructor vacío para un jb
     public Usuario()
     {
+    }
+
+    //* constructor vacío para insertar a mongo :D, nomas lo necesario
+    public Usuario(ObjectId id, String nombre_user, String email, String passw_hash, String universidad)
+    {
+        // TODO: por ahora solo es String universidad, falta buscar el Object ID de la universidad :D
     }
 
     // setters y getters

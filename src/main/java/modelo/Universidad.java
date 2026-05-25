@@ -10,6 +10,7 @@ public class Universidad implements Serializable
     private static final long serialVersionUID = 1L;
     private ObjectId ID_Universidad;
     private String nombre_uni;
+    private String dominio;
 
     public Universidad()
     {
@@ -45,6 +46,16 @@ public class Universidad implements Serializable
     public void setFk_ubicacion(int fk_ubicacion)
     {
         this.fk_ubicacion = fk_ubicacion;
+    }
+
+    public String getDominio()
+    {
+        return dominio;
+    }
+
+    public void setDominio(String dominio)
+    {
+        this.dominio = dominio;
     }
 
     // metodos

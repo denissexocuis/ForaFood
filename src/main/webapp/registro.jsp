@@ -2,6 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<!--! nota: uso de IA en ciertas partes-->
 
 <!DOCTYPE html>
 <html lang="es">
@@ -10,6 +11,8 @@
 
  https://mdbootstrap.com/docs/standard/extended/login/
  -->
+
+
 
 <head>
     <meta charset="UTF-8">
@@ -46,15 +49,16 @@
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
                             <div class="card-body p-4 p-lg-5 text-black">
 
+                                <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Registro</h5>
+
                                 <!-- ! METODO POST, SERVLET REGISTRO  -->
-                                <form action="registro" method="post" class="mb-3">
+                                <form action="registro" method="post" class="mb-3" novalidate>
 
                                     <div class="d-flex align-items-center mb-3 pb-1">
                                         <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
                                     </div>
 
-                                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Registro</h5>
-
+                                    <!--* PASO 1  DEL FORMULARIO-->
                                     <div id="paso1">
                                         <div data-mdb-input-init class="form-outline mb-1">
                                             <label class="form-label" for="nombreUsuario">Nombre de usuario</label>
@@ -69,7 +73,7 @@
 
                                         <div data-mdb-input-init class="form-outline mb-1">
                                             <label class="form-label" for="pwd">Contraseña</label>
-                                            <input type="password" class="form-control" id="pwd" name="pwd" required>
+                                            <input type="password" class="form-control" id="pwd" name="pwd">
                                             <small class="text-muted">Mínimo 8 caracteres, incluye al menos un número y un símbolo.</small>
                                             <div class="invalid-feedback">
                                                 Debe ser al menos de 8 caracteres con un número y símbolo.
@@ -78,8 +82,7 @@
 
                                         <!-- ? Seleccionar la universidad -->
                                         <label class="form-label" for="uniSelect">Universidad:</label>
-
-                                        <select id="uniSelect" name="txtUniversidad" class="form-control mb-2">
+                                        <select id="uniSelect" name="txtUniversidad" class="form-control mb-2" onchange="mostrarCorreo()">
                                             <option selected disabled>Seleccionar Universidad...</option>
 
                                             <%
@@ -96,6 +99,7 @@
                                                         // 4. extraer los datos del documento de Mongo
                                                         String idUni = uni.get("_id").toString();
                                                         String nombreUni = uni.getString("nombre_uni");
+                                                        String dominioUni = uni.getString("dominio");
                                             %>
                                             <option value="<%= idUni %>"><%= nombreUni %></option>
                                             <%
@@ -104,15 +108,33 @@
                                             %>
 
                                         </select>
-                                        <div data-mdb-input-init class="form-outline mb-1">
-                                            <label class="form-label" for="email">Correo Institucional:</label>
-                                            <input type="email" id="emailInstitucional" name="email" class="form-control" />
+
+                                        <!-- ? esto aparece después de seleccionar, es escribir el correo institucional -->
+                                        <div id="divCorreo" style="display:none;" class="mb-2 mt-2">
+                                            <label class="form-label" for="correoInstitucional">Correo institucional</label>
+                                            <input type="email" id="correoInstitucional" name="correoInstitucional" class="form-control mb-2" />
+                                            <small class="text-muted" id="hintCorreo"></small>
                                         </div>
 
                                         <button type="button" class="btn btn-dark mt-3 w-100" onclick="siguientePaso()">Siguiente</button>
                                     </div>
 
-                                    <div id="paso2" style="display: none;">
+                                    <!--* PASO 2 DEL FORMULARIO -->
+                                    <div id="paso2" style="display:none;">
+                                        <p >Se ha mandado un código de verificación a: <strong id="correoMostrado"></strong></p>
+
+                                        <div class="mb-2">
+                                            <label class="form-label" for="codigoVerificacion">Código:</label>
+                                            <input type="text" id="codigoVerificacion" name="codigoVerificacion"
+                                                   class="form-control form-control-lg" placeholder="Ej: 483920" maxlength="6" />
+                                        </div>
+
+                                        <button type="button" class="btn btn-secondary mt-3 w-100" onclick="anteriorPaso()">Atrás</button>
+                                        <button type="button" class="btn btn-dark mt-3 w-100" onclick="verificarCodigo()">Verificar</button>
+                                    </div>
+
+                                    <!--* PASO 3 DEL FORMULARIO -->
+                                    <div id="paso3" style="display: none;">
 
                                         <!-- Checkboxes -->
                                         <div class="mb-2">
@@ -197,6 +219,18 @@
     </div>
 </div>
 
+<%
+    List<String> dominios = (List<String>) request.getAttribute("lista_dominios");
+    StringBuilder dominiosJson = new StringBuilder("[");
+    for (int i = 0; i < dominios.size(); i++) {
+        dominiosJson.append("\"").append(dominios.get(i)).append("\"");
+        if (i < dominios.size() - 1) dominiosJson.append(",");
+    }
+    dominiosJson.append("]");
+%>
+<script>
+    const dominiosValidos = <%= dominiosJson %>;
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/registro.js"></script>
