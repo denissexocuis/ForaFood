@@ -28,7 +28,7 @@ public class Registro_Servlet extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
 
-        //? mandar correo de verificación y verificarcodigo, estos dos los saqué de ia
+        //? mandar correo de verificación y verificarcodigo, estos dos 'if' los saqué de ia
         String accion = request.getParameter("accion");
         if (accion != null && accion.equals("mandarCodigo"))
         {
@@ -71,7 +71,7 @@ public class Registro_Servlet extends HttpServlet
             return;
         }
 
-        //? cargar página de registro normal
+        //! Cargar página de registro normal
         System.out.println("[ServletRegistro GET] obteniendo dominios y universidades...");
         UniversidadDAO universidad = new UniversidadDAO();
         //* regresar una lista de documentos de todas las universidades
@@ -86,6 +86,7 @@ public class Registro_Servlet extends HttpServlet
         {
             lista_dominios.add(uni.getString("dominio"));
         }
+
         //* mandar la lista de dominios a jsp
         request.setAttribute("lista_dominios", lista_dominios);
         System.out.println("[ServletRegistro GET] Mandando lista dominios y universidades...");
@@ -107,6 +108,7 @@ public class Registro_Servlet extends HttpServlet
         String passw_hash = BCrypt.hashpw(pwd, BCrypt.gensalt());
 
         // TODO: Buscar objectid de universidad e insertarlo
+        
         Usuario usuario = new Usuario(nombre_user, email, passw_hash, universidad);
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
