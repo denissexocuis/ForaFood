@@ -106,7 +106,7 @@ public class Registro_Servlet extends HttpServlet
         //! hasheando contraseña jejej
         String passw_hash = BCrypt.hashpw(pwd, BCrypt.gensalt());
 
-        // TODO: Buscar objectid de universidad e insertarlo 
+        // TODO: Buscar objectid de universidad e insertarlo
         Usuario usuario = new Usuario(nombre_user, email, passw_hash, universidad);
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
