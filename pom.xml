@@ -48,11 +48,18 @@
       <version>2.7.0</version>
     </dependency>
 
-    <!-- para el mongodb  -->
+    <!-- *para el mongodb  -->
     <dependency>
       <groupId>org.mongodb</groupId>
       <artifactId>mongodb-driver-sync</artifactId>
       <version>5.0.1</version>
+    </dependency>
+
+    <!-- *para mandar correos en java-->
+    <dependency>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>javax.mail</artifactId>
+      <version>1.6.2</version>
     </dependency>
 
     <dependency>

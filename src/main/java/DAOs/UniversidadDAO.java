@@ -16,9 +16,6 @@ public class UniversidadDAO implements CRUD<Universidad>
     //MongoDatabase database = ConexionMongo.getDb();
     //this.collection = database.getCollection("Usuario");
 
-    private static MongoCollection<Document> collection = ConexionMongo.getDatabase().getCollection("Universidad");
-
-
     @Override
     public void insertOne(Universidad object)
     {
@@ -42,19 +39,20 @@ public class UniversidadDAO implements CRUD<Universidad>
             // me di cuenta que no era necesario, estuve entendiendo mejor los métodos del mongo en java jejejej, upsi
             //MongoCollection<Document> collection = ConexionMongo.seleccionar_coleccion("Universidad");
 
-            System.out.println("Testeando para ver si conectó bien con la coleccion");
-            FindIterable<Document> documents = collection.find();
-            for (Document doc : documents) {
-                System.out.println(doc);
+            MongoCollection<Document> collection = ConexionMongo.getDatabase().getCollection("Universidad"); // obtener coleccion especifica
+            FindIterable<Document> cursor = collection.find();
+            MongoCursor<Document> iterador = cursor.iterator();
+            while (iterador.hasNext())
+            {
+                lista_unis.add(iterador.next()); // ir iterando en cada documento y agregarlo a una lista
             }
-
+            //System.out.println(lista_unis); ya funcionaaa
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-        //System.out.println(lista_unis);
-        System.out.println("no hice na de unis");
+        System.out.println("Mandando universidades al select del html...");
         return lista_unis;
     }
 

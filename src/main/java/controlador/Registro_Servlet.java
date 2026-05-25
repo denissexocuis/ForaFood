@@ -23,10 +23,17 @@ public class Registro_Servlet extends HttpServlet
         UniversidadDAO universidad = new UniversidadDAO();
         // regresar una lista de documentos de todas las universidades
         List<Document> lista_unis = universidad.findAll();
+        //System.out.println(lista_unis);
 
         // mandar la lista a jsp
         request.setAttribute("lista_universidades", lista_unis);
 
         request.getRequestDispatcher("registro.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+
     }
 }
