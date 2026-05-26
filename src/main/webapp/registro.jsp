@@ -68,8 +68,9 @@
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-1">
-                                            <label class="form-label" for="email">Email</label>
+                                            <label class="form-label" for="email">Email Personal</label>
                                             <input type="email" id="email" name="email" class="form-control" />
+                                            <small class="text-muted">Con este correo podrás iniciar sesión.</small>
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-1">
@@ -158,11 +159,6 @@
                                         </button>
                                         <button type="button" class="btn btn-dark mt-3 w-100" onclick="anteriorPaso()">Atrás</button>
                                     </div>
-
-
-                                    <a class="small text-muted" href="#!">Forgot password?</a>
-                                    <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="#!"
-                                                                                                              style="color: #393f81;">Register here</a></p>
 
                                 </form>
 

@@ -102,25 +102,20 @@ public class Registro_Servlet extends HttpServlet
         String nombre_user = request.getParameter("nombreUsuario");
         String email = request.getParameter("email");
         String pwd = request.getParameter("pwd");
-        String universidad = request.getParameter("txtUniversidad");
+        String universidad = request.getParameter("txtUniversidad"); // aquí recibe le ObjectID de registro.jsp
 
         System.out.println("Universidad seleccionada desde el frontend: " + universidad);
-        String correoInstitucional = request.getParameter("correoInstitucional");
 
         //! hasheando contraseña jejej
         String passw_hash = BCrypt.hashpw(pwd, BCrypt.gensalt());
 
-        // esto es para sacar el documento de la universidad de acuerdo al nombre que se eligió
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        // se busca el documento de acuerdo al nombre ;)
-        Document universidad_mongo = usuarioDAO.getCollection().find(Filters.eq("nombre_uni", universidad)).first();
-
         // se crea el modelo de usuario ;)
-        Usuario usuario = new Usuario(nombre_user, email, passw_hash, universidad_mongo.getObjectId("_id"));
+        Usuario usuario = new Usuario(nombre_user, email, passw_hash, new ObjectId(universidad));
 
-
+        // se manda al DAO
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
         usuarioDAO.insertOne(usuario);
 
-        response.sendRedirect("home.jsp");
+        response.sendRedirect("login.jsp");
     }
 }
