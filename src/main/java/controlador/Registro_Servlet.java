@@ -107,13 +107,13 @@ public class Registro_Servlet extends HttpServlet
         System.out.println("Universidad seleccionada desde el frontend: " + universidad);
 
         //! hasheando contraseña jejej
-        String passw_hash = BCrypt.hashpw(pwd, BCrypt.gensalt());
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        String passw_hash = usuarioDAO.hashing(pwd); // lo pasé aquí para llevar un control
 
-        // se crea el modelo de usuario ;)
+        //* se crea el modelo de usuario ;)
         Usuario usuario = new Usuario(nombre_user, email, passw_hash, new ObjectId(universidad));
 
-        // se manda al DAO
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        //* se manda al DAO
         usuarioDAO.insertOne(usuario);
 
         response.sendRedirect("login.jsp");

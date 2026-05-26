@@ -41,8 +41,8 @@
 
                                 <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Iniciar Sesión</h5>
 
-                                <!-- ! METODO POST, SERVLET REGISTRO  -->
-                                <form action="registro" method="post" class="mb-3" novalidate>
+                                <!-- ! METODO POST, SERVLET LOGIN  -->
+                                <form action="login" method="post" class="mb-3" novalidate>
 
                                     <div class="d-flex align-items-center mb-3 pb-1">
                                         <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
@@ -53,12 +53,12 @@
                                     <div id="paso1">
                                         <div data-mdb-input-init class="form-outline mb-1">
                                             <label class="form-label" for="email">Email</label>
-                                            <input type="email" id="email" name="email" class="form-control" />
+                                            <input type="email" id="email" name="emailLogin" class="form-control" />
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-1">
                                             <label class="form-label" for="pwd">Contraseña</label>
-                                            <input type="password" class="form-control" id="pwd" name="pwd">
+                                            <input type="password" class="form-control" id="pwd" name="pwdLogin">
                                         </div>
                                     </div>
 

@@ -15,3 +15,10 @@ https://www.geeksforgeeks.org/java/introduction-java-servlets/
 
 Incluso cursito de youtube:
 https://www.youtube.com/watch?v=0FpLve7ffoY&list=PLfu_Bpi_zcDOn8ajnuLY6g1C6hc_eeDFl
+
+
+https://stackoverflow.com/questions/57907932/how-to-get-the-object-id-of-the-document-in-a-mongodb-collection-during-mongotem
+
+https://colorlib.com/wp/cat/login-forms/
+
+https://preview.colorlib.com/theme/bootstrap/login-form-20/

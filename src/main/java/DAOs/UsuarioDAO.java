@@ -12,6 +12,7 @@ import modelo.Usuario;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
 
@@ -32,9 +33,16 @@ public class UsuarioDAO implements CRUD<Usuario>
 
     }
 
-    void login(String email, String passw)
+    public boolean autenticar_credenciales(String email, String passw)
     {
+        //* fetch el usuario con el email :D
+        Document user = (Document) collection.find(Filters.eq("email", email));
 
+        // aqui busca la contraseña hasheada guardada en la base de datos :)
+        String hash_guardada = user.getString("passw_hash");
+
+        // verifica el input de la contraseña con la contraseña guardada
+        return BCrypt.checkpw(passw, hash_guardada);
     }
 
     void subir_foto(Multimedia img)
@@ -62,9 +70,9 @@ public class UsuarioDAO implements CRUD<Usuario>
         return 1;
     }
 
-    String hashing()
+    public String hashing(String contrasenia)
     {
-        return "todo";
+        return BCrypt.hashpw(contrasenia, BCrypt.gensalt());
     }
 
     boolean verificar_cuenta(String email)

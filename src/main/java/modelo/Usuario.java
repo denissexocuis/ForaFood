@@ -33,7 +33,7 @@ public class Usuario implements Serializable
     {
     }
 
-    //* constructor vacío para insertar a mongo :D, nomas lo necesario
+    //* constructor para insertar a mongo :D, nomas lo necesario
     public Usuario(String nombre_user, String email, String passw_hash, ObjectId universidad)
     {
         // TODO: por ahora solo es String universidad, falta buscar el Object ID de la universidad :D
@@ -42,6 +42,13 @@ public class Usuario implements Serializable
         this.email = email;
         this.passw_hash = passw_hash;
         this.fk_universidad = universidad;
+    }
+
+    //* constructor para guardar usuario con email y contraseña hasheada :D, esto es para hacer una autenticación del login asdjasjd
+    public Usuario(String email, String passw_hasheada)
+    {
+        this.email = email;
+        this.passw_hash = passw_hasheada;
     }
 
     // setters y getters
