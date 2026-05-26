@@ -5,6 +5,7 @@ package controlador;
 import DAOs.CorreoService;
 import DAOs.UniversidadDAO;
 import DAOs.UsuarioDAO;
+import com.mongodb.client.model.Filters;
 import modelo.Universidad;
 import modelo.Usuario;
 import org.bson.Document;
@@ -102,16 +103,22 @@ public class Registro_Servlet extends HttpServlet
         String email = request.getParameter("email");
         String pwd = request.getParameter("pwd");
         String universidad = request.getParameter("txtUniversidad");
+
+        System.out.println("Universidad seleccionada desde el frontend: " + universidad);
         String correoInstitucional = request.getParameter("correoInstitucional");
 
         //! hasheando contraseña jejej
         String passw_hash = BCrypt.hashpw(pwd, BCrypt.gensalt());
 
-        // TODO: Buscar objectid de universidad e insertarlo
-        
-        Usuario usuario = new Usuario(nombre_user, email, passw_hash, universidad);
-
+        // esto es para sacar el documento de la universidad de acuerdo al nombre que se eligió
         UsuarioDAO usuarioDAO = new UsuarioDAO();
+        // se busca el documento de acuerdo al nombre ;)
+        Document universidad_mongo = usuarioDAO.getCollection().find(Filters.eq("nombre_uni", universidad)).first();
+
+        // se crea el modelo de usuario ;)
+        Usuario usuario = new Usuario(nombre_user, email, passw_hash, universidad_mongo.getObjectId("_id"));
+
+
         usuarioDAO.insertOne(usuario);
 
         response.sendRedirect("home.jsp");

@@ -6,6 +6,7 @@ package DAOs;
 
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import modelo.Multimedia;
 import modelo.Usuario;
 
@@ -23,7 +24,7 @@ public class UsuarioDAO implements CRUD<Usuario>
     // hice una funcion solo para seleccionar la coleccion ya asi rapido  y no tener que estar haciendo eso a cada rato sjdfjsdf ->>>> me di cuenta que esto no era necesario, entendí bien los métodos del mongo en java jejejej, upsi
 
     //private final MongoCollection<Document> collection = ConexionMongo.seleccionar_coleccion("Usuario");
-    private MongoCollection<Document> collection = ConexionMongo.getDatabase().getCollection("Usuario");
+    private final MongoCollection<Document> collection = ConexionMongo.getDatabase().getCollection("Usuario");
 
     // métodos principales
     void registrarse(String email, String passw, String nombre, String paterno, String materno, String nombre_user)
@@ -76,8 +77,8 @@ public class UsuarioDAO implements CRUD<Usuario>
     @Override
     public void insertOne(Usuario user)
     {
-        // para lo de abajo pedí ayuda de una IA porque busqué en varias paginas y me daban cosas bien bizarras T.T, no sabía como hacerle el insert D:
 
+        // para lo de abajo pedí ayuda de una IA porque busqué en varias paginas y me daban cosas bien bizarras T.T, no sabía como hacerle el insert D:
         //esta es la información que se pedirá para el registro :D
         Document doc = new Document()
                 .append("nombre_user", user.getNombre_user())
@@ -110,5 +111,10 @@ public class UsuarioDAO implements CRUD<Usuario>
     public void updateOne(Usuario user)
     {
 
+    }
+
+    public MongoCollection<Document> getCollection()
+    {
+        return collection;
     }
 }

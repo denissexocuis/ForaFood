@@ -34,14 +34,14 @@ public class Usuario implements Serializable
     }
 
     //* constructor vacío para insertar a mongo :D, nomas lo necesario
-    public Usuario(String nombre_user, String email, String passw_hash, String universidad)
+    public Usuario(String nombre_user, String email, String passw_hash, ObjectId universidad)
     {
         // TODO: por ahora solo es String universidad, falta buscar el Object ID de la universidad :D
         this.ID_Usuario = new ObjectId();
         this.nombre_user = nombre_user;
         this.email = email;
         this.passw_hash = passw_hash;
-        this.fk_universidad = new ObjectId(); //* esto solo es temporal
+        this.fk_universidad = universidad;
     }
 
     // setters y getters

@@ -59,6 +59,7 @@
                                     </div>
 
                                     <!--* PASO 1  DEL FORMULARIO-->
+                                    <!-- uso de ia en los pasos...para el diseño ;)-->
                                     <div id="paso1">
                                         <div data-mdb-input-init class="form-outline mb-1">
                                             <label class="form-label" for="nombreUsuario">Nombre de usuario</label>
