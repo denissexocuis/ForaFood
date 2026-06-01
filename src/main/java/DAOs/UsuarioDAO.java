@@ -35,14 +35,46 @@ public class UsuarioDAO implements CRUD<Usuario>
 
     public boolean autenticar_credenciales(String email, String passw)
     {
-        //* fetch el usuario con el email :D
-        Document user = (Document) collection.find(Filters.eq("email", email));
+        try
+        {
+            //* fetch el usuario con el email :D
+            Document user = this.findOne_email(email);
 
-        // aqui busca la contraseña hasheada guardada en la base de datos :)
-        String hash_guardada = user.getString("passw_hash");
+            // si el correo no existe en atlas, return
+            if (user == null)
+            {
+                System.out.println("[autenticar_credenciales] el correo '" + email + "' no existe en la base de datos :C.");
+                return false;
+            }
 
-        // verifica el input de la contraseña con la contraseña guardada
-        return BCrypt.checkpw(passw, hash_guardada);
+            // si existe, sacar el hash guardado
+            String hash_guardada = user.getString("passw_hash");
+
+            // si el hash está vacío en la bd
+            if (hash_guardada == null || hash_guardada.isEmpty())
+            {
+                System.out.println("[autenticar_credenciales] el usuario existe, pero su contraseña está vacía en la base de datos :C");
+                return false;
+            }
+
+            // pasando a bcrypt el hash de la bd:
+            System.out.println("[autenticar_credenciales] pass guardada en la bd: " + hash_guardada);
+
+            // checar contaseña guardada con la ingresada, si son iguales
+            return BCrypt.checkpw(passw, hash_guardada);
+
+        }
+        catch (IllegalArgumentException e)
+        {
+            // si la contraseña no está encriptada..
+            System.out.println("[autenticar_credenciales] la contraseña en la BD no está encriptada correctamente (osea Invalid salt version).");
+            return false;
+        } catch (Exception e)
+        {
+            System.out.println("[autenticar_credenciales] hay otro error en la autenticación:");
+            e.printStackTrace();
+            return false;
+        }
     }
 
     void subir_foto(Multimedia img)
@@ -83,7 +115,7 @@ public class UsuarioDAO implements CRUD<Usuario>
 
     // métodos CRUD
     @Override
-    public void insertOne(Usuario user)
+    public boolean insertOne(Usuario user)
     {
 
         // para lo de abajo pedí ayuda de una IA porque busqué en varias paginas y me daban cosas bien bizarras T.T, no sabía como hacerle el insert D:
@@ -95,12 +127,23 @@ public class UsuarioDAO implements CRUD<Usuario>
                 .append("fk_universidad", user.getFk_universidad());
 
         collection.insertOne(doc);
+        return false;
     }
 
     @Override
     public Document findOne(ObjectId user)
     {
         return collection.find(new Document("_id", user)).first();
+    }
+
+    // función que hice para retornar el usuario que encuentre dependiendo del 'email'
+    // esto es para el Login_Servlet
+    public Document findOne_email(String email)
+    {
+        //Document doc = collection.find(Filters.eq("email", email)).first();
+        // depurar jeje
+        //System.out.println("[findOne_email] documento real que leyó java " + doc.toJson());
+        return collection.find(Filters.eq("email", email)).first();
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface CRUD<T>
 {
-    void insertOne(T object);
+    boolean insertOne(T object);
     Document findOne(ObjectId object);
     List<Document> findAll();
     void deleteOne(ObjectId object);

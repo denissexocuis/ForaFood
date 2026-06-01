@@ -19,8 +19,6 @@ function siguientePaso() {
         return;
     }
 
-
-
     // Mostrar correo en el mensaje
     document.getElementById("correoMostrado").textContent = correo;
 

@@ -1,29 +1,40 @@
 package modelo;
+import org.bson.types.ObjectId;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class Publicacion implements Serializable
 {
     private static final long serialVersionUID = 1L;
-    private int ID_Publicacion, cant_estrellas;
-    private String texto_publicacion, url_imagen, titulo;
-    private float puntuacion;
+    private ObjectId ID_Publicacio;
+    private int cant_estrellas;
+    private String titulo,
+                    texto_publicacion,
+                    url_imagen;
     private Date fecha;
-    private boolean es_comentario, es_valida;
+    private boolean es_valida;
+    private List<String> comentarios;
 
-    private int fk_usuario, fk_establecimiento;
+    private ObjectId fk_usuario,
+                    fk_establecimiento,
+                    fk_universidad;
+    // para lo de tipo waze :D
+    private int votosVigente;
+    private int votosFalso;
 
     public Publicacion()
     {}
 
-    public int getID_Publicacion()
+    public ObjectId getID_Publicacio()
     {
-        return ID_Publicacion;
+        return ID_Publicacio;
     }
 
-    public void setID_Publicacion(int ID_Publicacion)
+    public void setID_Publicacio(ObjectId ID_Publicacio)
     {
-        this.ID_Publicacion = ID_Publicacion;
+        this.ID_Publicacio = ID_Publicacio;
     }
 
     public int getCant_estrellas()
@@ -34,6 +45,16 @@ public class Publicacion implements Serializable
     public void setCant_estrellas(int cant_estrellas)
     {
         this.cant_estrellas = cant_estrellas;
+    }
+
+    public String getTitulo()
+    {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo)
+    {
+        this.titulo = titulo;
     }
 
     public String getTexto_publicacion()
@@ -56,26 +77,6 @@ public class Publicacion implements Serializable
         this.url_imagen = url_imagen;
     }
 
-    public String getTitulo()
-    {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo)
-    {
-        this.titulo = titulo;
-    }
-
-    public float getPuntuacion()
-    {
-        return puntuacion;
-    }
-
-    public void setPuntuacion(float puntuacion)
-    {
-        this.puntuacion = puntuacion;
-    }
-
     public Date getFecha()
     {
         return fecha;
@@ -84,16 +85,6 @@ public class Publicacion implements Serializable
     public void setFecha(Date fecha)
     {
         this.fecha = fecha;
-    }
-
-    public boolean isEs_comentario()
-    {
-        return es_comentario;
-    }
-
-    public void setEs_comentario(boolean es_comentario)
-    {
-        this.es_comentario = es_comentario;
     }
 
     public boolean isEs_valida()
@@ -106,23 +97,63 @@ public class Publicacion implements Serializable
         this.es_valida = es_valida;
     }
 
-    public int getFk_usuario()
+    public List<String> getComentarios()
+    {
+        return comentarios;
+    }
+
+    public void setComentarios(List<String> comentarios)
+    {
+        this.comentarios = comentarios;
+    }
+
+    public ObjectId getFk_usuario()
     {
         return fk_usuario;
     }
 
-    public void setFk_usuario(int fk_usuario)
+    public void setFk_usuario(ObjectId fk_usuario)
     {
         this.fk_usuario = fk_usuario;
     }
 
-    public int getFk_establecimiento()
+    public ObjectId getFk_establecimiento()
     {
         return fk_establecimiento;
     }
 
-    public void setFk_establecimiento(int fk_establecimiento)
+    public void setFk_establecimiento(ObjectId fk_establecimiento)
     {
         this.fk_establecimiento = fk_establecimiento;
+    }
+
+    public ObjectId getFk_universidad()
+    {
+        return fk_universidad;
+    }
+
+    public void setFk_universidad(ObjectId fk_universidad)
+    {
+        this.fk_universidad = fk_universidad;
+    }
+
+    public int getVotosVigente()
+    {
+        return votosVigente;
+    }
+
+    public void setVotosVigente(int votosVigente)
+    {
+        this.votosVigente = votosVigente;
+    }
+
+    public int getVotosFalso()
+    {
+        return votosFalso;
+    }
+
+    public void setVotosFalso(int votosFalso)
+    {
+        this.votosFalso = votosFalso;
     }
 }

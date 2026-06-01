@@ -1,0 +1,145 @@
+/* ======================================================== */
+/* uso de IA aquí!
+/* ======================================================== */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Alinea los 3 bloques principales en fila */
+    height: 100vh;
+}
+
+/* 1. Columna Izquierda: Menú Lateral (15% del ancho) */
+.sidebar-left {
+    width: 15%;
+    background-color: #f4f4f4;
+    border-right: 1px solid #ccc;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar-left .avatar {
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.sidebar-left .menu-link {
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+}
+
+.sidebar-left .btn-mapa {
+    width: 100%;
+    padding: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.sidebar-left .sub-titulo {
+    color: gray;
+    font-size: 12px;
+    margin-top: 20px;
+}
+
+/* 2. Columna Central: Feed Principal (60% del ancho) */
+.main-content {
+    width: 60%;
+    padding: 20px;
+    overflow-y: auto; /* Agrega scroll si hay demasiadas publicaciones */
+}
+
+.header-feed {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.buscador-form {
+    margin: 0;
+    display: flex;
+    gap: 5px;
+}
+
+.buscador-input {
+    padding: 6px;
+    width: 250px;
+}
+
+/* Diseño de las tarjetas de publicaciones individuales */
+.post-card {
+    border: 2px solid #333;
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.post-info {
+    max-width: 75%;
+}
+
+.post-valoracion {
+    font-size: 14px;
+    color: #cc7a00;
+    font-weight: bold;
+}
+
+.post-imagen-placeholder {
+    width: 100px;
+    height: 80px;
+    border: 1px dashed gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+    font-size: 12px;
+    color: gray;
+}
+
+/* 3. Columna Derecha: Top Lugares (25% del ancho) */
+.sidebar-right {
+    width: 25%;
+    background-color: #fafafa;
+    border-left: 1px solid #ccc;
+    padding: 20px;
+}
+
+.sidebar-right h3 {
+    letter-spacing: 1px;
+}
+
+.sidebar-right ol {
+    padding-left: 20px;
+    line-height: 2.5;
+}
+
+/* Clase para ocultar el formulario al cargar la página */
+.formulario-oculto {
+    display: none;
+}
+
+/* Estilo para el botón interactivo */
+.btn-desplegar-form {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 20px;
+    width: 100%; /* Ocupa el ancho del feed central */
+    transition: background 0.3s ease;
+}
+
+.btn-desplegar-form:hover {
+    background-color: #555;
+}

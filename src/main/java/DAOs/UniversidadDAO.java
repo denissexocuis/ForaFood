@@ -17,9 +17,10 @@ public class UniversidadDAO implements CRUD<Universidad>
     //this.collection = database.getCollection("Usuario");
 
     @Override
-    public void insertOne(Universidad object)
+    public boolean insertOne(Universidad object)
     {
 
+        return false;
     }
 
     @Override

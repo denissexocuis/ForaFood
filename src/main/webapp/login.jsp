@@ -53,18 +53,23 @@
                                     <div id="paso1">
                                         <div data-mdb-input-init class="form-outline mb-1">
                                             <label class="form-label" for="email">Email</label>
-                                            <input type="email" id="email" name="emailLogin" class="form-control" />
+                                            <input type="email" id="email" name="emailLogin" class="form-control" required/>
                                         </div>
 
                                         <div data-mdb-input-init class="form-outline mb-1">
                                             <label class="form-label" for="pwd">Contraseña</label>
-                                            <input type="password" class="form-control" id="pwd" name="pwdLogin">
+                                            <input type="password" class="form-control" id="pwd" name="pwdLogin" required>
                                         </div>
                                     </div>
 
                                     <a class="small text-muted" href="#!">¿Olvidaste tu contraseña? (WIP)</a>
-                                    <p class="mb-5 pb-lg-2" style="color: #393f81;">¿No tienes una cuenta? <a href="registro"
+                                    <p class="pb-lg-2" style="color: #393f81;">¿No tienes una cuenta? <a href="registro"
                                                                                                               style="color: #393f81;">Registrate aquí.</a></p>
+
+                                    <!-- ? Botón desactivado hasta que acepten -->
+                                    <button type="submit" class="btn btn-dark w-100" id="btnRegistrarse">
+                                        Iniciar Sesión
+                                    </button>
 
                                 </form>
 
