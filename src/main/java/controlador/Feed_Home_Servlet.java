@@ -10,15 +10,15 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/home") // remplazar al web.xml
-public class Feed_Servlet extends HttpServlet
+@WebServlet("/principal") // remplazar al web.xml
+public class Feed_Home_Servlet extends HttpServlet
 {
     //* obtener lo que se manda
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        System.out.println("[Feed_Servlet GET] cargando feed principal...");
+        System.out.println("[Feed_Servlet GET] cargando feed principal con el DAO publicacion...");
 
         // validar la sesión del usuario, esto lo saqué de ia btw
         HttpSession session = request.getSession(false);
@@ -42,7 +42,7 @@ public class Feed_Servlet extends HttpServlet
         request.setAttribute("posts_comunidad", postsParaVista);
 
         // mandar a home.jsp
-        request.getRequestDispatcher("/home.jsp").forward(request, response);
+        request.getRequestDispatcher("home.jsp").forward(request, response);
 
     }
 }

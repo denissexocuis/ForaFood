@@ -7,13 +7,16 @@ package DAOs;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import modelo.Multimedia;
 import modelo.Usuario;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.mindrot.jbcrypt.BCrypt;
 
+import javax.ejb.AsyncResult;
 import java.util.List;
 
 public class UsuarioDAO implements CRUD<Usuario>
@@ -77,6 +80,74 @@ public class UsuarioDAO implements CRUD<Usuario>
         }
     }
 
+    //? método para actualizar la reputación y gamificación de acuerdo de los puntos que obtiene el usuario referente a los posts
+    public void actualizar_reputacion_gamificacion(ObjectId usuario_id, boolean voto_positivo)
+    {
+        try
+        {
+            // buscar datos actuales del usuario
+            Document user_bd = collection.find(Filters.eq("_id", usuario_id)).first();
+            // es decir, retornar todo lo que tenga el usuario en la bd
+            if (user_bd == null) return; // si no existe el documento en la base de datos
+
+            //? extraer los valores actuales (si son null, van en 0)
+            int puntos_actuales = user_bd.getInteger("puntos", 0);
+            int votosVigente = user_bd.getInteger("votosVigente", 0);
+            int votosFalso = user_bd.getInteger("votosFalso", 0);
+
+            // aqui use ia
+            if (voto_positivo)
+            {
+                votosVigente += 1;
+                puntos_actuales += 10; // 10 puntos por info verídica
+            } else
+            {
+                votosFalso += 1;
+            }
+
+            // cálculo de la reputación, porcentaje de efectividad
+            float total_votos = votosVigente + votosFalso; // aqui usé ia
+            float nuevaReputacion = (total_votos > 0) ? ((float) votosVigente / total_votos) * 100 : 0;
+
+            //asignar rangos según los puntos acumulados
+            String nuevoRango = "Novato";
+            if (puntos_actuales >= 500)
+            {
+                nuevoRango = "Crítico de Oro";
+            } else if (puntos_actuales >= 200)
+            {
+                nuevoRango = "Experto";
+            } else if (puntos_actuales >= 50)
+            {
+                nuevoRango = "Explorador";
+            }
+
+            //? mandar actualización a mongodb
+            Bson actualizaciones = Updates.combine(
+                    Updates.set("votosVigente", votosVigente),
+                    Updates.set("votosFalso", votosFalso),
+                    Updates.set("puntos", puntos_actuales),
+                    Updates.set("reputacion", nuevaReputacion),
+                    Updates.set("rango", nuevoRango)
+            );
+
+            // mandar las actualizaciones
+            collection.updateOne(Filters.eq("_id", usuario_id), actualizaciones);
+            System.out.println("[UserDAO] Gamificación actualizada para el usuario. Rango: " + nuevoRango + " | Puntos: " + puntos_actuales);
+
+            // asignar medallas
+            List<String> medallas = (List<String>) user_bd.get("medallas");
+            if (puntos_actuales >= 500 && (medallas == null || !medallas.contains("🎖️ Leyenda Forafood")))
+            {
+                collection.updateOne(Filters.eq("_id", usuario_id), Updates.addToSet("medallas", "🎖️ Leyenda Forafood"));
+                System.out.println("[UserDAO] ¡Medalla otorgada!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     void subir_foto(Multimedia img)
     {
 
@@ -117,17 +188,31 @@ public class UsuarioDAO implements CRUD<Usuario>
     @Override
     public boolean insertOne(Usuario user)
     {
+        try
+        {
+            // para lo de abajo pedí ayuda de una IA porque busqué en varias paginas y me daban cosas bien bizarras T.T, no sabía como hacerle el insert D:
+            //esta es la información que se pedirá para el registro :D
+            Document doc = new Document()
+                    .append("nombre_user", user.getNombre_user())
+                    .append("email", user.getEmail())
+                    .append("passw_hash", user.getPassw_hash())
+                    .append("fk_universidad", user.getFk_universidad())
+                    // atributos por defecto en cero
+                    .append("puntos", 0)
+                    .append("votosVigente", 0)
+                    .append("votosFalso", 0)
+                    .append("reputacion", 0.0)
+                    .append("rango", "Novato")
+                    .append("medallas", new java.util.ArrayList<String>()); // array vacío listo para llenarse
 
-        // para lo de abajo pedí ayuda de una IA porque busqué en varias paginas y me daban cosas bien bizarras T.T, no sabía como hacerle el insert D:
-        //esta es la información que se pedirá para el registro :D
-        Document doc = new Document()
-                .append("nombre_user", user.getNombre_user())
-                .append("email", user.getEmail())
-                .append("passw_hash", user.getPassw_hash())
-                .append("fk_universidad", user.getFk_universidad());
-
-        collection.insertOne(doc);
-        return false;
+            collection.insertOne(doc);
+            return true;
+        } catch (Exception e)
+        {
+            System.out.println("[UserDAO] Error al registrar usuario:");
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override

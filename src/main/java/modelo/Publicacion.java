@@ -8,43 +8,35 @@ import java.util.List;
 public class Publicacion implements Serializable
 {
     private static final long serialVersionUID = 1L;
-    private ObjectId ID_Publicacio;
-    private int cant_estrellas;
+    private ObjectId ID_Publicacion;
     private String titulo,
-                    texto_publicacion,
-                    url_imagen;
+                    texto_publicacion;
+    private List<Multimedia> multimedia;
     private Date fecha;
     private boolean es_valida;
     private List<String> comentarios;
 
-    private ObjectId fk_usuario,
+    private ObjectId fk_usuario_autor,
                     fk_establecimiento,
                     fk_universidad;
     // para lo de tipo waze :D
     private int votosVigente;
     private int votosFalso;
 
+    private String nombre_autor;
+    private String foto_perfil_autor;
+
     public Publicacion()
     {}
 
-    public ObjectId getID_Publicacio()
+    public ObjectId getID_Publicacion()
     {
-        return ID_Publicacio;
+        return ID_Publicacion;
     }
 
-    public void setID_Publicacio(ObjectId ID_Publicacio)
+    public void setID_Publicacion(ObjectId ID_Publicacion)
     {
-        this.ID_Publicacio = ID_Publicacio;
-    }
-
-    public int getCant_estrellas()
-    {
-        return cant_estrellas;
-    }
-
-    public void setCant_estrellas(int cant_estrellas)
-    {
-        this.cant_estrellas = cant_estrellas;
+        this.ID_Publicacion = ID_Publicacion;
     }
 
     public String getTitulo()
@@ -65,16 +57,6 @@ public class Publicacion implements Serializable
     public void setTexto_publicacion(String texto_publicacion)
     {
         this.texto_publicacion = texto_publicacion;
-    }
-
-    public String getUrl_imagen()
-    {
-        return url_imagen;
-    }
-
-    public void setUrl_imagen(String url_imagen)
-    {
-        this.url_imagen = url_imagen;
     }
 
     public Date getFecha()
@@ -105,16 +87,6 @@ public class Publicacion implements Serializable
     public void setComentarios(List<String> comentarios)
     {
         this.comentarios = comentarios;
-    }
-
-    public ObjectId getFk_usuario()
-    {
-        return fk_usuario;
-    }
-
-    public void setFk_usuario(ObjectId fk_usuario)
-    {
-        this.fk_usuario = fk_usuario;
     }
 
     public ObjectId getFk_establecimiento()
@@ -155,5 +127,45 @@ public class Publicacion implements Serializable
     public void setVotosFalso(int votosFalso)
     {
         this.votosFalso = votosFalso;
+    }
+
+    public List<Multimedia> getMultimedia()
+    {
+        return multimedia;
+    }
+
+    public void setMultimedia(List<Multimedia> multimedia)
+    {
+        this.multimedia = multimedia;
+    }
+
+    public ObjectId getFk_usuario_autor()
+    {
+        return fk_usuario_autor;
+    }
+
+    public void setFk_usuario_autor(ObjectId fk_usuario_autor)
+    {
+        this.fk_usuario_autor = fk_usuario_autor;
+    }
+
+    public String getNombre_autor()
+    {
+        return nombre_autor;
+    }
+
+    public void setNombre_autor(String nombre_autor)
+    {
+        this.nombre_autor = nombre_autor;
+    }
+
+    public String getFoto_perfil_autor()
+    {
+        return foto_perfil_autor;
+    }
+
+    public void setFoto_perfil_autor(String foto_perfil_autor)
+    {
+        this.foto_perfil_autor = foto_perfil_autor;
     }
 }

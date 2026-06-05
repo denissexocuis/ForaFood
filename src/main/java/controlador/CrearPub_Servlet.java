@@ -31,9 +31,18 @@ public class CrearPub_Servlet extends HttpServlet
             return;
         }
 
+        //! sesion validada, proceder...
+
         // obtener universidad que se mandó desde el login al home
         ObjectId id_user_sesion = (ObjectId) session.getAttribute("_id_usuario");
         ObjectId ID_Uni_sesion = (ObjectId) session.getAttribute("fk_universidad");
+        String nombre_user_sesion = (String) session.getAttribute("user");
+
+        //? obtener foto de perfil del usuario :D
+        String foto_usuario_logeado = (String) session.getAttribute("foto_perfil");
+        if (foto_usuario_logeado == null) {
+            foto_usuario_logeado = "img/avatar-default.png"; // por si acaso no subió foto
+        }
 
         try
         {
@@ -47,13 +56,13 @@ public class CrearPub_Servlet extends HttpServlet
             Publicacion nuevoPost = new Publicacion();
             nuevoPost.setTitulo(titulo);
             nuevoPost.setTexto_publicacion(texto_publicacion);
-            nuevoPost.setUrl_imagen(imagen == null || imagen.isEmpty() ? "default.jpg" : imagen);
             nuevoPost.setEs_valida(true);
             nuevoPost.setComentarios(new ArrayList<>());
+            nuevoPost.setNombre_autor(nombre_user_sesion);
+            nuevoPost.setFoto_perfil_autor(foto_usuario_logeado);
 
             // strings a objectid
             nuevoPost.setFk_universidad(ID_Uni_sesion);
-            nuevoPost.setFk_usuario(id_user_sesion);
             nuevoPost.setFk_establecimiento(new ObjectId(id_establecimiento));
 
             //? GUARDARLO EN LA BD
@@ -61,20 +70,20 @@ public class CrearPub_Servlet extends HttpServlet
 
             if (exito)
             {
-                response.sendRedirect("home");
+                response.sendRedirect("principal");
             } else
             {
-                response.sendRedirect("home?error=db_error");
+                response.sendRedirect("principal?error=db_error");
             }
 
         } catch (IllegalArgumentException e) {
             System.out.println("[CrearPost_Servlet] uno de los IDs no es un ObjectId válido.");
             e.printStackTrace();
-            response.sendRedirect("home?error=id_invalido");
+            response.sendRedirect("principal?error=id_invalido");
         } catch (Exception e) {
             System.out.println("[CrearPost_Servlet] un error inesperado:");
             e.printStackTrace();
-            response.sendRedirect("home?error=unknown");
+            response.sendRedirect("principal?error=unknown");
         }
 
     }

@@ -55,18 +55,18 @@ public class Login_Servlet extends HttpServlet
                 ObjectId id_sesion_usuario = datos_Usuario.getObjectId("_id");
                 ObjectId ID_Uni_sesion = datos_Usuario.getObjectId("fk_universidad");
 
-                // mandar ambas cosas a la sesión
+                //? mandar tooodo a la sesión del usuario
                 request.getSession().setAttribute("user", nombre_sesion);
                 request.getSession().setAttribute("fk_universidad", ID_Uni_sesion);
                 request.getSession().setAttribute("_id_usuario", id_sesion_usuario);
             }
             // mandar al home :D
-            response.sendRedirect("home.jsp");
+            response.sendRedirect("principal");
         }
         else
         {
             // regresar al login con un mensaje de error
-            response.sendRedirect("login.jsp?error=1");
+            response.sendRedirect("login?error=1");
         }
 
     }

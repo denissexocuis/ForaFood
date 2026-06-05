@@ -11,7 +11,7 @@ body {
 
 /* 1. Columna Izquierda: Menú Lateral (15% del ancho) */
 .sidebar-left {
-    width: 15%;
+    width: 20%;
     background-color: #f4f4f4;
     border-right: 1px solid #ccc;
     padding: 20px;
