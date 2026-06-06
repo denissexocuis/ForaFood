@@ -1,27 +1,46 @@
 package modelo;
+import org.bson.types.ObjectId;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Establecimiento implements Serializable
 {
     private static final long serialVersionUID = 1L;
-    private int ID_Establecimiento;
-    private String nombre_estab, horario_servicio, descripcion, rango_precios;
+    private ObjectId ID_Establecimiento;
+    private String nombre_estab,
+            horario_servicio,
+            descripcion,
+            rango_precios;
     private float calificacion;
     private boolean descuento_estudiante;
 
-    private int fk_ubicacion, fk_multimedia, fk_metodo_pago;
+    // estructura GeoJSON para el Geopunto [longitud, latitud]
+    private String tipoUbicacion = "Point";
+    private List<Double> coordenadas;
 
-    public Establecimiento()
-    {}
 
-    public int getID_Establecimiento()
+    private ObjectId fk_universidad;
+    private List<String> galeria_fotos;
+    private List<String> metodos_pago; // Ej: ["Efectivo", "Transferencia"]
+
+    //public Establecimiento()
+    //{}
+
+    public Establecimiento() {
+        this.coordenadas = new java.util.ArrayList<Double>();
+        this.metodos_pago = new java.util.ArrayList<String>();
+        this.galeria_fotos = new java.util.ArrayList<String>();
+    }
+
+    public ObjectId getID_Establecimiento()
     {
         return ID_Establecimiento;
     }
 
-    public void setID_Establecimiento(int ID_Establecimiento)
+    public void setID_Establecimiento(ObjectId ID_Establecimiento)
     {
         this.ID_Establecimiento = ID_Establecimiento;
     }
@@ -86,37 +105,66 @@ public class Establecimiento implements Serializable
         this.descuento_estudiante = descuento_estudiante;
     }
 
-    public int getFk_ubicacion()
+    public String getTipoUbicacion()
     {
-        return fk_ubicacion;
+        return tipoUbicacion;
     }
 
-    public void setFk_ubicacion(int fk_ubicacion)
+    public void setTipoUbicacion(String tipoUbicacion)
     {
-        this.fk_ubicacion = fk_ubicacion;
+        this.tipoUbicacion = tipoUbicacion;
     }
 
-    public int getFk_multimedia()
+    public List<Double> getCoordenadas()
     {
-        return fk_multimedia;
+        return coordenadas;
     }
 
-    public void setFk_multimedia(int fk_multimedia)
+    public void setCoordenadas(List<Double> coordenadas)
     {
-        this.fk_multimedia = fk_multimedia;
+        this.coordenadas = coordenadas;
     }
 
-    public int getFk_metodo_pago()
-    {
-        return fk_metodo_pago;
+    // setear latitud y longitud rapido
+    public void setGeopunto(double lng, double lat) {
+        if (this.coordenadas == null) {
+            this.coordenadas = new java.util.ArrayList<Double>();
+        }
+
+        this.coordenadas.clear();
+        this.coordenadas.add(lng);
+        this.coordenadas.add(lat);
     }
 
-    public void setFk_metodo_pago(int fk_metodo_pago)
+    public ObjectId getFk_universidad()
     {
-        this.fk_metodo_pago = fk_metodo_pago;
+        return fk_universidad;
     }
 
-    // metodos, todo
+    public void setFk_universidad(ObjectId fk_universidad)
+    {
+        this.fk_universidad = fk_universidad;
+    }
+
+    public List<String> getGaleria_fotos()
+    {
+        return galeria_fotos;
+    }
+
+    public void setGaleria_fotos(List<String> galeria_fotos)
+    {
+        this.galeria_fotos = galeria_fotos;
+    }
+
+    public List<String> getMetodos_pago()
+    {
+        return metodos_pago;
+    }
+
+    public void setMetodos_pago(List<String> metodos_pago)
+    {
+        this.metodos_pago = metodos_pago;
+    }
 
     float cal_promedio_calif()
     {
@@ -139,8 +187,7 @@ public class Establecimiento implements Serializable
 
     }
 
-    List locales_cercanos(String geopunto, int radio)
-    {
+    public List<Establecimiento> locales_cercanos(String geopunto, int radio) {
         return null;
     }
 

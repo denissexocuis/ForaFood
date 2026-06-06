@@ -28,12 +28,6 @@ public class Votacion_Servlet extends HttpServlet
         HttpSession session = request.getSession();
         ObjectId id_usuario_votante = (ObjectId) session.getAttribute("_id_usuario");
 
-        System.out.println("--- 🧩 REVISANDO FILTRO DE VOTO ---");
-        System.out.println("-> id_publicacion (Form/URL): " + id_publicacion);
-        System.out.println("-> tipo_voto (Form/URL): " + tipo_voto);
-        System.out.println("-> id_usuario_votante (Sesión): " + id_usuario_votante);
-        System.out.println("------------------------------------");
-
         if (id_publicacion != null && tipo_voto != null && id_usuario_votante != null) {
             ObjectId OI_Publicacion = new ObjectId(id_publicacion);
             boolean es_vigente = tipo_voto.equals("real");

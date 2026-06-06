@@ -1,0 +1,86 @@
+/* Fondo oscuro para la ventana flotante */
+.modal-mapa-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.6);
+    display: none; /* Controlado con JS */
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+/* Caja blanca del modal del mapa */
+.modal-mapa-box {
+    background-color: #ffffff;
+    width: 90%;
+    max-width: 650px;
+    height: 520px;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.modal-mapa-box h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #1e293b;
+}
+
+/* Contenedor del mapa interactivo */
+.mapa-seleccion-canvas {
+    flex: 1;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+}
+
+/* Input flotante para cuando es un local nuevo */
+.seccion-nuevo-local {
+    background-color: #f8fafc;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    display: none; /* Se prende si pica una zona vacía */
+}
+
+.seccion-nuevo-local input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 6px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Botonera inferior */
+.modal-mapa-acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-confirmar {
+    background-color: #1e293b;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-cancelar {
+    background-color: #94a3b8;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}

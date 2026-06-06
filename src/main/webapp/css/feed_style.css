@@ -1,0 +1,137 @@
+
+.forafood-post-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-family: system-ui, -apple-system, sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.forafood-post-card:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+/* Encabezado: Autor, comunidad y fecha */
+.post-meta-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.post-author-name {
+    color: #0f172a;
+    font-weight: 600;
+}
+
+/* Bloque central: Contenido y multimedia */
+.post-main-content {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.post-text-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.post-title {
+    margin: 0;
+    font-size: 18px;
+    color: #0f172a;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.post-description {
+    margin: 0;
+    color: #475569;
+    font-size: 14.5px;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+/* Imagen lateral compacta (Estilo Reddit cuando hay link/foto) */
+.post-image-side {
+    width: 120px;
+    height: 90px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    flex-shrink: 0;
+    background-color: #f8fafc;
+}
+
+.post-image-side img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 📊 Barra de Acciones Inferior Minimalista (Votos chiquitos) */
+.post-action-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+/* Pastilla unificada de Real/Falso chiquito */
+.pill-votacion {
+    background-color: #f1f5f9;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 4px 12px;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+.pill-votacion a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: opacity 0.2s;
+}
+
+.pill-votacion a:hover {
+    opacity: 0.8;
+}
+
+.voto-real { color: #16a34a; }
+.voto-falso { color: #dc2626; }
+.voto-separador { color: #cbd5e1; }
+
+/* Botones secundarios (Comentarios y Compartir) */
+.btn-action-secundario {
+    background: none;
+    border: none;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.btn-action-secundario:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+}

@@ -224,4 +224,13 @@ public class PublicacionDAO implements  CRUD<Publicacion>
         return null;
     }
 
+    public MongoCollection<Document> getCollection()
+    {
+        return collection;
+    }
+
+    public void setCollection(MongoCollection<Document> collection)
+    {
+        this.collection = collection;
+    }
 }
