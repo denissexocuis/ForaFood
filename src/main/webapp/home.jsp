@@ -65,13 +65,9 @@
         <div style="font-size: 12px; color: #64748b; margin-top: 6px;">🏆 <strong><%= puntosLogueado %></strong> puntos</div>
     </div>
 
-
-
-    <!-- TODO: aqui meter un js para boton de Feed-->
-    <a href="home.jsp" style="font-weight: bold; text-decoration: none; color: black;">[ Feed ]</a>
-
-    <!-- TODO: aqui meter un js para boton de Mapa-->
-    <a href="home.jsp" style="font-weight: bold; text-decoration: none; color: black;">[ Mapa ]</a>
+    <a href="mapa" style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; background: #16a34a; color: white; text-decoration: none; font-weight: 600; font-size: 14px;">
+        🗺️ Ver Mapa Completo
+    </a>
 
     <a href="index.jsp">Cerrar Sesión</a>
 
@@ -81,10 +77,11 @@
 
     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px;">
         <!-- ! aqui FORM DE GET PARA LA BÚSQUEDA :D -->
-        <h2>ForaFood</h2> <form action="principal" method="get" style="margin: 0; display: flex; gap: 5px;">
-        <input type="text" name="txtBuscar" placeholder="Buscar lugares o comida..." style="padding: 6px; width: 250px;">
-        <button type="submit">🔍 Buscar</button>
-    </form>
+        <h2>ForaFood</h2>
+        <form action="principal" method="get" style="margin: 0; display: flex; gap: 5px;">
+            <input type="text" name="txtBuscar" placeholder="Buscar lugares o comida..." style="padding: 6px; width: 250px;">
+            <button type="submit">🔍 Buscar</button>
+        </form>
     </div>
 
     <p style="color: gray; margin-top: 10px;"></p>
@@ -190,21 +187,20 @@
             for (Document post : listaPosts)
             {
                 //? esto lo saqué de ia D:
-                java.util.Date fecha = post.getDate("fecha_publicacion");
+                //java.util.Date fecha = post.getDate("fecha_publicacion");
+                java.util.Date fecha = post.getDate("fecha");
                 String fecha_formateada = (fecha != null) ? sdf.format(fecha) : "Reciente";
 
                 // extraer foto desde el array de objetos multimedia :D
+                List<Document> mediaList = (List<Document>) post.get("multimedia");
+                String rutaFotoLocal = "img/posts/default-local.png";
 
-                // extraer foto directa de la publicacion
-                String rutaFotoLocal = post.getString("url_imagen"); // asi la puse en mongo desde el principio
-
-
-                boolean tieneImagen = (rutaFotoLocal != null && !rutaFotoLocal.isEmpty() && !rutaFotoLocal.equals("img/default-post.png"));
-
-                // Si viene vacío o nulo, le asignamos la imagen genérica pero con la ruta webapp real
-                if (rutaFotoLocal == null || rutaFotoLocal.isEmpty()) {
-                    rutaFotoLocal = "img/posts/default-local.png"; // Asegúrate de tener una imagen de respaldo ahí
+                if (mediaList != null && !mediaList.isEmpty()) {
+                    Document primeraMultimedia = mediaList.get(0);
+                    rutaFotoLocal = primeraMultimedia.getString("url");
                 }
+
+                boolean tieneImagen = (rutaFotoLocal != null && !rutaFotoLocal.equals("img/posts/default-local.png"));
 
                 String nombreAutor = post.getString("nombre_autor");
                 String fotoPerfil = post.getString("foto_perfil_autor");
@@ -226,40 +222,42 @@
             </div>
 
             <div class="post-main-content">
+
                 <div class="post-text-side">
-                    <h3 class="post-title"><%= post.getString("titulo") %></h3>
-                    <p class="post-description"><%= post.getString("texto_publicacion") %></p>
+                    <h3 class="post-title" style="margin: 0; font-size: 18px; color: #0f172a; font-weight: 700;"><%= post.getString("titulo") %></h3>
+                    <p class="post-description" style="margin: 4px 0 0 0; color: #475569; font-size: 14.5px;"><%= post.getString("texto_publicacion") %></p>
                 </div>
 
                 <% if (tieneImagen) { %>
-                <div class="post-image-side">
-                    <img src="<%= rutaFotoLocal %>" alt="Foto del menú" />
+                <div class="post-image-large-container">
+                    <img src="<%= rutaFotoLocal %>" alt="Multimedia ForaFood" />
                 </div>
                 <% } %>
+
             </div>
 
             <div class="post-action-bar">
-
                 <div class="pill-votacion">
-                    <a href="votar?id=<%= post.getObjectId("_id") %>&tipo=real" class="voto-real">
-                        ▲ <span><%= post.getInteger("votosVigente", 0) %> Real</span>
+                    <a href="javascript:void(0);" onclick="votarPost('<%= post.getObjectId("_id") %>', 'real', this)" style="text-decoration: none; display: flex; align-items: center; gap: 4px;">
+                        <strong class="contador-votos-vigente" style="color: #16a34a;"><%= post.getInteger("votosVigente", 0) %></strong>
+                        <span style="color: #16a34a; font-weight: 500;">Es real</span>
                     </a>
+
                     <span class="voto-separador">|</span>
-                    <a href="votar?id=<%= post.getObjectId("_id") %>&tipo=falso" class="voto-falso">
-                        ▼ <span><%= post.getInteger("votosFalso", 0) %> Falso</span>
+
+                    <a href="javascript:void(0);" onclick="votarPost('<%= post.getObjectId("_id") %>', 'falso', this)" style="text-decoration: none; display: flex; align-items: center; gap: 4px;">
+                        <strong class="contador-votos-falso" style="color: #dc2626;"><%= post.getInteger("votosFalso", 0) %></strong>
+                        <span style="color: #dc2626; font-weight: 500;">Es falso</span>
                     </a>
                 </div>
 
-                <a href="javascript:void(0);"
-                   onclick="abrirPanelComentarios('<%= post.getObjectId("_id") %>', '<%= post.getString("titulo") %>', '<%= tieneImagen ? rutaFotoLocal : "" %>')"
-                   class="btn-action-secundario">
+                <a href="javascript:void(0);" onclick="abrirPanelComentarios('<%= post.getObjectId("_id") %>', '<%= post.getString("titulo") %>', '<%= tieneImagen ? rutaFotoLocal : "" %>', '<%= post.getObjectId("fk_establecimiento") %>')" class="btn-action-secundario">
                     💬 Comentarios
                 </a>
 
                 <button type="button" onclick="compartirEnlacePost('<%= post.getObjectId("_id") %>')" class="btn-action-secundario">
                     🔗 Compartir
                 </button>
-
             </div>
 
         </div>
@@ -268,6 +266,8 @@
                 }
             }
         %>
+
+
         <div style="text-align: center; padding: 40px; color: #64748b; font-family: sans-serif;">
             <p style="font-size: 18px; margin-bottom: 8px;">Aún no hay publicaciones en tu comunidad.</p>
             <p style="font-size: 14px; margin: 0;">¡Sé el primero en recomendar unos tacos usando la caja de arriba!</p>
@@ -331,18 +331,26 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+
     // Intercambia los páneles y carga la info base
-    function abrirPanelComentarios(idPost, titulo, fotoUrl) {
+    function abrirPanelComentarios(idPost, titulo, fotoUrl, idEstablecimiento) {
         document.getElementById("bloque-top-lugares").style.display = "none";
         document.getElementById("bloque-comentarios-panel").style.display = "flex";
 
         document.getElementById("panel-titulo-local").innerText = titulo;
-        document.getElementById("panel-foto-local").src = fotoUrl;
+
+        // Usamos la foto que viene del post o la default
+        document.getElementById("panel-foto-local").src = (fotoUrl && fotoUrl !== "" && fotoUrl !== "null") ? fotoUrl : "img/posts/default-local.png";
+
+        // 🎯 AQUÍ ESTÁ EL TRUCO:
+        // Si el usuario viene del feed, el ID importante es el del post (idPost)
+        // Pero le mandamos al Servlet el idPost que es el que el servlet ya sabe procesar
         document.getElementById("input-post-id").value = idPost;
 
-        // Llamar al Servlet que devuelve la lista fresca de comentarios en formato JSON
+        // Llamar al Servlet para cargar los comentarios de esta publicación específica
         cargarComentariosDesdeBase(idPost);
     }
+
 
     function cerrarPanelComentarios() {
         document.getElementById("bloque-comentarios-panel").style.display = "none";
@@ -354,7 +362,7 @@
         const contenedor = document.getElementById("contenedor-lista-comentarios");
         contenedor.innerHTML = '<p style="color: #94a3b8; font-size: 13px; text-align: center; margin: auto;">Cargando opiniones...</p>';
 
-        fetch('comentarios?action=listar&idPost=' + idPost)
+        fetch('comentarios?&idPost=' + idPost)
             .then(response => response.json())
             .then(comentarios => {
                 contenedor.innerHTML = "";
@@ -396,6 +404,8 @@
             }
         });
     }
+
+
 
 
     function alternarFormulario() {
@@ -556,23 +566,37 @@
         });
     }
 
-    // 😀 Función para inyectar emojis al input de comentarios activo
+    // 😀 CORREGIDO: Una sola función unificada para inyectar emojis al textarea
     function insertarEmoji(emoji) {
-        // Asumiendo que tu input de texto del panel lateral derecho se llama 'txtNuevoComentario'
-        const inputComentario = document.getElementById("txtNuevoComentario");
-        if(inputComentario) {
-            inputComentario.value += emoji;
-            inputComentario.focus(); // No pierde el foco de escritura
-        }
-    }
-
-    function insertarEmoji(emoji) {
-        // Apuntamos exactamente al id de tu textarea existente: 'texto-comentario'
         const inputComentario = document.getElementById("texto-comentario");
         if (inputComentario) {
             inputComentario.value += emoji;
             inputComentario.focus(); // Mantiene el cursor adentro para seguir escribiendo texto
         }
+    }
+
+    // 📊 CORREGIDO: Mantiene el formato estético original al refrescar las cifras
+    function votarPost(idPost, tipoVoto, elementoClicado) {
+        fetch('votar?id=' + idPost + '&tipo=' + tipoVoto)
+            .then(response => {
+                if (!response.ok) throw new Error("Error en el servidor de votación");
+                return response.json(); // Atrapa el JSON fresco que acabamos de programar
+            })
+            .then(data => {
+                // Buscamos la tarjeta actual del post
+                const tarjeta = elementoClicado.closest('.forafood-post-card');
+
+                if (tarjeta) {
+                    // Localizamos las etiquetas strong internas de esta tarjeta específica
+                    const spanReal = tarjeta.querySelector('.contador-votos-vigente');
+                    const spanFalso = tarjeta.querySelector('.contador-votos-falso');
+
+                    // Seteamos el valor numérico exacto respetando la matemática de tu DAO
+                    if (spanReal) spanReal.innerText = data.reales;
+                    if (spanFalso) spanFalso.innerText = data.falsos;
+                }
+            })
+            .catch(err => console.error("Error al procesar el voto asíncrono:", err));
     }
 
 </script>

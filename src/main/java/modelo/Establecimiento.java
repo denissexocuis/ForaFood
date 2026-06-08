@@ -1,4 +1,5 @@
 package modelo;
+import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.io.Serializable;
@@ -24,7 +25,10 @@ public class Establecimiento implements Serializable
 
     private ObjectId fk_universidad;
     private List<String> galeria_fotos;
-    private List<String> metodos_pago; // Ej: ["Efectivo", "Transferencia"]
+    private List<String> metodos_pago;
+
+    private double calificacion_promedio = 5.0;
+    private List<Document> comentarios = new ArrayList<>();
 
     //public Establecimiento()
     //{}
@@ -164,6 +168,26 @@ public class Establecimiento implements Serializable
     public void setMetodos_pago(List<String> metodos_pago)
     {
         this.metodos_pago = metodos_pago;
+    }
+
+    public double getCalificacion_promedio()
+    {
+        return calificacion_promedio;
+    }
+
+    public void setCalificacion_promedio(double calificacion_promedio)
+    {
+        this.calificacion_promedio = calificacion_promedio;
+    }
+
+    public List<Document> getComentarios()
+    {
+        return comentarios;
+    }
+
+    public void setComentarios(List<Document> comentarios)
+    {
+        this.comentarios = comentarios;
     }
 
     float cal_promedio_calif()

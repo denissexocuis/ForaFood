@@ -22,3 +22,5 @@ https://stackoverflow.com/questions/57907932/how-to-get-the-object-id-of-the-doc
 https://colorlib.com/wp/cat/login-forms/
 
 https://preview.colorlib.com/theme/bootstrap/login-form-20/
+
+https://www.flaticon.com/free-icons/avatar

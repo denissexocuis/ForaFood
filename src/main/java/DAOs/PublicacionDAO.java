@@ -5,6 +5,7 @@ package DAOs;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.Updates;
 import modelo.Multimedia;
 import modelo.Publicacion;
@@ -142,7 +143,10 @@ public class PublicacionDAO implements  CRUD<Publicacion>
             // juntar todos los filtros con un AND
             Bson filtro = Filters.and(condiciones);
 
-            FindIterable<Document> documentos = collection.find(filtro);
+            // agregar el método sort antes del bucle, esto es para que aparezcan los más recientes!!
+            FindIterable<Document> documentos = collection.find(filtro)
+                    .sort(Sorts.descending("_id"));
+
             for (Document doc : documentos)
             {
                 resultados_filtrados.add(doc);
@@ -157,6 +161,34 @@ public class PublicacionDAO implements  CRUD<Publicacion>
             e.printStackTrace();
         }
         return resultados_filtrados;
+    }
+
+    // 🎯 MÉTODO TRASLADADO AL DAO: Calcula el promedio matemático y actualiza Atlas
+    //? calcular el promedio que tiene un local
+    public double recalcular_promedio(ObjectId idPost)
+    {
+        Bson filtroPost = Filters.eq("_id", idPost);
+        Document postActualizado = collection.find(filtroPost).first();
+        double nuevoPromedio = 5.0;
+
+        if (postActualizado != null) {
+            List<Document> todosLosComentarios = (List<Document>) postActualizado.get("comentarios");
+            if (todosLosComentarios != null && !todosLosComentarios.isEmpty()) {
+                double suma = 0;
+                for (Document c : todosLosComentarios) {
+                    // Buscamos la calificación, si por alguna razón es nula usamos 5 por defecto
+                    Integer calif = c.getInteger("calificacion");
+                    suma += (calif != null) ? calif : 5;
+                }
+                nuevoPromedio = suma / todosLosComentarios.size();
+                nuevoPromedio = Math.round(nuevoPromedio * 10.0) / 10.0; // Redondea a un decimal (ej: 4.7)
+            }
+        }
+
+        // Persistimos el promedio directamente en el documento de Atlas
+        collection.updateOne(filtroPost, Updates.set("calificacion_promedio", nuevoPromedio));
+
+        return nuevoPromedio;
     }
 
     // métodos CRUD
@@ -184,6 +216,7 @@ public class PublicacionDAO implements  CRUD<Publicacion>
                 .append("titulo", post.getTitulo())
                 .append("texto_publicacion", post.getTexto_publicacion())
                 .append("multimedia", lista_multimedia_docs)
+                .append("url_foto", post.getUrl_foto())
                 .append("votosVigente", post.getVotosVigente())
                 .append("votosFalso", post.getVotosFalso())
                 .append("fecha", post.getFecha())

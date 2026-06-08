@@ -15,6 +15,7 @@ public class Publicacion implements Serializable
     private Date fecha;
     private boolean es_valida;
     private List<String> comentarios;
+    private String url_foto;
 
     private ObjectId fk_usuario_autor,
                     fk_establecimiento,
@@ -167,5 +168,15 @@ public class Publicacion implements Serializable
     public void setFoto_perfil_autor(String foto_perfil_autor)
     {
         this.foto_perfil_autor = foto_perfil_autor;
+    }
+
+    public String getUrl_foto()
+    {
+        return url_foto;
+    }
+
+    public void setUrl_foto(String url_foto)
+    {
+        this.url_foto = url_foto;
     }
 }

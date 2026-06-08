@@ -31,7 +31,7 @@ public class CrearPub_Servlet extends HttpServlet
             throws ServletException, IOException
     {
         //? codificación UTF-8 para que no se rompan los acentos ni la 'ñ'
-        request.setCharacterEncoding("UTF-8");
+        //request.setCharacterEncoding("UTF-8");
         System.out.println("[CrearPost_Servlet POST] recibiendo datos del formulario...");
 
         //  validar sesión del usuario
@@ -59,8 +59,16 @@ public class CrearPub_Servlet extends HttpServlet
         try
         {
             // ? recuperar los inputs del jsp
-            String titulo = request.getParameter("txtTitulo");
-            String texto_publicacion = request.getParameter("txtDescripcion");
+            //String titulo = request.getParameter("txtTitulo");
+            //String texto_publicacion = request.getParameter("txtDescripcion");
+
+            //? esto lo saqué de ia porque tenia problemas con los acentos D:
+            String titulo_raw = request.getParameter("txtTitulo");
+            String titulo = (titulo_raw != null) ? new String(titulo_raw.getBytes("ISO-8859-1"), "UTF-8") : "";
+
+            String desc_raw = request.getParameter("txtDescripcion");
+            String texto_publicacion = (desc_raw != null) ? new String(desc_raw.getBytes("ISO-8859-1"), "UTF-8") : "";
+
 
             // procesar imagne desde el almacenamiento
             Part filePart = request.getPart("fileImagen");
@@ -80,7 +88,6 @@ public class CrearPub_Servlet extends HttpServlet
                     directorio.mkdirs();
                 }
 
-                // Clonar el archivo de la computadora al servidor
                 //? clonar el archivo de la compu al servidor
                 filePart.write(ruta_destino_sv + nombre_archivo);
                 ruta_foto_final = "img/posts/" + nombre_archivo;
@@ -140,11 +147,27 @@ public class CrearPub_Servlet extends HttpServlet
             Publicacion nuevoPost = new Publicacion();
             nuevoPost.setTitulo(titulo);
             nuevoPost.setTexto_publicacion(texto_publicacion);
-            // nuevoPost.setRuta_imagen(rutaFotoFinal); // ya no porque se maneja como una imagen y no url
+            //nuevoPost.setUrl_foto(ruta_foto_final);
             nuevoPost.setEs_valida(true);
             nuevoPost.setComentarios(new ArrayList<>());
             nuevoPost.setNombre_autor(nombre_user_sesion);
             nuevoPost.setFoto_perfil_autor(foto_usuario_logeado);
+            nuevoPost.setFecha(new java.util.Date());
+
+            // mandar la foto en el array multimedia, esto me ayudó ia
+            if (!"img/default-post.png".equals(ruta_foto_final)) {
+                modelo.Multimedia mediaObjeto = new modelo.Multimedia();
+                // usando los milisegundos del sistema casteados a int (Casi imposible que se repita en el mismo post)
+                mediaObjeto.setID_Multimedia((int) (System.currentTimeMillis() & 0xfffffff));
+                mediaObjeto.setUrl(ruta_foto_final);
+                mediaObjeto.setFecha_subida(new java.util.Date());
+
+                List<modelo.Multimedia> listaMedia = new ArrayList<>();
+                listaMedia.add(mediaObjeto);
+                nuevoPost.setMultimedia(listaMedia);
+            } else {
+                nuevoPost.setMultimedia(new ArrayList<>());
+            }
 
             // strings a objectid
             nuevoPost.setFk_universidad(ID_Uni_sesion);

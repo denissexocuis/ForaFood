@@ -18,6 +18,7 @@ public class Votacion_Servlet extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
+        request.setCharacterEncoding("UTF-8");
         System.out.println("[Votacion_Servlet GET] haciendo votación...");
 
         //? obtener los datos de la publicación que está en el jsp :D
@@ -36,8 +37,23 @@ public class Votacion_Servlet extends HttpServlet
             PublicacionDAO postDAO = new PublicacionDAO();
             System.out.println("[Votacion_Servlet GET] mandarlo al DAO para registrar voto...");
             postDAO.registrar_votoPublicacion(OI_Publicacion, id_usuario_votante, es_vigente);
+
+            //? recuperar el documento actualizado desde mongo
+            org.bson.Document postActualizado = postDAO.findOne(OI_Publicacion);
+            if (postActualizado != null)
+            {
+                int reales = postActualizado.getInteger("votosVigente", 0);
+                int falsos = postActualizado.getInteger("votosFalso", 0);
+
+                //? esto lo saque de ia, configurar cabecera e imprimir json porque lo espera el javascript
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().print("{\"reales\":" + reales + ", \"falsos\":" + falsos + "}");
+                return;
+            }
         }
 
-        response.sendRedirect("principal");
+        //response.sendRedirect("principal");
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 }

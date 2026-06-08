@@ -2,7 +2,6 @@ package controlador;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.*;
@@ -19,8 +18,10 @@ import org.bson.types.ObjectId;
 import com.mongodb.client.MongoCollection;
 import DAOs.PublicacionDAO;
 
+//? este servlet se creó con ayuda de IA porque se tenía que crear un json para mandarlo a javascript
+//?.....de hecho me ayudó con  comentarios, publicación y mapa-pines servlet, sobre todo a dibujar los pines
 @WebServlet("/comentarios")
-public class Comentarios_Servlet extends HttpServlet
+public class ComentariosFeed_Servlet extends HttpServlet
 {
     //? basicamente esto es para obtener la lista de la bd y ponerla en el panel lateral u mostrarla
     @Override
