@@ -27,16 +27,13 @@ public class EstablecimientoDAO implements CRUD<Establecimiento>
             if (comentarios != null && !comentarios.isEmpty()) {
                 double suma = 0;
                 for (Document c : comentarios) {
-                    // Soportamos si viene como Integer o Double de la base de datos
                     Number nota = (Number) c.get("calificacion");
                     suma += (nota != null) ? nota.doubleValue() : 5.0;
                 }
                 promedio = suma / comentarios.size();
-                // Redondear a un decimal (Ej: 4.6)
                 promedio = Math.round(promedio * 10.0) / 10.0;
             }
 
-            // Guardamos el nuevo promedio calculado directamente en el documento del Establecimiento
             collection.updateOne(Filters.eq("_id", idEstablecimiento), Updates.set("calificacion_promedio", promedio));
             return promedio;
 

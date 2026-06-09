@@ -39,13 +39,45 @@ public class Feed_Home_Servlet extends HttpServlet
         PublicacionDAO publicacionDAO = new PublicacionDAO();
         List<Document> postsParaVista = publicacionDAO.buscar_portexto(universidad, txta_buscar);
 
+        //? validación de historial por los votos
+        if (postsParaVista != null && id_usuario != null) {
+            String idUsuarioStr = id_usuario.toString();
+
+            for (Document post : postsParaVista) {
+                String yaVotoTipo = "ninguno";
+
+                //? extraer el historial de votos que guarda la publicacion
+                List<Document> historial = (List<Document>) post.get("historial_votos");
+                if (historial != null) {
+                    for (Document votoDoc : historial) {
+                        Object idVotanteObj = votoDoc.get("usuario_id");
+                        if (idVotanteObj != null && idVotanteObj.toString().equals(idUsuarioStr)) {
+                            yaVotoTipo = votoDoc.getBoolean("es_vigente") ? "vigente" : "falso";
+                            break;
+                        }
+                    }
+                }
+
+                //? mandar bandera temporal al jsp
+                post.append("voto_usuario_sesion", yaVotoTipo);
+            }
+        }
+
         //? refresh de gamificación :D
         if (id_usuario != null) {
             Document userActualizado = new UsuarioDAO().findOne(id_usuario);
             if (userActualizado != null) {
+                //? actualizar los atributos individuales en la sesión
                 session.setAttribute("puntos", userActualizado.getInteger("puntos", 0));
                 session.setAttribute("rango", userActualizado.getString("rango"));
-                System.out.println("[Feed_Servlet] Gamificación actualizada para " + session.getAttribute("user") + ": " + userActualizado.getInteger("puntos", 0) + " pts.");
+
+                //? sacar el arreglo de medallas de la bd y subirlo
+                List<String> medallasBD = (List<String>) userActualizado.get("medallas");
+                if (medallasBD == null) {
+                    medallasBD = new java.util.ArrayList<>();
+                }
+                session.setAttribute("misMedallas", medallasBD);
+                System.out.println("[Feed_Servlet] Gamificación y medallas (" + medallasBD.size() + ") actualizadas para " + session.getAttribute("user"));
             }
         }
 

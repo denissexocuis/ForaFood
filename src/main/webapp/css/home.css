@@ -1,145 +1,720 @@
-/* ======================================================== */
-/* uso de IA aquí!
-/* ======================================================== */
+/* ============================================================ */
+/*  FORAFOOD — DARK FOREST v5  (clases ff-* + selectores ID)   */
+/* ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+    --ff-bg-root:     #0c110e;
+    --ff-bg-left:     #0f1510;
+    --ff-bg-feed:     #111610;
+    --ff-bg-card:     #172019;
+    --ff-bg-right:    #0e1410;
+    --ff-bg-hover:    #1b2c1d;
+    --ff-bg-input:    #172019;
+    --ff-border:      #1f2e22;
+    --ff-border-card: #263329;
+    --ff-green-neon:  #4ade80;
+    --ff-green-mid:   #22c55e;
+    --ff-green-btn:   #16a34a;
+    --ff-green-dim:   #14301e;
+    --ff-text-1:      #dff0e4;
+    --ff-text-2:      #6e9478;
+    --ff-text-3:      #3a5242;
+    --ff-red:         #f87171;
+    --r:              12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--ff-border); border-radius: 99px; }
+
 body {
-    font-family: sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex; /* Alinea los 3 bloques principales en fila */
-    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    margin: 0; padding: 0;
+    display: flex; height: 100vh; overflow: hidden;
+    background: var(--ff-bg-root);
+    color: var(--ff-text-1);
 }
 
-/* 1. Columna Izquierda: Menú Lateral (15% del ancho) */
+/* ── SIDEBAR IZQUIERDO ────────────────────────────────────── */
 .sidebar-left {
-    width: 20%;
-    background-color: #f4f4f4;
-    border-right: 1px solid #ccc;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    width: 240px; min-width: 240px;
+    background: var(--ff-bg-left) !important;
+    border-right: 1px solid var(--ff-border) !important;
+    padding: 22px 16px 18px;
+    display: flex; flex-direction: column; gap: 4px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sidebar-left .avatar {
-    font-size: 40px;
+.sidebar-left h3:first-child {
+    font-size: 22px; font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--ff-text-1);
+    margin: 0 0 16px 2px; line-height: 1;
+}
+
+/* Bloque de perfil */
+.ff-perfil-bloque {
+    padding: 14px 10px !important;
+    border-bottom: 1px solid var(--ff-border) !important;
+    margin-bottom: 10px !important;
     text-align: center;
-    margin-bottom: 10px;
+    background: transparent !important;
+    border: none !important;
+}
+.ff-avatar-sidebar {
+    width: 54px !important; height: 54px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 2px solid var(--ff-green-btn) !important;
+}
+.ff-username {
+    font-size: 14px !important; font-weight: 600 !important;
+    color: var(--ff-text-1) !important;
+    margin: 8px 0 4px !important;
+}
+.ff-badge-rango {
+    font-size: 11px !important; font-weight: 700 !important;
+    background: var(--ff-green-dim) !important;
+    color: var(--ff-green-neon) !important;
+    padding: 2px 10px !important; border-radius: 99px !important;
+}
+.ff-puntos {
+    font-size: 12px !important; color: var(--ff-text-2) !important;
+    margin-top: 5px !important;
+}
+.ff-puntos strong { color: var(--ff-green-mid) !important; }
+.ff-link-perfil {
+    font-size: 12px !important; color: var(--ff-green-mid) !important;
+    text-decoration: none !important; font-weight: 600 !important;
+}
+.ff-link-perfil:hover { color: var(--ff-green-neon) !important; }
+
+/* Caja de medallas */
+.ff-medallas-box {
+    background: var(--ff-bg-root) !important;
+    border: 1px solid var(--ff-border) !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    margin-top: 8px !important;
+}
+.ff-medallas-titulo {
+    font-size: 10px !important; font-weight: 700 !important;
+    text-transform: uppercase !important; letter-spacing: 0.1em !important;
+    color: var(--ff-text-3) !important;
+    margin: 0 0 8px !important;
 }
 
+/* Links de menú */
 .sidebar-left .menu-link {
-    font-weight: bold;
-    text-decoration: none;
-    color: black;
+    font-size: 14px; font-weight: 500;
+    text-decoration: none; color: var(--ff-text-2);
+    padding: 10px 14px; border-radius: var(--r);
+    display: flex; align-items: center; gap: 10px;
+    transition: all 0.18s; line-height: 1;
+}
+.sidebar-left .menu-link:hover,
+.sidebar-left .menu-link.active {
+    background: var(--ff-bg-hover);
+    color: var(--ff-green-neon); font-weight: 600;
 }
 
-.sidebar-left .btn-mapa {
-    width: 100%;
-    padding: 8px;
-    cursor: pointer;
-    font-weight: bold;
+/* Botón mapa */
+.sidebar-left a[href="mapa"] {
+    display: flex !important; align-items: center !important;
+    justify-content: center !important; gap: 8px !important;
+    padding: 11px 14px !important;
+    background: var(--ff-green-dim) !important;
+    color: var(--ff-green-neon) !important;
+    border: 1px solid var(--ff-green-btn) !important;
+    border-radius: var(--r) !important;
+    text-decoration: none !important;
+    font-size: 13.5px !important; font-weight: 600 !important;
+    transition: all 0.18s !important;
+    margin-top: auto !important;
+}
+.sidebar-left a[href="mapa"]:hover {
+    background: #1b3f24 !important;
+    border-color: var(--ff-green-neon) !important;
+    color: #fff !important;
 }
 
+/* Cerrar sesión */
+.sidebar-left a[href="index.jsp"] {
+    display: block !important;
+    font-size: 12px !important; font-weight: 500 !important;
+    color: var(--ff-text-3) !important;
+    text-decoration: none !important;
+    text-align: center !important;
+    padding: 8px !important;
+    transition: color 0.15s !important;
+}
+.sidebar-left a[href="index.jsp"]:hover { color: var(--ff-red) !important; }
+
+/* Sub-títulos "EXPLORAR" */
 .sidebar-left .sub-titulo {
-    color: gray;
-    font-size: 12px;
-    margin-top: 20px;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--ff-text-3); margin: 14px 0 4px 4px;
 }
 
-/* 2. Columna Central: Feed Principal (60% del ancho) */
+/* Colapso */
+.sidebar-oculto-total {
+    width: 0 !important; min-width: 0 !important;
+    padding: 0 !important; border: none !important;
+    opacity: 0 !important; pointer-events: none !important;
+    overflow: hidden !important;
+}
+
+/* ── COLUMNA CENTRAL ──────────────────────────────────────── */
 .main-content {
-    width: 60%;
-    padding: 20px;
-    overflow-y: auto; /* Agrega scroll si hay demasiadas publicaciones */
+    flex: 1; min-width: 0;
+    padding: 22px 26px;
+    overflow-y: auto;
+    background: var(--ff-bg-feed) !important;
 }
 
-.header-feed {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
+/* Header */
+.ff-header-feed {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-bottom: 1px solid var(--ff-border) !important;
+    padding-bottom: 16px !important; margin-bottom: 20px !important;
+    gap: 12px !important;
+}
+/* Cualquier div header del feed que no tenga clase */
+.main-content > div:first-child {
+    border-bottom-color: var(--ff-border) !important;
+}
+.ff-titulo-feed,
+.main-content h2 {
+    font-size: 20px !important; font-weight: 700 !important;
+    color: var(--ff-text-1) !important;
+    margin: 0 !important; letter-spacing: -0.03em;
 }
 
-.buscador-form {
-    margin: 0;
-    display: flex;
-    gap: 5px;
+/* Buscador */
+.ff-search-input,
+input[type="text"][name="txtBuscar"] {
+    padding: 9px 14px !important;
+    border-radius: var(--r) !important;
+    border: 1px solid var(--ff-border) !important;
+    background: var(--ff-bg-input) !important;
+    color: var(--ff-text-1) !important;
+    font-size: 13px !important;
+    font-family: 'Poppins', sans-serif !important;
+    outline: none !important;
 }
-
-.buscador-input {
-    padding: 6px;
-    width: 250px;
+.ff-search-input:focus,
+input[type="text"][name="txtBuscar"]:focus {
+    border-color: var(--ff-green-btn) !important;
+    box-shadow: 0 0 0 3px rgba(22,163,74,0.15) !important;
 }
+input[type="text"][name="txtBuscar"]::placeholder { color: var(--ff-text-3) !important; }
 
-/* Diseño de las tarjetas de publicaciones individuales */
-.post-card {
-    border: 2px solid #333;
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
+/* Botón buscar */
+button[type="submit"].btn-dark {
+    background: var(--ff-green-btn) !important;
+    color: #fff !important; border: none !important;
+    border-radius: var(--r) !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 600 !important;
+    transition: background 0.18s !important;
 }
+button[type="submit"].btn-dark:hover { background: #15803d !important; }
 
-.post-info {
-    max-width: 75%;
-}
-
-.post-valoracion {
-    font-size: 14px;
-    color: #cc7a00;
-    font-weight: bold;
-}
-
-.post-imagen-placeholder {
-    width: 100px;
-    height: 80px;
-    border: 1px dashed gray;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #eee;
-    font-size: 12px;
-    color: gray;
-}
-
-/* 3. Columna Derecha: Top Lugares (25% del ancho) */
-.sidebar-right {
-    width: 25%;
-    background-color: #fafafa;
-    border-left: 1px solid #ccc;
-    padding: 20px;
-}
-
-.sidebar-right h3 {
-    letter-spacing: 1px;
-}
-
-.sidebar-right ol {
-    padding-left: 20px;
-    line-height: 2.5;
-}
-
-/* Clase para ocultar el formulario al cargar la página */
-.formulario-oculto {
-    display: none;
-}
-
-/* Estilo para el botón interactivo */
+/* Botón compartir */
 .btn-desplegar-form {
-    background-color: #333;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 20px;
-    width: 100%; /* Ocupa el ancho del feed central */
-    transition: background 0.3s ease;
+    width: 100% !important;
+    padding: 14px 18px !important;
+    background: var(--ff-bg-card) !important;
+    color: var(--ff-text-2) !important;
+    border: 1px dashed var(--ff-border-card) !important;
+    border-radius: var(--r) !important;
+    cursor: pointer !important;
+    font-size: 14px !important; font-weight: 500 !important;
+    font-family: 'Poppins', sans-serif !important;
+    margin-bottom: 18px !important;
+    transition: all 0.2s !important;
+    display: flex !important; align-items: center !important; gap: 10px !important;
+    text-align: left !important;
+}
+.btn-desplegar-form:hover {
+    border-color: var(--ff-green-btn) !important;
+    color: var(--ff-green-neon) !important;
+    background: var(--ff-bg-hover) !important;
 }
 
-.btn-desplegar-form:hover {
-    background-color: #555;
+/* Formulario de nueva publicación */
+.ff-form-container {
+    background: var(--ff-bg-card) !important;
+    border: 1px solid var(--ff-border-card) !important;
+    border-radius: var(--r) !important;
+    padding: 18px !important; margin-bottom: 18px !important;
+}
+.ff-form-container h3 {
+    color: var(--ff-text-1) !important;
+    font-size: 15px !important;
+}
+.ff-label, .ff-form-container label {
+    font-size: 11px !important; font-weight: 700 !important;
+    color: var(--ff-text-2) !important;
+    text-transform: uppercase !important; letter-spacing: 0.07em !important;
+    display: block !important;
+}
+.ff-input,
+.ff-form-container input[type="text"],
+.ff-form-container textarea {
+    width: 100% !important;
+    background: var(--ff-bg-input) !important;
+    border: 1px solid var(--ff-border-card) !important;
+    border-radius: 8px !important;
+    color: var(--ff-text-1) !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 13px !important; padding: 9px 12px !important;
+}
+.ff-input:focus,
+.ff-form-container input:focus,
+.ff-form-container textarea:focus {
+    outline: none !important;
+    border-color: var(--ff-green-btn) !important;
+    box-shadow: 0 0 0 3px rgba(22,163,74,0.12) !important;
+}
+.ff-btn-publicar {
+    background: var(--ff-green-btn) !important;
+    color: #fff !important; border: none !important;
+    padding: 10px 22px !important; border-radius: var(--r) !important;
+    cursor: pointer !important; font-weight: 600 !important;
+    font-size: 13px !important; font-family: 'Poppins', sans-serif !important;
+    transition: background 0.18s !important;
+}
+.ff-btn-publicar:hover { background: #15803d !important; }
+.ff-btn-cancelar {
+    background: var(--ff-bg-hover) !important;
+    color: var(--ff-text-2) !important;
+    border: 1px solid var(--ff-border-card) !important;
+    padding: 10px 22px !important; border-radius: var(--r) !important;
+    cursor: pointer !important; font-weight: 500 !important;
+    font-size: 13px !important; font-family: 'Poppins', sans-serif !important;
+}
+.ff-btn-mapa-sel {
+    background: var(--ff-green-dim) !important;
+    color: var(--ff-green-neon) !important;
+    border: 1px solid var(--ff-green-btn) !important;
+    padding: 10px 14px !important; border-radius: 8px !important;
+    cursor: pointer !important; font-weight: 600 !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* Tarjetas de posts */
+.post-card, .forafood-post-card {
+    background: var(--ff-bg-card) !important;
+    border: 1px solid var(--ff-border-card) !important;
+    border-radius: var(--r) !important;
+    padding: 18px !important;
+    margin-top: 0 !important; margin-bottom: 14px !important;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.4) !important;
+    transition: border-color 0.18s, box-shadow 0.18s;
+}
+.post-card:hover, .forafood-post-card:hover {
+    border-color: #2e4633 !important;
+    box-shadow: 0 6px 28px rgba(0,0,0,0.55) !important;
+}
+.post-title { color: var(--ff-text-1) !important; font-size: 15.5px !important; font-weight: 600 !important; }
+.post-description { color: var(--ff-text-2) !important; font-size: 13px !important; }
+.post-author-name { color: var(--ff-text-1) !important; font-weight: 600; }
+.post-meta-header { color: var(--ff-text-3) !important; font-size: 12px; }
+
+/* Imágenes */
+.post-image-large-container {
+    width: 100% !important; max-height: 420px !important;
+    border-radius: 10px !important; overflow: hidden !important;
+    border: 1px solid var(--ff-border-card) !important;
+    background: var(--ff-bg-root) !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+}
+.post-image-large-container img {
+    width: 100% !important; height: 100% !important;
+    object-fit: contain !important; background: var(--ff-bg-root) !important;
+}
+
+/* Votos */
+.pill-votacion {
+    background: var(--ff-bg-root) !important;
+    border: 1px solid var(--ff-border) !important;
+    color: var(--ff-text-2) !important;
+    border-radius: 99px !important;
+    display: inline-flex !important; align-items: center !important;
+    padding: 5px 13px !important; gap: 8px !important;
+    font-size: 12px !important; font-weight: 600 !important;
+}
+.voto-real   { color: var(--ff-green-mid) !important; }
+.voto-falso  { color: var(--ff-red) !important; }
+.voto-separador { color: var(--ff-border-card) !important; }
+.btn-action-secundario {
+    background: none !important; border: none !important;
+    color: var(--ff-text-3) !important;
+    font-size: 12.5px; font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 10px; border-radius: 99px;
+    cursor: pointer; text-decoration: none; transition: all 0.15s;
+}
+.btn-action-secundario:hover {
+    background: var(--ff-bg-hover) !important;
+    color: var(--ff-green-neon) !important;
+}
+
+/* Estado vacío */
+.ff-empty-state { color: var(--ff-text-3) !important; }
+.ff-empty-state p { color: var(--ff-text-3) !important; }
+
+/* ── SIDEBAR DERECHO ──────────────────────────────────────── */
+.ff-sidebar-right-inner {
+    width: 300px !important; flex-shrink: 0 !important;
+    background: var(--ff-bg-right) !important;
+    border-left: 1px solid var(--ff-border) !important;
+    padding: 22px 16px !important;
+    overflow-y: auto !important;
+    display: flex !important; flex-direction: column !important;
+    gap: 4px !important;
+    min-height: 100vh !important;
+    position: sticky !important; top: 0 !important;
+    transition: all 0.3s ease-in-out !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+}
+
+/* Bloques del ranking — eliminar el blanco */
+.ff-ranking-bloque {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+/* Títulos de sección del ranking */
+.ff-ranking-titulo,
+.ff-ranking-bloque h3 {
+    font-size: 10px !important; font-weight: 700 !important;
+    text-transform: uppercase !important; letter-spacing: 0.12em !important;
+    color: var(--ff-text-3) !important;
+    margin: 12px 0 10px !important;
+    display: flex; align-items: center; gap: 6px;
+}
+
+/* Tabla leaderboard */
+.leaderboard-table { width: 100% !important; border-collapse: collapse !important; }
+.leaderboard-table th { display: none !important; }
+.leaderboard-table tbody td {
+    padding: 10px 4px !important;
+    vertical-align: middle !important;
+    border-bottom: 1px solid var(--ff-border) !important;
+    font-size: 13px !important; color: var(--ff-text-1) !important;
+    background: transparent !important;
+}
+.leaderboard-table td.rank {
+    width: 24px !important; font-weight: 700 !important; font-size: 13px !important;
+    color: var(--ff-green-mid) !important;
+}
+.leaderboard-table .score {
+    font-weight: 700 !important; font-size: 12px !important;
+    color: var(--ff-green-neon) !important; white-space: nowrap !important;
+}
+.user-container-flex {
+    display: flex !important; align-items: center !important; gap: 10px !important;
+}
+.leaderboard-table img.avatar-ranking {
+    width: 30px !important; height: 30px !important;
+    border-radius: 50% !important;
+    border: 2px solid var(--ff-green-dim) !important;
+    object-fit: cover !important;
+}
+
+/* Rankings de locales (contenedor-ranking-locales) */
+#contenedor-ranking-locales > div {
+    background: var(--ff-bg-card) !important;
+    border: 1px solid var(--ff-border-card) !important;
+    border-radius: 8px !important;
+    padding: 10px 12px !important;
+    color: var(--ff-text-1) !important;
+    font-size: 13px !important;
+}
+
+/* Panel de comentarios */
+.ff-panel-header {
+    display: flex !important; justify-content: space-between !important;
+    align-items: flex-start !important; gap: 12px !important;
+    border-bottom: 1px solid var(--ff-border) !important;
+    padding-bottom: 12px !important; margin-bottom: 5px !important;
+}
+.ff-panel-label {
+    font-size: 10px !important; font-weight: 700 !important;
+    text-transform: uppercase !important; letter-spacing: 0.07em !important;
+    color: var(--ff-text-3) !important;
+}
+.ff-panel-titulo-local {
+    margin: 0 !important; font-size: 15px !important;
+    color: var(--ff-text-1) !important; font-weight: 700 !important;
+    line-height: 1.4 !important; word-break: break-word !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+.ff-panel-foto-wrap {
+    width: 100% !important; height: 160px !important;
+    border-radius: 8px !important; overflow: hidden !important;
+    border: 1px solid var(--ff-border-card) !important;
+    background: var(--ff-bg-root) !important; flex-shrink: 0 !important;
+}
+.ff-panel-subtitulo {
+    color: var(--ff-text-2) !important;
+    font-size: 13px !important; font-weight: 600 !important;
+    margin: 5px 0 0 !important;
+}
+.ff-comentarios-lista {
+    background: var(--ff-bg-card) !important;
+    border: 1px solid var(--ff-border-card) !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    display: flex !important; flex-direction: column !important;
+    gap: 10px !important; flex: 1 !important;
+    overflow-y: auto !important; max-height: 220px !important;
+}
+.ff-textarea-comentario {
+    background: var(--ff-bg-input) !important;
+    border: 1px solid var(--ff-border-card) !important;
+    color: var(--ff-text-1) !important;
+    border-radius: 6px !important; padding: 8px !important;
+    font-size: 13px !important; resize: none !important;
+    width: 100% !important; height: 60px !important;
+    font-family: 'Poppins', sans-serif !important;
+    box-sizing: border-box !important;
+}
+.ff-textarea-comentario::placeholder { color: var(--ff-text-3) !important; }
+.ff-textarea-comentario:focus {
+    outline: none !important;
+    border-color: var(--ff-green-btn) !important;
+    box-shadow: 0 0 0 3px rgba(22,163,74,0.12) !important;
+}
+.ff-btn-comentar {
+    background: var(--ff-green-btn) !important;
+    color: #fff !important; border: none !important;
+    border-radius: 8px !important; padding: 9px !important;
+    font-weight: 600 !important; font-size: 13px !important;
+    font-family: 'Poppins', sans-serif !important;
+    cursor: pointer !important; width: 100% !important;
+}
+.ff-btn-comentar:hover { background: #15803d !important; }
+
+/* ── MODAL MAPA ───────────────────────────────────────────── */
+#modalSelectorMapa {
+    background: rgba(4,9,5,0.87) !important;
+}
+.modal-mapa-box {
+    background: var(--ff-bg-card) !important;
+    border: 1px solid var(--ff-border-card) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 32px 60px rgba(0,0,0,0.7) !important;
+}
+.modal-mapa-box h3 { color: var(--ff-text-1) !important; }
+#mapa-selector { border: 1px solid var(--ff-border-card) !important; }
+#zonaNuevoLocalInput {
+    background: var(--ff-green-dim) !important;
+    border: 1px solid var(--ff-green-btn) !important;
+}
+.btn-confirmar {
+    background: var(--ff-green-btn) !important; color: #fff !important;
+    border: none !important; border-radius: 10px !important;
+    padding: 10px 22px !important; font-weight: 600 !important;
+    font-size: 13px !important; font-family: 'Poppins', sans-serif !important;
+    cursor: pointer !important;
+}
+.btn-confirmar:hover { background: #15803d !important; }
+.btn-cancelar {
+    background: transparent !important; color: var(--ff-text-2) !important;
+    border: 1px solid var(--ff-border-card) !important;
+    border-radius: 10px !important; padding: 10px 22px !important;
+    font-weight: 500 !important; font-size: 13px !important;
+    font-family: 'Poppins', sans-serif !important; cursor: pointer !important;
+}
+.btn-cancelar:hover { background: var(--ff-bg-hover) !important; color: var(--ff-text-1) !important; }
+
+/* ── POPUP BIENVENIDA ─────────────────────────────────────── */
+.ff-popup-overlay {
+    position: fixed !important;
+    top: 0 !important; left: 0 !important;
+    width: 100% !important; height: 100% !important;
+    background: rgba(4,9,5,0.82) !important;
+    z-index: 9999 !important;
+    justify-content: center !important; align-items: center !important;
+}
+.ff-popup-box {
+    background: var(--ff-bg-card) !important;
+    border: 1px solid var(--ff-border-card) !important;
+    border-radius: 16px !important;
+    width: 520px !important; max-width: 95% !important;
+    padding: 30px !important;
+    box-shadow: 0 24px 50px rgba(0,0,0,0.6) !important;
+    position: relative !important;
+    font-family: 'Poppins', sans-serif !important;
+    box-sizing: border-box !important;
+}
+.ff-popup-h2 { color: var(--ff-text-1) !important; }
+.ff-popup-sub { color: var(--ff-text-2) !important; }
+.ff-tutorial-item {
+    background: var(--ff-bg-root) !important;
+    border: 1px solid var(--ff-border) !important;
+    border-radius: 8px !important; padding: 10px !important;
+    color: var(--ff-text-2) !important;
+    display: flex !important; gap: 12px !important;
+    align-items: flex-start !important;
+}
+.ff-popup-box p, .ff-popup-box div[style*="color: #334155"] {
+    color: var(--ff-text-2) !important;
+}
+.ff-btn-siguiente {
+    background: var(--ff-green-btn) !important;
+    color: #fff !important; border: none !important;
+    padding: 12px !important; font-size: 14px !important;
+    font-weight: 600 !important; border-radius: 8px !important;
+    cursor: pointer !important; width: 100% !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+.ff-btn-guardar {
+    background: var(--ff-green-btn) !important;
+    color: #fff !important; border: none !important;
+    padding: 12px !important; font-size: 13px !important;
+    font-weight: 600 !important; border-radius: 8px !important;
+    cursor: pointer !important; flex: 2 !important;
+}
+.ff-btn-atras {
+    background: var(--ff-bg-hover) !important;
+    color: var(--ff-text-2) !important;
+    border: 1px solid var(--ff-border-card) !important;
+    padding: 12px !important; font-size: 13px !important;
+    font-weight: 600 !important; border-radius: 8px !important;
+    cursor: pointer !important; flex: 1 !important;
+}
+
+/* ── BOOTSTRAP OVERRIDES ──────────────────────────────────── */
+.btn-light {
+    background: var(--ff-bg-hover) !important;
+    border-color: var(--ff-border) !important;
+    color: var(--ff-text-2) !important;
+}
+.btn-outline-success {
+    color: var(--ff-green-neon) !important;
+    border-color: var(--ff-green-btn) !important;
+    background: transparent !important;
+}
+.btn-outline-success:hover { background: var(--ff-green-dim) !important; }
+.shadow-sm { box-shadow: 0 1px 8px rgba(0,0,0,0.4) !important; }
+
+/* ============================================================ */
+/*  FIXES v5.1 — Letras oscuras, botón compartir, comentarios  */
+/* ============================================================ */
+
+/* Forzar texto visible en cualquier elemento con color inline oscuro */
+.forafood-post-card * { color: inherit; }
+.forafood-post-card [style*="color: #0f172a"],
+.forafood-post-card [style*="color: #1e293b"],
+.forafood-post-card [style*="color: #475569"],
+.forafood-post-card [style*="color: #334155"] {
+    color: var(--ff-text-1) !important;
+}
+.post-description[style],
+.forafood-post-card p[style*="color"] {
+    color: var(--ff-text-2) !important;
+}
+
+/* Botón compartir: ocultar el style inline con !important */
+#btnCompartirPrincipal {
+    background: var(--ff-bg-card) !important;
+    color: var(--ff-text-2) !important;
+    border: 1px dashed var(--ff-border-card) !important;
+    border-radius: var(--r) !important;
+    padding: 14px 18px !important;
+}
+#btnCompartirPrincipal:hover {
+    border-color: var(--ff-green-btn) !important;
+    color: var(--ff-green-neon) !important;
+    background: var(--ff-bg-hover) !important;
+}
+
+/* Contenedor de comentarios del panel derecho */
+#contenedor-lista-comentarios {
+    background: var(--ff-bg-card) !important;
+    border: 1px solid var(--ff-border-card) !important;
+    border-radius: 8px !important;
+}
+#contenedor-lista-comentarios p {
+    color: var(--ff-text-3) !important;
+}
+
+/* Cualquier texto generado dinámicamente en el panel derecho */
+#bloque-comentarios-panel strong,
+#bloque-comentarios-panel p,
+#bloque-comentarios-panel span {
+    color: inherit !important;
+}
+
+/* Header del panel de comentarios derecho */
+#bloque-comentarios-panel [style*="border-bottom: 2px solid #f1f5f9"],
+#bloque-comentarios-panel [style*="border-bottom: 2px solid"] {
+    border-bottom-color: var(--ff-border) !important;
+}
+
+/* Estado "sin publicaciones" */
+.main-content > form > div[style*="text-align: center"] {
+    color: var(--ff-text-3) !important;
+}
+.main-content > form > div[style*="text-align: center"] p {
+    color: var(--ff-text-3) !important;
+}
+
+/* Textos del estado vacío del panel de comentarios */
+#bloque-comentarios-panel p[style*="color: #94a3b8"],
+#bloque-comentarios-panel p[style*="color: #64748b"] {
+    color: var(--ff-text-3) !important;
+}
+
+/* Formulario de valoración / select del panel */
+select, textarea {
+    background: var(--ff-bg-input) !important;
+    color: var(--ff-text-1) !important;
+    border: 1px solid var(--ff-border-card) !important;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Contenedor de comentarios cuando se abre panel */
+#bloque-comentarios-panel .ff-comentarios-lista,
+#contenedor-lista-comentarios {
+    background: var(--ff-bg-card) !important;
+    border: 1px solid var(--ff-border-card) !important;
+}
+
+/* Sub-label del panel "Establecimiento seleccionado" */
+.ff-panel-label {
+    color: var(--ff-text-3) !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+}
+
+/* Foto del panel lateral derecho */
+#panel-foto-local, .ff-panel-foto-wrap img {
+    border: 1px solid var(--ff-border-card) !important;
+    border-radius: 8px !important;
+}
+
+/* Emoji bar del formulario de comentarios */
+.emoji-picker-bar span { cursor: pointer; }
+
+/* Subtítulo "Comentarios comunitarios" */
+.ff-panel-subtitulo {
+    color: var(--ff-text-2) !important;
 }

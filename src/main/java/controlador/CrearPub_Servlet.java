@@ -122,7 +122,7 @@ public class CrearPub_Servlet extends HttpServlet
                 nuevoEstablecimiento.setFk_universidad(ID_Uni_sesion);
 
                 //? atrbituos por defecto porque el local se acaba de agregar al mapa
-                nuevoEstablecimiento.setCalificacion(5.0f);
+                nuevoEstablecimiento.setCalificacion(0.0f);
                 nuevoEstablecimiento.setDescripcion("Establecimiento agregado por la comunidad estudiantil.");
 
                 //? insertar a mongo
@@ -153,6 +153,7 @@ public class CrearPub_Servlet extends HttpServlet
             nuevoPost.setNombre_autor(nombre_user_sesion);
             nuevoPost.setFoto_perfil_autor(foto_usuario_logeado);
             nuevoPost.setFecha(new java.util.Date());
+            nuevoPost.setFk_usuario_autor(id_user_sesion);
 
             // mandar la foto en el array multimedia, esto me ayudó ia
             if (!"img/default-post.png".equals(ruta_foto_final)) {
@@ -183,6 +184,11 @@ public class CrearPub_Servlet extends HttpServlet
                 {
                     System.out.println("[Galería] Agregando imagen al repositorio del establecimiento con addToSet...");
                     new EstablecimientoDAO().agregar_foto_galeria(fk_establecimiento_final, ruta_foto_final);
+                }
+
+                //?? medalla por publicar
+                if (id_user_sesion != null) {
+                    new DAOs.UsuarioDAO().gamificacion_por_publicacion(id_user_sesion, titulo);
                 }
 
                 response.sendRedirect("principal");

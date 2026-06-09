@@ -1,5 +1,6 @@
 package controlador;
 
+import DAOs.EstablecimientoDAO;
 import DAOs.PublicacionDAO;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
@@ -37,69 +38,86 @@ public class MapaPines_Servlet extends HttpServlet {
         ObjectId idUniversidad = (ObjectId) session.getAttribute("fk_universidad");
 
         try {
-            PublicacionDAO dao = new PublicacionDAO();
-            MongoCollection<Document> coleccionPubs = dao.getCollection();
             DAOs.EstablecimientoDAO estabDAO = new DAOs.EstablecimientoDAO();
 
-            //Bson filtro = Filters.eq("fk_universidad", idUniversidad);
-            //List<Document> publicacionesComunidad = coleccionPubs.find(filtro).into(new ArrayList<>());
-            List<Document> publicacionesComunidad = coleccionPubs.find().into(new ArrayList<>());
+            // busacr los locales segmentados por universidad de forma nativa
+            List<Document> listaEstablecimientos = estabDAO.getCollection()
+                    .find(Filters.eq("fk_universidad", idUniversidad))
+                    .into(new java.util.ArrayList<>());
 
-            StringBuilder json = new StringBuilder("[");
+            StringBuilder json = new StringBuilder();
+            json.append("[");
             boolean primeraInclusion = true;
 
-            for (Document post : publicacionesComunidad) {
-                Object fkEstabObj = post.get("fk_establecimiento");
+            for (Document estabDoc : listaEstablecimientos) {
+                System.out.println("nombre local: " + estabDoc.get("nombre_local"));
 
-                if (fkEstabObj != null && !fkEstabObj.toString().equals("null") && !fkEstabObj.toString().trim().isEmpty()) {
+                //? lectura de la ubicación
+                Object ubiObj = estabDoc.get("ubicacion");
+                if (ubiObj == null) {
+                    ubiObj = estabDoc.get("geopunto");
+                }
 
-                    ObjectId fkEstab = (fkEstabObj instanceof ObjectId) ? (ObjectId) fkEstabObj : new ObjectId(fkEstabObj.toString());
+                if (ubiObj != null && ubiObj instanceof Document) {
+                    Document ubicacionDoc = (Document) ubiObj;
+                    java.util.List<?> coord = (java.util.List<?>) ubicacionDoc.get("coordinates");
 
-                    //? buscar el local en atlas
-                    Document estabDoc = estabDAO.getCollection().find(Filters.eq("_id", fkEstab)).first();
+                    if (coord != null && coord.size() >= 2) {
+                        double lng = ((Number) coord.get(0)).doubleValue();
+                        double lat = ((Number) coord.get(1)).doubleValue();
 
-                    if (estabDoc != null) {
-                        Document ubicacionDoc = (Document) estabDoc.get("ubicacion");
+                        //? manejo seguro del nombre
+                        String nombreFinal = estabDoc.getString("nombre_local");
+                        if (nombreFinal == null) nombreFinal = estabDoc.getString("nombre_local");
+                        if (nombreFinal == null) nombreFinal = "Establecimiento desconocido";
 
-                        if (ubicacionDoc != null) {
-                            List<?> coordenadas = (List<?>) ubicacionDoc.get("coordinates");
+                        nombreFinal = nombreFinal.replace("\"", "\\\"");
 
-                            if (coordenadas != null && coordenadas.size() >= 2) {
-                                //? MongoDB GeoJSON: posición 0 = Longitud, posición 1 = Latitud
-                                double lng = Double.parseDouble(coordenadas.get(0).toString());
-                                double lat = Double.parseDouble(coordenadas.get(1).toString());
+                        //? galeria , eso me ayudo la ia
+                        String urlFoto = "img/default-post.png";
+                        Object galeriaObj = estabDoc.get("galeria_fotos");
 
-                                //? extraer la ruta de la imagen multimedia de forma segura
-                                List<Document> mediaList = (List<Document>) post.get("multimedia");
-                                String urlFoto = "";
-                                if (mediaList != null && !mediaList.isEmpty()) {
-                                    urlFoto = mediaList.get(0).getString("url");
-                                }
 
-                                if (!primeraInclusion) {
-                                    json.append(",");
-                                }
-                                primeraInclusion = false;
-
-                                json.append("{");
-                                //? enviar la llave foranea del local, no el id del post
-                                json.append("\"id\":\"").append(fkEstab.toHexString()).append("\",");
-                                json.append("\"nombre\":\"").append(estabDoc.getString("nombre_local").replace("\"", "\\\"")).append("\",");
-                                json.append("\"lat\":").append(lat).append(",");
-                                json.append("\"lng\":").append(lng).append(",");
-                                json.append("\"url_foto\":\"").append(urlFoto != null ? urlFoto : "").append("\"");
-                                json.append("}");
-                            }
+                        if (galeriaObj == null) {
+                            galeriaObj = new java.util.ArrayList<>();
                         }
+
+                        if (galeriaObj instanceof List) {
+                            List<?> galeria = (List<?>) galeriaObj;
+                            if (!galeria.isEmpty() && galeria.get(0) instanceof Document) {
+                                Document primeraFoto = (Document) galeria.get(0);
+                                if (primeraFoto.containsKey("url")) {
+                                    urlFoto = primeraFoto.getString("url");
+                                }
+                            }
+                        } else if (galeriaObj instanceof String) {
+                            urlFoto = (String) galeriaObj;
+                        }
+
+
+                        if (!primeraInclusion) {
+                            json.append(",");
+                        }
+                        primeraInclusion = false;
+
+                        //? armando del json
+                        json.append("{");
+                        json.append("\"id\":\"").append(estabDoc.getObjectId("_id").toHexString()).append("\",");
+                        json.append("\"nombre\":\"").append(nombreFinal).append("\",");
+                        json.append("\"lat\":").append(lat).append(",");
+                        json.append("\"lng\":").append(lng).append(",");
+                        json.append("\"url_foto\":\"").append(urlFoto).append("\"");
+                        json.append("}");
                     }
                 }
             }
             json.append("]");
 
             response.getWriter().print(json.toString());
+            return;
 
         } catch (Exception e) {
-            System.out.println("[MapaPines_Servlet GET] Error al procesar el JSON de pines:");
+            System.out.println("[MapaPines_Servlet GET] Error al armar el JSON independiente:");
             e.printStackTrace();
             response.getWriter().print("[]");
         }

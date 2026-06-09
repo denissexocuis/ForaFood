@@ -1,237 +1,492 @@
 <%@ page import="org.bson.Document" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<!--! nota: uso de IA en ciertas partes-->
-
 <!DOCTYPE html>
 <html lang="es">
 
-<!-- plantillas
-
- https://mdbootstrap.com/docs/standard/extended/login/
- -->
-
-
-
+<!-- ! nota: la parte del frontend (estilos, colores, etc) las mejoré con ia :D
+        estuve buscando plantillas y creando mi propio diseño pero me tomó
+        como 1 mes realizar la parte del login y registro T.T
+-->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>ForaFood</title>
-
-    <!-- bootstrap   -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-
-    <!-- archivo css -->
-    <link rel="stylesheet" href="css/style.css">
-
-    <!-- fevicon -->
+    <title>ForaFood — Registrarse</title>
     <link rel="icon" type="image/png" href="img/diet.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- fonts style -->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/registro.css">
 </head>
-
-<body class="bg-white">
-
-<section class="vh-100" style="background-color: #1c7430;">
-    <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col col-xl-10">
-                <div class="card" style="border-radius: 1rem;">
-                    <div class="row g-0">
-                        <div class="col-md-6 col-lg-5 d-none d-md-block">
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
-                                 alt="register form" class="img-fluid h-100"
-                                 style="border-radius: 1rem 0 0 1rem; object-fit: cover;" />
-                        </div>
-                        <div class="col-md-6 col-lg-7 d-flex align-items-center">
-                            <div class="card-body p-4 p-lg-5 text-black">
-
-                                <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Registro</h5>
-
-                                <!-- ! METODO POST, SERVLET REGISTRO  -->
-                                <form action="registro" method="post" class="mb-3" novalidate>
-
-                                    <div class="d-flex align-items-center mb-3 pb-1">
-                                        <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
-                                    </div>
-
-                                    <!--* PASO 1  DEL FORMULARIO-->
-                                    <!-- uso de ia en los pasos...para el diseño ;)-->
-                                    <div id="paso1">
-                                        <div data-mdb-input-init class="form-outline mb-1">
-                                            <label class="form-label" for="nombreUsuario">Nombre de usuario</label>
-                                            <input type="text" id="nombreUsuario" name="nombreUsuario" class="form-control" />
-                                            <small class="text-muted">Usa un nombre ficticio, no tu nombre real.</small>
-                                        </div>
-
-                                        <div data-mdb-input-init class="form-outline mb-1">
-                                            <label class="form-label" for="email">Email Personal</label>
-                                            <input type="email" id="email" name="email" class="form-control" />
-                                            <small class="text-muted">Con este correo podrás iniciar sesión.</small>
-                                        </div>
-
-                                        <div data-mdb-input-init class="form-outline mb-1">
-                                            <label class="form-label" for="pwd">Contraseña</label>
-                                            <input type="password" class="form-control" id="pwd" name="pwd">
-                                            <small class="text-muted">Mínimo 8 caracteres, incluye al menos un número y un símbolo.</small>
-                                            <div class="invalid-feedback">
-                                                Debe ser al menos de 8 caracteres con un número y símbolo.
-                                            </div>
-                                        </div>
-
-                                        <!-- ? Seleccionar la universidad -->
-                                        <label class="form-label" for="uniSelect">Universidad:</label>
-                                        <select id="uniSelect" name="txtUniversidad" class="form-control mb-2" onchange="mostrarCorreo()">
-                                            <option selected disabled>Seleccionar Universidad...</option>
-
-                                            <%
-                                                // AQUÍ SI USE IA...
-                                                // 1. sacar la lista que el servlet dejó en request
-                                                List<Document> universidades = (List<Document>) request.getAttribute("lista_universidades");
-
-                                                // 2. validar que la lista no venga vacía por si acaso
-                                                if (universidades != null)
-                                                {
-                                                    // 3. recorrer cada documento de la lista
-                                                    for (Document uni : universidades)
-                                                    {
-                                                        // 4. extraer los datos del documento de Mongo
-                                                        String idUni = uni.get("_id").toString();
-                                                        String nombreUni = uni.getString("nombre_uni");
-                                                        String dominioUni = uni.getString("dominio");
-                                            %>
-                                            <option value="<%= idUni %>"><%= nombreUni %></option>
-                                            <%
-                                                    } // cerrar for
-                                                } // cerrar if
-                                            %>
-
-                                        </select>
-
-                                        <!-- ? esto aparece después de seleccionar, es escribir el correo institucional -->
-                                        <div id="divCorreo" style="display:none;" class="mb-2 mt-2">
-                                            <label class="form-label" for="correoInstitucional">Correo institucional</label>
-                                            <input type="email" id="correoInstitucional" name="correoInstitucional" class="form-control mb-2" />
-                                            <small class="text-muted" id="hintCorreo"></small>
-                                        </div>
-
-                                        <button type="button" class="btn btn-dark mt-3 w-100" onclick="siguientePaso()">Siguiente</button>
-                                    </div>
-
-                                    <!--* PASO 2 DEL FORMULARIO -->
-                                    <div id="paso2" style="display:none;">
-                                        <p >Se ha mandado un código de verificación a: <strong id="correoMostrado"></strong></p>
-
-                                        <div class="mb-2">
-                                            <label class="form-label" for="codigoVerificacion">Código:</label>
-                                            <input type="text" id="codigoVerificacion" name="codigoVerificacion"
-                                                   class="form-control form-control-lg" placeholder="Ej: 483920" maxlength="6" />
-                                        </div>
-
-                                        <button type="button" class="btn btn-secondary mt-3 w-100" onclick="anteriorPaso()">Atrás</button>
-                                        <button type="button" class="btn btn-dark mt-3 w-100" onclick="verificarCodigo()">Verificar</button>
-                                    </div>
-
-                                    <!--* PASO 3 DEL FORMULARIO -->
-                                    <div id="paso3" style="display: none;">
-
-                                        <!-- Checkboxes -->
-                                        <div class="mb-2">
-                                            <input type="checkbox" id="chkPrivacidad" name="chkPrivacidad" required>
-                                            <label for="chkPrivacidad">Acepto el
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalPrivacidad">Aviso de Privacidad</a>
-                                            </label>
-                                        </div>
-
-                                        <div class="mb-2">
-                                            <input type="checkbox" id="chkTerminos" name="chkTerminos" required>
-                                            <label for="chkTerminos">Acepto los
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalTerminos">Términos y Condiciones</a>
-                                            </label>
-                                        </div>
-
-                                        <!-- ? Botón desactivado hasta que acepten -->
-                                        <button type="submit" class="btn btn-dark mt-3 w-100" id="btnRegistrarse" disabled>
-                                            Registrarse
-                                        </button>
-                                        <button type="button" class="btn btn-dark mt-3 w-100" onclick="anteriorPaso()">Atrás</button>
-                                    </div>
-
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-<!-- Modal Aviso de Privacidad -->
-<div class="modal fade" id="modalPrivacidad" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Aviso de Privacidad</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-                <!-- tu texto aquí -->
-                <p>Tu texto del aviso de privacidad...</p>
-            </div>
-            <div class="modal-footer">
-                <a href="docs/aviso-privacidad.pdf" download class="btn btn-outline-dark">
-                    Descargar PDF
-                </a>
-                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ! Modal Términos y Condiciones -->
-<div class="modal fade" id="modalTerminos" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Términos y Condiciones</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-                <p>Tu texto de términos y condiciones...</p>
-            </div>
-            <div class="modal-footer">
-                <a href="docs/terminos.pdf" download class="btn btn-outline-dark">
-                    Descargar PDF
-                </a>
-                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
+<body>
 
 <%
+    //? preparar dominios para js
     List<String> dominios = (List<String>) request.getAttribute("lista_dominios");
+    List<Document> universidades = (List<Document>) request.getAttribute("lista_universidades");
     StringBuilder dominiosJson = new StringBuilder("[");
-    for (int i = 0; i < dominios.size(); i++) {
-        dominiosJson.append("\"").append(dominios.get(i)).append("\"");
-        if (i < dominios.size() - 1) dominiosJson.append(",");
+    if (dominios != null) {
+        for (int i = 0; i < dominios.size(); i++) {
+            dominiosJson.append("\"").append(dominios.get(i)).append("\"");
+            if (i < dominios.size() - 1) dominiosJson.append(",");
+        }
     }
     dominiosJson.append("]");
 %>
+
+<!--? ── NAVBAR ───────────────────────────────────────────────── -->
+<nav class="ff-nav">
+    <a class="ff-nav-logo" href="index.jsp">fora<span>food</span></a>
+    <a class="ff-nav-link" href="index.jsp">← Volver al inicio</a>
+</nav>
+
+<!--? ── LAYOUT ───────────────────────────────────────────────── -->
+<div class="ff-registro-wrap">
+
+    <!-- panel izquierdo -->
+    <div class="ff-panel-left">
+        <h2 class="ff-left-title">
+            Come mejor.<br>
+            Comparte más.<br>
+            <span>Sube de nivel.</span>
+        </h2>
+        <p class="ff-left-sub">
+            Crea tu cuenta gratis y forma parte de la red estudiantil
+            que descubre los mejores lugares para comer cerca del campus.
+        </p>
+
+        <div class="ff-benefit">
+            <div class="ff-benefit-icon">🗺️</div>
+            <div class="ff-benefit-text">
+                <strong>Mapa interactivo</strong><br>
+                Ubica puestos y restaurantes cerca de tu facultad.
+            </div>
+        </div>
+        <div class="ff-benefit">
+            <div class="ff-benefit-icon">🏆</div>
+            <div class="ff-benefit-text">
+                <strong>Gamificación real</strong><br>
+                Gana puntos, medallas y sube del rango Novato a Leyenda.
+            </div>
+        </div>
+        <div class="ff-benefit">
+            <div class="ff-benefit-icon">🛡️</div>
+            <div class="ff-benefit-text">
+                <strong>Solo universitarios</strong><br>
+                Verificación con correo institucional. Solo tu comunidad.
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel derecho -->
+    <div class="ff-panel-right">
+        <h1 class="ff-form-title">Crear cuenta</h1>
+        <p class="ff-form-sub">
+            ¿Ya tienes cuenta? <a href="index.jsp">Inicia sesión</a>
+        </p>
+
+        <!-- Indicador de pasos -->
+        <div class="ff-steps-indicator">
+            <div class="ff-step-dot active" id="dot1">1</div>
+            <div class="ff-step-line" id="line1"></div>
+            <div class="ff-step-dot" id="dot2">2</div>
+            <div class="ff-step-line" id="line2"></div>
+            <div class="ff-step-dot" id="dot3">✓</div>
+        </div>
+        <div class="ff-steps-labels">
+            <div class="ff-step-lbl" style="margin-left:-14px;">Tu cuenta</div>
+            <div class="ff-step-lbl">Verificar</div>
+            <div class="ff-step-lbl" style="margin-right:-14px;">Listo</div>
+        </div>
+
+        <form action="registro" method="post" id="formRegistro" novalidate>
+
+            <!-- ══ PASO 1 — Datos básicos ══════════════════════ -->
+            <div id="paso1">
+                <div class="ff-group">
+                    <label class="ff-label">Nombre de usuario</label>
+                    <input type="text" id="nombreUsuario" name="nombreUsuario"
+                           class="ff-input" placeholder="ej. taquero_uv22">
+                    <div class="ff-hint">Usa un alias, no tu nombre real.</div>
+                    <div class="ff-error-msg" id="err-nombre">Ingresa un nombre de usuario.</div>
+                </div>
+
+                <div class="ff-group">
+                    <label class="ff-label">Correo personal</label>
+                    <input type="email" id="email" name="email"
+                           class="ff-input" placeholder="tu@correo.com">
+                    <div class="ff-hint">Con este correo inicias sesión.</div>
+                    <div class="ff-error-msg" id="err-email">Ingresa un correo válido.</div>
+                </div>
+
+                <div class="ff-group">
+                    <label class="ff-label">Contraseña</label>
+                    <input type="password" id="pwd" name="pwd"
+                           class="ff-input" placeholder="Mínimo 8 caracteres"
+                           oninput="actualizarFuerza(this.value)">
+                    <div class="ff-pwd-strength">
+                        <div class="ff-pwd-bar-wrap">
+                            <div class="ff-pwd-bar" id="pwdBar"></div>
+                        </div>
+                        <div class="ff-pwd-label" id="pwdLabel">Escribe tu contraseña</div>
+                    </div>
+                    <div class="ff-error-msg" id="err-pwd">Mínimo 8 caracteres, un número y un símbolo.</div>
+                </div>
+
+                <div class="ff-group">
+                    <label class="ff-label">Universidad</label>
+                    <select id="uniSelect" name="txtUniversidad" class="ff-select"
+                            onchange="mostrarCorreo()">
+                        <option value="" disabled selected>Seleccionar universidad…</option>
+                        <%
+                            if (universidades != null) {
+                                for (Document uni : universidades) {
+                                    String idUni     = uni.get("_id").toString();
+                                    String nombreUni = uni.getString("nombre_uni");
+                        %>
+                        <option value="<%= idUni %>"><%= nombreUni %></option>
+                        <% } } %>
+                    </select>
+                    <div class="ff-error-msg" id="err-uni">Selecciona tu universidad.</div>
+                </div>
+
+                <!-- Correo institucional — aparece al elegir uni -->
+                <div class="ff-correo-wrap" id="correoWrap">
+                    <div class="ff-correo-dominio" id="correoDominio"></div>
+                    <label class="ff-label">Correo institucional</label>
+                    <input type="email" id="correoInstitucional" name="correoInstitucional"
+                           class="ff-input" placeholder="usuario@universidad.edu.mx">
+                    <div class="ff-error-msg" id="err-correo">Ingresa un correo institucional válido.</div>
+                </div>
+
+                <button type="button" class="ff-btn ff-btn-primary"
+                        onclick="siguientePaso()">Continuar →</button>
+            </div>
+
+            <!-- ══ PASO 2 — Verificación ═══════════════════════ -->
+            <div id="paso2" style="display:none;">
+                <p style="font-size:13px;color:var(--text-2);margin-bottom:4px;">
+                    Enviamos un código de 6 dígitos a:
+                </p>
+                <p style="font-size:14px;font-weight:700;color:var(--text-1);margin-bottom:20px;"
+                   id="correoMostrado"></p>
+
+                <div class="ff-code-inputs">
+                    <input type="text" class="ff-code-digit" maxlength="1"
+                           inputmode="numeric" oninput="avanzarDigito(this,0)">
+                    <input type="text" class="ff-code-digit" maxlength="1"
+                           inputmode="numeric" oninput="avanzarDigito(this,1)">
+                    <input type="text" class="ff-code-digit" maxlength="1"
+                           inputmode="numeric" oninput="avanzarDigito(this,2)">
+                    <input type="text" class="ff-code-digit" maxlength="1"
+                           inputmode="numeric" oninput="avanzarDigito(this,3)">
+                    <input type="text" class="ff-code-digit" maxlength="1"
+                           inputmode="numeric" oninput="avanzarDigito(this,4)">
+                    <input type="text" class="ff-code-digit" maxlength="1"
+                           inputmode="numeric" oninput="avanzarDigito(this,5)">
+                </div>
+                <!-- Input hidden que recibe el código completo -->
+                <input type="hidden" id="codigoVerificacion" name="codigoVerificacion">
+
+                <div class="ff-error-msg" id="err-codigo" style="text-align:center;">
+                    Código incorrecto. Inténtalo de nuevo.
+                </div>
+
+                <button type="button" class="ff-btn ff-btn-primary"
+                        onclick="verificarCodigo()">Verificar código</button>
+                <button type="button" class="ff-btn ff-btn-ghost"
+                        onclick="anteriorPaso()">← Atrás</button>
+            </div>
+
+            <!-- ══ PASO 3 — Términos ═══════════════════════════ -->
+            <div id="paso3" style="display:none;">
+                <p style="font-size:13px;color:var(--text-2);margin-bottom:16px;">
+                    Ya casi listo. Lee y acepta para crear tu cuenta.
+                </p>
+
+                <label class="ff-check-row">
+                    <input type="checkbox" id="chkPrivacidad" name="chkPrivacidad"
+                           onchange="revisarChecks()">
+                    <div class="ff-check-text">
+                        He leído y acepto el
+                        <a href="#" onclick="abrirModalDoc('privacidad');return false;">
+                            Aviso de Privacidad
+                        </a>
+                    </div>
+                </label>
+
+                <label class="ff-check-row">
+                    <input type="checkbox" id="chkTerminos" name="chkTerminos"
+                           onchange="revisarChecks()">
+                    <div class="ff-check-text">
+                        He leído y acepto los
+                        <a href="#" onclick="abrirModalDoc('terminos');return false;">
+                            Términos y Condiciones
+                        </a>
+                    </div>
+                </label>
+
+                <div class="ff-error-msg" id="err-checks">
+                    Debes aceptar ambos documentos para continuar.
+                </div>
+
+                <button type="submit" class="ff-btn ff-btn-primary"
+                        id="btnRegistrarse" disabled>
+                    🎉 Crear mi cuenta
+                </button>
+                <button type="button" class="ff-btn ff-btn-ghost"
+                        onclick="anteriorPaso()">← Atrás</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<!-- ══ MODAL AVISO DE PRIVACIDAD ══════════════════════════════ -->
+<div class="ff-modal-overlay" id="modalPrivacidad"
+     onclick="cerrarModalDoc('privacidad',event)">
+    <div class="ff-modal-doc" onclick="event.stopPropagation()">
+        <div class="ff-modal-doc-header">
+            📄 Aviso de Privacidad
+            <button class="ff-btn-sm ff-btn-sm-ghost"
+                    onclick="cerrarModalDoc('privacidad',null)">✕</button>
+        </div>
+        <div class="ff-modal-doc-body">
+            <p>Tu texto del aviso de privacidad.... WIP</p>
+        </div>
+        <div class="ff-modal-doc-footer">
+            <a href="docs/aviso-privacidad.pdf" download
+               class="ff-btn-sm ff-btn-sm-ghost" style="text-decoration:none;">
+                Descargar (trabajo a futuro XD)
+            </a>
+            <button class="ff-btn-sm ff-btn-sm-solid"
+                    onclick="cerrarModalDoc('privacidad',null)">Entendido</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL TÉRMINOS Y CONDICIONES ════════════════════════════ -->
+<div class="ff-modal-overlay" id="modalTerminos"
+     onclick="cerrarModalDoc('terminos',event)">
+    <div class="ff-modal-doc" onclick="event.stopPropagation()">
+        <div class="ff-modal-doc-header">
+            📋 Términos y Condiciones
+            <button class="ff-btn-sm ff-btn-sm-ghost"
+                    onclick="cerrarModalDoc('terminos',null)">✕</button>
+        </div>
+        <div class="ff-modal-doc-body">
+            <p>Tu texto de términos y condiciones... WIP</p>
+        </div>
+        <div class="ff-modal-doc-footer">
+            <a href="docs/terminos.pdf" download
+               class="ff-btn-sm ff-btn-sm-ghost" style="text-decoration:none;">
+                Descargar (trabajo a futuro XD)
+            </a>
+            <button class="ff-btn-sm ff-btn-sm-solid"
+                    onclick="cerrarModalDoc('terminos',null)">Entendido</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    //! ia aqui
+    // ── Dominios válidos desde Java ──────────────────────────────
     const dominiosValidos = <%= dominiosJson %>;
+
+    // ── Estado de pasos ──────────────────────────────────────────
+    let pasoActual = 1;
+
+    function irAPaso(n) {
+        [1,2,3].forEach(i => {
+            document.getElementById('paso'+i).style.display = i===n ? 'block' : 'none';
+        });
+        pasoActual = n;
+        actualizarIndicador(n);
+    }
+
+    function actualizarIndicador(n) {
+        [1,2,3].forEach(i => {
+            const dot  = document.getElementById('dot'+i);
+            if (!dot) return;
+            dot.classList.remove('active','done');
+            if (i < n)       dot.classList.add('done');
+            else if (i === n) dot.classList.add('active');
+        });
+        [1,2].forEach(i => {
+            const line = document.getElementById('line'+i);
+            if (!line) return;
+            line.classList.toggle('done', i < n);
+        });
+    }
+
+    // ── Fuerza de contraseña ─────────────────────────────────────
+    function actualizarFuerza(val) {
+        const bar   = document.getElementById('pwdBar');
+        const label = document.getElementById('pwdLabel');
+        let score = 0;
+        if (val.length >= 8)           score++;
+        if (/[0-9]/.test(val))         score++;
+        if (/[^a-zA-Z0-9]/.test(val))  score++;
+        if (val.length >= 12)          score++;
+        const configs = [
+            { w:'0%',   bg:'var(--border)',    txt:'Escribe tu contraseña' },
+            { w:'25%',  bg:'#f87171',          txt:'Muy débil' },
+            { w:'50%',  bg:'#fbbf24',          txt:'Regular' },
+            { w:'75%',  bg:'#a3c45a',          txt:'Buena' },
+            { w:'100%', bg:'var(--green)',      txt:'¡Excelente!' },
+        ];
+        const c = configs[score] || configs[0];
+        bar.style.width      = c.w;
+        bar.style.background = c.bg;
+        label.textContent    = c.txt;
+        label.style.color    = c.bg === 'var(--border)' ? 'var(--text-3)' : c.bg;
+    }
+
+    // ── Mostrar correo institucional ─────────────────────────────
+    function mostrarCorreo() {
+        const select = document.getElementById('uniSelect');
+        const idx    = select.selectedIndex;
+        if (idx <= 0) return;
+        const domRaw2 = dominiosValidos[idx - 1] || '';
+        const dominio = domRaw2.startsWith('@') ? domRaw2 : '@' + domRaw2;
+        const dominioLimpio = domRaw2.startsWith('@') ? domRaw2.slice(1) : domRaw2;
+        const wrap    = document.getElementById('correoWrap');
+        const hint    = document.getElementById('correoDominio');
+        wrap.classList.add('show');
+        hint.textContent = '📧 Correo requerido con dominio: ' + dominio;
+        document.getElementById('correoInstitucional').placeholder =
+            'usuario@' + dominioLimpio;
+    }
+
+    // ── Validación paso 1 ────────────────────────────────────────
+    function siguientePaso() {
+        let ok = true;
+
+        const nombre = document.getElementById('nombreUsuario').value.trim();
+        mostrarError('err-nombre', 'nombreUsuario', !nombre);
+        if (!nombre) ok = false;
+
+        const email = document.getElementById('email').value.trim();
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        mostrarError('err-email', 'email', !emailOk);
+        if (!emailOk) ok = false;
+
+        const pwd = document.getElementById('pwd').value;
+        const pwdOk = pwd.length>=8 && /[0-9]/.test(pwd) && /[^a-zA-Z0-9]/.test(pwd);
+        mostrarError('err-pwd', 'pwd', !pwdOk);
+        if (!pwdOk) ok = false;
+
+        const uni = document.getElementById('uniSelect').value;
+        mostrarError('err-uni', 'uniSelect', !uni);
+        if (!uni) ok = false;
+
+        const correoWrap = document.getElementById('correoWrap');
+        if (correoWrap.classList.contains('show')) {
+            const ci = document.getElementById('correoInstitucional').value.trim();
+            const idx = document.getElementById('uniSelect').selectedIndex;
+            // Limpiar el @ si el dominio ya lo trae (ej. "@estudiantes.uv.mx" → "estudiantes.uv.mx")
+            const domRaw = dominiosValidos[idx-1] || '';
+            const dom = domRaw.startsWith('@') ? domRaw.slice(1) : domRaw;
+            // Validar que termine en @dominio y tenga algo antes del @
+            const ciOk = dom && ci.endsWith('@' + dom) && ci.indexOf('@') > 0;
+            mostrarError('err-correo', 'correoInstitucional', !ciOk);
+            if (!ciOk) ok = false;
+        }
+
+        if (!ok) return;
+
+        // Enviar código al correo institucional
+        const ci = document.getElementById('correoInstitucional').value.trim();
+        document.getElementById('correoMostrado').textContent = ci;
+        // Limpiar dígitos
+        document.querySelectorAll('.ff-code-digit').forEach(d => {
+            d.value=''; d.classList.remove('ff-code-ok');
+        });
+
+        irAPaso(2);
+        // Llamar al endpoint que envía el código
+        fetch('enviarCodigo?correo=' + encodeURIComponent(ci)).catch(()=>{});
+    }
+
+    function mostrarError(idErr, idInput, show) {
+        const el = document.getElementById(idErr);
+        const inp = document.getElementById(idInput);
+        if (el)  el.classList.toggle('show', show);
+        if (inp) inp.classList.toggle('error', show);
+    }
+
+    // ── Inputs de código de 6 dígitos ───────────────────────────
+    function avanzarDigito(el, idx) {
+        el.value = el.value.replace(/\D/,''); // solo números
+        if (el.value) {
+            el.classList.add('ff-code-ok');
+            const next = document.querySelectorAll('.ff-code-digit')[idx+1];
+            if (next) next.focus();
+        } else {
+            el.classList.remove('ff-code-ok');
+        }
+        // Juntar los 6 dígitos en el input hidden
+        const digits = [...document.querySelectorAll('.ff-code-digit')];
+        document.getElementById('codigoVerificacion').value =
+            digits.map(d=>d.value).join('');
+    }
+
+    function verificarCodigo() {
+        const codigo = document.getElementById('codigoVerificacion').value;
+        if (codigo.length < 6) {
+            document.getElementById('err-codigo').classList.add('show');
+            return;
+        }
+        document.getElementById('err-codigo').classList.remove('show');
+        // Llamar al endpoint de verificación
+        fetch('verificarCodigo?codigo=' + codigo)
+            .then(r => r.json())
+            .then(data => {
+                if (data.ok) {
+                    irAPaso(3);
+                } else {
+                    document.getElementById('err-codigo').classList.add('show');
+                    document.querySelectorAll('.ff-code-digit').forEach(d => {
+                        d.value=''; d.classList.remove('ff-code-ok');
+                    });
+                    document.querySelectorAll('.ff-code-digit')[0].focus();
+                }
+            })
+            .catch(() => irAPaso(3)); // fallback si no hay endpoint aún
+    }
+
+    function anteriorPaso() { irAPaso(pasoActual - 1); }
+
+    // ── Habilitar botón de registro ──────────────────────────────
+    function revisarChecks() {
+        const priv = document.getElementById('chkPrivacidad').checked;
+        const term = document.getElementById('chkTerminos').checked;
+        document.getElementById('btnRegistrarse').disabled = !(priv && term);
+        document.getElementById('err-checks').classList.toggle('show', false);
+    }
+
+    // ── Modales de documentos legales ───────────────────────────
+    function abrirModalDoc(tipo) {
+        const id = tipo === 'privacidad' ? 'modalPrivacidad' : 'modalTerminos';
+        document.getElementById(id).classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function cerrarModalDoc(tipo, e) {
+        const id = tipo === 'privacidad' ? 'modalPrivacidad' : 'modalTerminos';
+        const el = document.getElementById(id);
+        if (e === null || e.target === el) {
+            el.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    }
+    document.addEventListener('keydown', e => {
+        if (e.key !== 'Escape') return;
+        ['modalPrivacidad','modalTerminos'].forEach(id => {
+            document.getElementById(id)?.classList.remove('open');
+        });
+        document.body.style.overflow = '';
+    });
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/registro.js"></script>
-
 </body>
-
 </html>

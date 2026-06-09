@@ -51,14 +51,28 @@ public class Login_Servlet extends HttpServlet
 
             if (datos_Usuario != null)
             {
-                String nombre_sesion = datos_Usuario.getString("nombre_user");
+                String nombre_sesion    = datos_Usuario.getString("nombre_user");
                 ObjectId id_sesion_usuario = datos_Usuario.getObjectId("_id");
-                ObjectId ID_Uni_sesion = datos_Usuario.getObjectId("fk_universidad");
+                ObjectId ID_Uni_sesion     = datos_Usuario.getObjectId("fk_universidad");
+                int puntos_sesion          = datos_Usuario.getInteger("puntos", 0);
+                String rango_sesion        = datos_Usuario.getString("rango");
+                if (rango_sesion == null) rango_sesion = "Novato";
+                String foto_sesion         = datos_Usuario.getString("foto_perfil");
+                if (foto_sesion == null) foto_sesion = "img/avatar-default.png";
 
-                //? mandar tooodo a la sesión del usuario
-                request.getSession().setAttribute("user", nombre_sesion);
-                request.getSession().setAttribute("fk_universidad", ID_Uni_sesion);
-                request.getSession().setAttribute("_id_usuario", id_sesion_usuario);
+                java.util.List<String> medallas_sesion =
+                        (java.util.List<String>) datos_Usuario.get("medallas");
+                if (medallas_sesion == null) medallas_sesion = new java.util.ArrayList<>();
+
+                //? guardar todo en sesión — incluyendo gamificación
+                javax.servlet.http.HttpSession sesion = request.getSession();
+                sesion.setAttribute("user",           nombre_sesion);
+                sesion.setAttribute("fk_universidad", ID_Uni_sesion);
+                sesion.setAttribute("_id_usuario",    id_sesion_usuario);
+                sesion.setAttribute("puntos",         puntos_sesion);
+                sesion.setAttribute("rango",          rango_sesion);
+                sesion.setAttribute("foto_perfil",    foto_sesion);
+                sesion.setAttribute("misMedallas",    medallas_sesion);
             }
             // mandar al home :D
             response.sendRedirect("principal");

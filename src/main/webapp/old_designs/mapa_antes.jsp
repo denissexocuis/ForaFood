@@ -1,23 +1,7 @@
 <%@ page import="org.bson.Document" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.bson.types.ObjectId" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page pageEncoding="UTF-8" %>
-<%
-    // ── Gamificación: medalla Explorador al visitar el mapa ──────
-    ObjectId _idUsuMapa = (ObjectId) session.getAttribute("_id_usuario");
-    if (_idUsuMapa != null) {
-        new DAOs.UsuarioDAO().gamificacion_por_mapa(_idUsuMapa);
-        // Refrescar medallas en sesión
-        org.bson.Document _userMapaDoc = new DAOs.UsuarioDAO().findOne(_idUsuMapa);
-        if (_userMapaDoc != null) {
-            java.util.List<String> _medallasMapa =
-                (java.util.List<String>) _userMapaDoc.get("medallas");
-            if (_medallasMapa == null) _medallasMapa = new java.util.ArrayList<>();
-            session.setAttribute("misMedallas", _medallasMapa);
-        }
-    }
-%>
 <!DOCTYPE html>
 <html lang="es" data-theme="light" id="ff-root">
 <head>
@@ -28,14 +12,14 @@
   <!-- Leer tema guardado ANTES de pintar para evitar flash de color incorrecto -->
   <script>(function(){var t=localStorage.getItem('ff-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-  <link rel="stylesheet" href="css/theme.css">
-  <link rel="icon" type="image/png" href="img/diet.png">
+  <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="icon" type="image/png" href="../img/diet.png">
   <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-  <link rel="stylesheet" href="css/mapa.css">
+  <link rel="stylesheet" href="../css/mapa.css">
   <style>
     html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; font-family: 'Poppins', sans-serif; }
     .pantalla-completa-flex { display: flex; flex-direction: column; height: 100vh; }
@@ -209,9 +193,24 @@
 </head>
 <body>
 
+<div class="pantalla-completa-flex">
+
+  <div class="ff-mapa-navbar">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <img src="../img/diet.png" style="width: 28px; height: 28px;">
+      <span class="ff-mapa-logo">ForaFood</span>
+    </div>
+
+    <form action="principal" method="get" style="margin: 0; display: flex; gap: 8px;">
+      <input type="text" name="txtBuscar" placeholder="Buscar puestos o comidas en el feed..." class="ff-mapa-search-input">
+      <button type="submit" class="ff-mapa-search-btn">Buscar</button>
+    </form>
+    <div style="width: 120px;"></div>
+  </div>
+
   <div class="cuerpo-columnas-container">
+
     <div class="columna-menu-izquierda">
-      <a class="ff-logo" href="principal"><span>fora</span><span class="accent">food</span></a>
       <div class="ff-mapa-perfil">
         <img src="<%= session.getAttribute("foto_perfil") != null ? session.getAttribute("foto_perfil") : "img/avatar-default.png" %>" style="width:55px;height:55px;border-radius:50%;object-fit:cover;border:2px solid #16a34a;margin-bottom:6px;">
         <h4 style="margin:0;font-size:14px;font-weight:700;color:var(--text-1);"><%= session.getAttribute("user") %></h4>
@@ -222,17 +221,19 @@
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 6px;">
-        <button class="ff-nav-link active" onclick="window.location='principal'"><span class="ico">🏠</span> Inicio</button>
-
+        <a href="principal" class="ff-mapa-link">
+          🏠 Feed de la Facultad
+        </a>
         <hr class="ff-hr">
-
-        <a href="index.jsp" class="ff-logout">Cerrar sesión</a>
-
+        <a href="../index.jsp" class="ff-mapa-link ff-mapa-link-cerrar">
+          🚪 Cerrar Sesión
+        </a>
       </div>
     </div>
 
     <div class="columna-mapa-central">
       <div class="ff-mapa-header">
+        <h2>🗺️ Radar Gastronómico Universitario</h2>
         <span>Haz click en los pines del mapa para ver las opiniones del local en el panel derecho.</span>
       </div>
 
@@ -241,22 +242,26 @@
 
     <div class="columna-comentarios-derecha" id="panel-derecho-comentarios">
 
+      <div id="aviso-panel-vacio" class="ff-panel-vacio">
+        <img src="../img/diet.png" style="width: 45px; opacity: 0.3; margin-bottom: 8px;">
+        <p>Selecciona un pin del mapa para desplegar las opiniones de la comunidad.</p>
+      </div>
 
       <div id="contenido-panel-activo" style="display: none; flex-direction: column; gap: 12px; height: 100%;">
         <div class="ff-panel-perfil-info">
-          <img id="foto-local-panel" src="img/posts/default-local.png" style="width:55px;height:55px;border-radius:8px;object-fit:cover;border:1px solid #263329;">
+          <img id="foto-local-panel" src="../img/posts/default-local.png" style="width:55px;height:55px;border-radius:8px;object-fit:cover;border:1px solid #263329;">
           <div>
             <h3 id="panel-comentarios-titulo">Nombre del Local</h3>
-            <span>📍 Local</span>
+            <span>📍 Local Verificado</span>
           </div>
         </div>
 
         <div class="ff-tab-bar">
           <button id="tab-publicaciones" onclick="cambiarPestaña('publicaciones')" class="ff-tab-btn active">
-            PUBLICACIONES
+            📜 PUBLICACIONES
           </button>
           <button id="tab-valoracion" onclick="cambiarPestaña('valoracion')" class="ff-tab-btn">
-            VALORACIÓN
+            ⭐ VALORACIÓN
           </button>
         </div>
 
@@ -268,12 +273,12 @@
         <div id="vista-valoracion" style="display: none; flex-direction: column; flex: 1; overflow: hidden; height: 100%;">
 
           <div class="ff-score-box">
-            <span class="label">PUNTUACIÓN DE LA COMUNIDAD (WIP)</span>
+            <span class="label">PUNTUACIÓN DE LA COMUNIDAD</span>
             <div id="estrellas-promedio-render" class="stars">⭐⭐⭐⭐⭐</div>
             <span id="texto-promedio-num" class="num">5.0 / 5.0</span>
           </div>
 
-          <span class="ff-reseñas-label">Reseñas:</span>
+          <span class="ff-reseñas-label">📋 Reseñas Históricas:</span>
           <div id="contenedor-reseñas-historicas" class="ff-reseñas-container">
 
             <div class="ff-resena-card" style="display:flex;flex-direction:column;gap:3px;">
@@ -293,7 +298,7 @@
             <div>
               <label style="font-weight:700;font-size:12px;color:var(--text-2);display:block;margin-bottom:4px;">¿Qué tal está la comida y el precio?</label>
               <select id="select-calificacion" class="ff-select">
-                <option value="5">⭐⭐⭐⭐⭐ Excelente </option>
+                <option value="5">⭐⭐⭐⭐⭐ Excelente (Súper Foráneo Friendly)</option>
                 <option value="4">⭐⭐⭐⭐ Muy Bueno (Rico y llenador)</option>
                 <option value="3">⭐⭐⭐ Bueno (Cumple para el bajón)</option>
                 <option value="2">⭐⭐ Regular (Dos tres, algo caro)</option>
@@ -303,11 +308,11 @@
 
             <div>
               <label style="font-weight:700;font-size:12px;color:var(--text-2);display:block;margin-bottom:4px;">Escribe una reseña o tip:</label>
-              <textarea id="texto-comentario-valoracion" placeholder="Ej. Los chilaquiles con milanesa están muy ricos..." required class="ff-mapa-textarea"></textarea>
+              <textarea id="texto-comentario-valoracion" placeholder="Ej. Los chilaquiles con milanesa están enormes..." required class="ff-mapa-textarea"></textarea>
             </div>
 
             <button type="submit" class="ff-btn-valorar">
-              Enviar
+              🚀 Enviar Valoración
             </button>
           </form>
 
@@ -318,10 +323,10 @@
     </div>
 
   </div>
+</div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-  //? sacao de ia
   document.addEventListener("DOMContentLoaded", function() {
     // Inicializar el mapa centrado en la facultad (Zona UV)
     const mapa = L.map('mapaPantallaCompleta').setView([19.1622, -96.1197], 16);
@@ -330,7 +335,7 @@
       attribution: '© OpenStreetMap'
     }).addTo(mapa);
 
-    // Consultar pines reales vinculados a los posts multimedia
+    // 📡 Consultar tus pines reales vinculados a los posts multimedia
     fetch('mapa-pines')
             .then(res => res.json())
             .then(locales => {
@@ -343,7 +348,7 @@
                                     '<b style="color:var(--text-1);font-size:13px;display:block;margin-bottom:6px;">' + l.nombre + '</b>' +
                                     '<button onclick="abrirPanelComentarios(\'' + l.id + '\', \'' + l.nombre + '\', \'' + (l.url_foto || '') + '\')" ' +
                                         'style="background:#16a34a;color:white;border:none;padding:4px 10px;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;">' +
-                                        'Ver más' +
+                                        '💬 Ver opiniones' +
                                     '</button>' +
                                   '</div>';
 
@@ -354,6 +359,7 @@
             .catch(err => console.error("Error al renderizar pines de publicaciones:", err));
   });
 
+  // 🎯 Adaptación de tu función original perfectamente enlazada para la barra del Mapa
   function abrirPanelComentarios(idPost, titulo, fotoUrl) {
     cambiarPestaña('publicaciones');
     // Apagamos el aviso inicial de panel vacío
@@ -378,10 +384,12 @@
     // Guardamos el ID del post en el input oculto para poder comentar asíncronamente
     document.getElementById("input-post-id").value = idPost;
 
+    // 📡 Lanzar tu petición AJAX original que jala perfecto de la base de datos
     cargarComentariosDesdeBase(idPost);
     cargarPublicacionesDelLocal(idPost);
   }
 
+  // 🎯 CONECTOR ASÍNCRONO: Abre la barra derecha con el ID del post de Mongo
   function conectarPinConPanel(idPost, nombreLocal, urlFoto) {
     document.getElementById("aviso-panel-vacio").style.display = "none";
     document.getElementById("contenido-panel-activo").style.display = "flex";
@@ -440,7 +448,7 @@
   }
 
 
-
+  // 📡 ENVIAR VALORACIÓN DIRECTO AL ESTABLECIMIENTO
   function guardarValoracion(event) {
     event.preventDefault();
 
@@ -481,9 +489,9 @@
             });
   }
 
-
+  // 📡 LEER COMENTARIOS DIRECTO DESDE EL ESTABLECIMIENTO
   function cargarComentariosDesdeBase(idEstablecimiento) {
-
+    // 🎯 Ahora SOLO buscamos el contenedor de las reseñas históricas
     const contenedorReseñas = document.getElementById("contenedor-reseñas-historicas");
 
     if (!contenedorReseñas) return;
@@ -513,7 +521,7 @@
               comentarios.forEach(c => {
                 const esMiReseña = (c.nombre_autor === '<%= session.getAttribute("user") %>');
                 let botonEliminar = esMiReseña
-                        ? '<span onclick="eliminarMiReseña(\'' + idEstablecimiento + '\')" style="color: #dc2626; font-size: 11px; cursor: pointer; font-weight: bold; margin-left: auto; user-select: none;">Borrar</span>'
+                        ? '<span onclick="eliminarMiReseña(\'' + idEstablecimiento + '\')" style="color: #dc2626; font-size: 11px; cursor: pointer; font-weight: bold; margin-left: auto; user-select: none;">🗑️ Borrar</span>'
                         : '';
 
                 const numEstrellas = c.calificacion || 5;
@@ -543,6 +551,7 @@
             });
   }
 
+  // 🗑️ ACCIÓN ASÍNCRONA PARA ELIMINAR VALORACIONES
   function eliminarMiReseña(idEstablecimiento) {
     if (!confirm("¿Seguro que deseas eliminar tu valoración de este establecimiento?")) return;
 
@@ -561,9 +570,10 @@
             .catch(err => console.error("Error al borrar valoración:", err));
   }
 
-
+  // 🎯 NUEVA VARIABLE GLOBAL (ponla antes de tu función):
   let publicacionesGlobales = [];
 
+  // 📸 FUNCIÓN ACTUALIZADA:
   function cargarPublicacionesDelLocal(idEstablecimiento) {
     const contenedorPubs = document.getElementById("contenedor-comentarios-scroll");
     if (!contenedorPubs) return;
@@ -575,7 +585,7 @@
             .then(pubs => {
               if (!Array.isArray(pubs)) pubs = [];
 
-
+              // 🎯 GUARDAMOS LOS POSTS EN LA MEMORIA RAM DEL NAVEGADOR
               publicacionesGlobales = pubs;
 
               contenedorPubs.innerHTML = "";
@@ -588,7 +598,7 @@
               pubs.forEach(p => {
                 let imgHtml = p.foto ? `<img src="${p.foto}" style="width: 100%; height: 110px; object-fit: cover; border-radius: 6px; margin-bottom: 8px; border: 1px solid #e2e8f0;">` : '';
 
-
+                // 🎯 CAMBIAMOS EL ONCLICK PARA QUE ABRA NUESTRO MODAL EN LUGAR DE CAMBIAR DE PÁGINA
                 let tarjetaHTML = `
                 <div class="ff-pub-card">
                     ${imgHtml}
@@ -596,7 +606,7 @@
                     <span class="autor">👤 Autor: @${p.autor}</span>
                     <p>${p.texto}</p>
                     <button onclick="abrirModalPublicacion('${p.id}')" class="ff-btn-expandir">
-                        Abrir publicación
+                        👁️ Expandir publicación
                     </button>
                 </div>`;
 
@@ -609,6 +619,7 @@
             });
   }
 
+  // 🪟 ABRE EL POPUP TIPO FACEBOOK
   function abrirModalPublicacion(idPub) {
     // Buscamos la publicación completa dentro de nuestra memoria
     const pub = publicacionesGlobales.find(p => p.id === idPub);
@@ -628,11 +639,13 @@
       imgEl.style.display = "none";
     }
 
+    // 🎯 NUEVO: CARGAR COMENTARIOS DE LA PUBLICACIÓN DESDE EL SERVLET DEL FEED
     const contenedorComentariosModal = document.getElementById("contenedor-comentarios-modal");
     if (contenedorComentariosModal) {
       contenedorComentariosModal.innerHTML = '<p style="color: #94a3b8; font-size: 12px; text-align: center; padding: 10px;">Cargando comentarios...</p>';
 
       // Hacemos el fetch al servlet que maneja las publicaciones (ComentariosFeed_Servlet)
+      // Recuerda verificar si la anotación de tu servlet del feed es "/comentarios" o "/comentarios-feed"
       fetch('comentarios?idPost=' + idPub)
               .then(res => res.json())
               .then(comentarios => {
@@ -667,6 +680,7 @@
     document.getElementById("modal-publicacion").style.display = "flex";
   }
 
+  // ❌ CIERRA EL POPUP
   function cerrarModalPublicacion() {
     document.getElementById("modal-publicacion").style.display = "none";
   }
@@ -695,7 +709,7 @@
 
       <hr>
 
-      <h5>Comentarios:</h5>
+      <h5>💬 Comentarios de la comunidad</h5>
       <div id="contenedor-comentarios-modal" style="max-height: 200px; overflow-y: auto; padding-right: 5px;">
       </div>
     </div>

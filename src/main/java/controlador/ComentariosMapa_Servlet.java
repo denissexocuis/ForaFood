@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-//? esto me ayudó ia tambien D:
+//! esto me ayudó ia tambien D:
 //? básicamente los que eran en formato json me ayudó, se supone que hacerlo manual
 //? es más rápido y eso hace que la solicitud no tarde mucho
 

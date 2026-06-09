@@ -1,59 +1,121 @@
 package controlador;
 
 import DAOs.PublicacionDAO;
+import DAOs.UsuarioDAO;
+import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.List;
 
+//! este servet lo hice como 4 o 5 veces porque tenia errores con la votación
+//! me apoyé de ia porque siempre se bugeaba y no sé que pasaba con los votos, hasta se duplicaban D:
 @WebServlet("/votar")
 public class Votacion_Servlet extends HttpServlet
 {
-    //! aquí tuve que checar por qué era Post, tuve ayuda de IA
-    //? Regla de oro de los navegadores web: Todos los enlaces <a> de HTML, cuando les das un clic, disparan obligatoriamente una petición de tipo GET. Los enlaces no saben cómo mandar un POST.
-    //?esto es porque en el servlet home, el botón de votación
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
         request.setCharacterEncoding("UTF-8");
-        System.out.println("[Votacion_Servlet GET] haciendo votación...");
 
-        //? obtener los datos de la publicación que está en el jsp :D
         String id_publicacion = request.getParameter("id");
-        String tipo_voto = request.getParameter("tipo");
+        String tipo_voto      = request.getParameter("tipo");
 
-        //? sacar la sesión para saber quien está votando :0
         HttpSession session = request.getSession();
         ObjectId id_usuario_votante = (ObjectId) session.getAttribute("_id_usuario");
 
-        if (id_publicacion != null && tipo_voto != null && id_usuario_votante != null) {
-            ObjectId OI_Publicacion = new ObjectId(id_publicacion);
-            boolean es_vigente = tipo_voto.equals("real");
+        int reales = 0;
+        int falsos = 0;
+        int puntosUsuario = 0;
+        String rangoUsuario = "Novato";
 
-            // mandarlo al DAO
-            PublicacionDAO postDAO = new PublicacionDAO();
-            System.out.println("[Votacion_Servlet GET] mandarlo al DAO para registrar voto...");
-            postDAO.registrar_votoPublicacion(OI_Publicacion, id_usuario_votante, es_vigente);
+        if (id_publicacion != null && tipo_voto != null && id_usuario_votante != null)
+        {
+            try {
+                ObjectId oid_post  = new ObjectId(id_publicacion);
+                boolean  es_vigente = "vigente".equals(tipo_voto);
 
-            //? recuperar el documento actualizado desde mongo
-            org.bson.Document postActualizado = postDAO.findOne(OI_Publicacion);
-            if (postActualizado != null)
-            {
-                int reales = postActualizado.getInteger("votosVigente", 0);
-                int falsos = postActualizado.getInteger("votosFalso", 0);
+                PublicacionDAO postDAO = new PublicacionDAO();
 
-                //? esto lo saque de ia, configurar cabecera e imprimir json porque lo espera el javascript
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().print("{\"reales\":" + reales + ", \"falsos\":" + falsos + "}");
-                return;
+                //? leer voto anterior
+                String votoAnterior = "ninguno";
+                Document postActual = postDAO.findOne(oid_post);
+                if (postActual != null) {
+                    List<Document> hist = (List<Document>) postActual.get("historial_votos");
+                    if (hist != null) {
+                        String uidStr = id_usuario_votante.toString();
+                        for (Document v : hist) {
+                            Object idV = v.get("usuario_id");
+                            if (idV != null && idV.toString().equals(uidStr)) {
+                                votoAnterior = Boolean.TRUE.equals(v.getBoolean("es_vigente"))
+                                        ? "vigente" : "falso";
+                                break;
+                            }
+                        }
+                    }
+                }
+                System.out.println("[Votar] votoAnterior=" + votoAnterior + " | tipoNuevo=" + tipo_voto);
+
+
+                //? actualizar historial y contadores del post
+                postDAO.registrar_votoPublicacion(oid_post, id_usuario_votante, es_vigente);
+
+                //? leer contadors frescos
+                Document postFresco = postDAO.findOne(oid_post);
+                if (postFresco != null) {
+                    reales = postFresco.getInteger("votosVigente", 0);
+                    falsos = postFresco.getInteger("votosFalso", 0);
+
+                    //? gamificacion del autor
+                    ObjectId id_autor = postFresco.getObjectId("fk_usuario_autor");
+                    if (id_autor != null) {
+                        UsuarioDAO usuDAO = new UsuarioDAO();
+                        usuDAO.actualizar_reputacion_gamificacion(id_autor, es_vigente, votoAnterior);
+                    }
+                }
+
+                //? gamificacion del votante
+                UsuarioDAO usuDAO = new UsuarioDAO();
+                // ? solo al sumar un voto nuevo (no al quitar)
+                if (!votoAnterior.equals("ninguno") == false) { // es primer voto en este post
+                    usuDAO.gamificacion_por_voto_dado(id_usuario_votante);
+                }
+                //? siempre llamar para cubrir el caso de toggle y cambio
+                usuDAO.gamificacion_por_voto_dado(id_usuario_votante);
+
+                //? leer puntos y medallas 'frescas'
+                Document votanteFresco = usuDAO.findOne(id_usuario_votante);
+                if (votanteFresco != null) {
+                    puntosUsuario = votanteFresco.getInteger("puntos", 0);
+                    rangoUsuario  = votanteFresco.getString("rango");
+                    if (rangoUsuario == null) rangoUsuario = "Novato";
+                    session.setAttribute("puntos",     puntosUsuario);
+                    session.setAttribute("rango",      rangoUsuario);
+                    // Actualizar medallas en sesión para que el sidebar se refresque
+                    java.util.List<String> medallasFrescas =
+                        (java.util.List<String>) votanteFresco.get("medallas");
+                    if (medallasFrescas == null) medallasFrescas = new java.util.ArrayList<>();
+                    session.setAttribute("misMedallas", medallasFrescas);
+                }
+
+            } catch (Exception e) {
+                System.err.println("[Votar] Error: " + e.getMessage());
+                e.printStackTrace();
             }
         }
 
-        //response.sendRedirect("principal");
-        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().print(
+            "{\"reales\":" + reales +
+            ",\"falsos\":" + falsos +
+            ",\"puntos\":" + puntosUsuario +
+            ",\"rango\":\"" + rangoUsuario + "\"}"
+        );
+        response.getWriter().flush();
     }
 }

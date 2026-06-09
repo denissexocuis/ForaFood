@@ -18,12 +18,12 @@
 
     <title>ForaFood</title>
 
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/theme.css">
-    <link rel="stylesheet" href="css/feed_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/feed_style.css">
 
     <!-- fevicon -->
-    <link rel="icon" type="image/png" href="img/diet.png">
+    <link rel="icon" type="image/png" href="../img/diet.png">
 
     <!-- fonts style -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet" />
@@ -40,7 +40,6 @@
 <body>
 
 <%
-    //! esto me ayudó la ia D:..tuvo dificil
     String userLogueado = (String) session.getAttribute("user");
     String avatarLogueado = (String) session.getAttribute("foto_perfil");
     Integer puntosLogueado = (Integer) session.getAttribute("puntos");
@@ -50,7 +49,7 @@
     if (puntosLogueado == null) puntosLogueado = 0;
     if (rangoLogueado == null) rangoLogueado = "Novato";
 
-    //? sistema de rangos y XP
+    // Sistema de rangos y XP
     int nivel = 1;
     int xpActual = puntosLogueado;
     int xpSiguiente = 100;
@@ -70,142 +69,63 @@
 
     <a class="ff-logo" href="principal"><span>fora</span><span class="accent">food</span></a>
 
-    <!-- toggle claro/oscuro -->
+    <!-- Toggle claro/oscuro -->
     <div class="ff-theme-toggle" onclick="toggleTheme()" title="Cambiar tema" style="margin-bottom:4px;justify-content:flex-start;gap:8px;">
         <div class="toggle-track"><div class="toggle-knob"></div></div>
         <span id="theme-label" style="font-size:12px;color:var(--text-2);font-weight:600;">Modo oscuro</span>
     </div>
 
-    <!-- perfil gamificado -->
+    <!-- Perfil gamificado -->
     <div class="ff-profile-card">
         <div class="ff-avatar-wrap">
             <img src="<%= avatarLogueado %>" alt="Avatar" onerror="this.src='img/avatar-default.png';">
             <div class="ff-level-badge">Nv.<%= nivel %></div>
         </div>
         <div class="ff-profile-name"><%= userLogueado %></div>
-        <div class="ff-rank-pill" id="ff-rango-display"><%= rangoEmoji %> <%= rangoDisplay %></div>
-        <div class="ff-pts-display">🏆 <strong id="ff-puntos-display"><%= puntosLogueado %></strong> pts totales</div>
+        <div class="ff-rank-pill"><%= session.getAttribute("rango") %></div>
+        <div class="ff-pts-display">🏆 <strong><%= puntosLogueado %></strong> pts totales</div>
         <div class="ff-xp-wrap">
             <div class="ff-xp-track">
-                <div class="ff-xp-fill" id="ff-xp-fill" style="width:<%= xpPct %>%;"></div>
+                <div class="ff-xp-fill" style="width:<%= xpPct %>%;"></div>
             </div>
-            <div class="ff-xp-label" id="ff-xp-label"><%= puntosLogueado %> / <%= xpSiguiente %> XP → sig. rango</div>
+            <div class="ff-xp-label"><%= puntosLogueado %> / <%= xpSiguiente %> XP → sig. rango</div>
         </div>
+        <a href="perfil" class="ff-edit-link">⚙️ Editar perfil y ajustes</a>
     </div>
 
-    <!-- medallas compactas y pop up -->
-    <%
-        //? esto me ayudó la ia
-        java.util.List<Object[]> catalogoMedallas = new java.util.ArrayList<>();
-        catalogoMedallas.add(new Object[]{"Primera Reseña",   "🍕", "Publica tu primera recomendación",   "Haz tu primer post"});
-        catalogoMedallas.add(new Object[]{"Detector",         "🔍", "Vota 5 veces en publicaciones",       "5 votos dados"});
-        catalogoMedallas.add(new Object[]{"Comentarista",     "💬", "Comenta en 3 publicaciones",           "3 comentarios"});
-        catalogoMedallas.add(new Object[]{"Explorador",       "🗺️", "Visita el mapa y ubica un local",      "Usa el mapa"});
-        catalogoMedallas.add(new Object[]{"Estrella",         "⭐", "Llega a 50 puntos de reputación",      "50 pts"});
-        catalogoMedallas.add(new Object[]{"Leyenda",          "👑", "Alcanza el rango Leyenda",          "1000 pts"});
-        catalogoMedallas.add(new Object[]{"En Llamas",        "🔥", "Recibe 10 votos reales en tus posts",  "10 votos reales"});
-        catalogoMedallas.add(new Object[]{"Taquero Mayor",    "🌮", "Publica 5 recomendaciones de tacos",   "5 posts de tacos"});
-        catalogoMedallas.add(new Object[]{"Verificador",      "✅", "Vota 20 veces como real",              "20 votos reales"});
-        catalogoMedallas.add(new Object[]{"Crítico",          "🎓", "Alcanza 200 puntos",                   "200 pts"});
-        catalogoMedallas.add(new Object[]{"Pro",      "🧭", "Llega al rango Pro",           "250 pts"});
-        catalogoMedallas.add(new Object[]{"Maestro",          "🏆", "Llega al rango Maestro",       "500 pts"});
-
-        java.util.List<String> medallasUsuario = (java.util.List<String>) session.getAttribute("misMedallas");
-        if (medallasUsuario == null) medallasUsuario = new java.util.ArrayList<>();
-        int totalDesbloqueadas = medallasUsuario.size();
-        int totalCatalogo = catalogoMedallas.size();
-
-        //? mostrar solo las primeras 4 en el recuadro
-        int mostrarEnRecuadro = Math.min(4, totalDesbloqueadas > 0 ? totalDesbloqueadas : 4);
-    %>
-
+    <!-- Medallas -->
     <div class="ff-medals-box">
-        <div class="ff-medals-title">
-            Mis medallas
-            <span class="ff-medals-counter"><%= totalDesbloqueadas %>/<%= totalCatalogo %></span>
-        </div>
-
-        <%-- máximo 4 medallas visibles --%>
-        <div class="ff-medals-preview">
-            <%
-                int mostradas = 0;
-                if (!medallasUsuario.isEmpty()) {
-                    for (String m : medallasUsuario) {
-                        if (mostradas >= 4) break;
-                        // buscar emoji en el catálogo
-                        String emoji = "⭐";
-                        for (Object[] cat : catalogoMedallas) {
-                            if (cat[0].equals(m)) { emoji = (String) cat[1]; break; }
-                        }
-            %>
-                <div class="ff-medal" title="<%= m %>"><%= emoji %></div>
-            <%      mostradas++;
-                    }
-                }
-                // Rellenar con bloqueadas hasta 4
-                for (int i = mostradas; i < 4; i++) {
-                    Object[] cat = catalogoMedallas.get(i);
-            %>
-                <div class="ff-medal locked" title="Bloqueada"><%= cat[1] %></div>
-            <% } %>
-        </div>
-
-        <button class="ff-medals-ver-mas" onclick="abrirPopupMedallas()">
-            Ver todas las medallas →
-        </button>
-    </div>
-
-    <!--? ══ POPUP TODAS LAS MEDALLAS ══════════════════════════════════  (IA)-->
-    <div id="ff-popup-medallas" class="ff-popup-overlay" style="display:none;" onclick="cerrarPopupMedallas(event)">
-        <div class="ff-popup-medallas-box" onclick="event.stopPropagation()">
-
-            <div class="ff-popup-medallas-header">
-                <span>Medallas</span>
-                <button class="ff-modal-close" onclick="cerrarPopupMedallas(null)">✖</button>
-            </div>
-
-            <div class="ff-popup-medallas-progress">
-                <div class="ff-xp-track">
-                    <div class="ff-xp-fill" style="width:<%= totalCatalogo > 0 ? (totalDesbloqueadas * 100 / totalCatalogo) : 0 %>%;"></div>
-                </div>
-                <span class="ff-xp-label"><%= totalDesbloqueadas %> de <%= totalCatalogo %> desbloqueadas</span>
-            </div>
-
-            <div class="ff-popup-medallas-grid">
-                <%
-                    for (Object[] cat : catalogoMedallas) {
-                        String nombre = (String) cat[0];
-                        String emoji  = (String) cat[1];
-                        String desc   = (String) cat[2];
-                        String req    = (String) cat[3];
-                        boolean tieneEsta = medallasUsuario.contains(nombre);
-                %>
-                <div class="ff-popup-medal-card <%= tieneEsta ? "desbloqueada" : "bloqueada" %>">
-                    <div class="ff-popup-medal-emoji"><%= emoji %></div>
-                    <div class="ff-popup-medal-nombre"><%= nombre %></div>
-                    <div class="ff-popup-medal-desc"><%= desc %></div>
-                    <div class="ff-popup-medal-req">
-                        <% if (tieneEsta) { %>
-                            <span class="ff-medal-obtenida">✓ Obtenida</span>
-                        <% } else { %>
-                            <span class="ff-medal-falta">🔒 <%= req %></span>
-                        <% } %>
-                    </div>
-                </div>
-                <% } %>
-            </div>
+        <div class="ff-medals-title">🏅 Mis medallas</div>
+        <div class="ff-medals-grid">
+            <c:forEach var="medalla" items="${sessionScope.misMedallas}">
+                <div class="ff-medal" title="${medalla}"><span style="font-size:15px;">⭐</span></div>
+            </c:forEach>
+            <c:if test="${empty sessionScope.misMedallas}">
+                <div class="ff-medal locked" title="Sin desbloquear">🍕</div>
+                <div class="ff-medal locked" title="Sin desbloquear">🔍</div>
+                <div class="ff-medal locked" title="Sin desbloquear">💬</div>
+                <div class="ff-medal locked" title="Sin desbloquear">🗺️</div>
+                <div class="ff-medal locked" title="Sin desbloquear">⭐</div>
+                <div class="ff-medal locked" title="Sin desbloquear">👑</div>
+                <div class="ff-medal locked" title="Sin desbloquear">🔥</div>
+                <div class="ff-medal locked" title="Sin desbloquear">🌮</div>
+            </c:if>
         </div>
     </div>
 
     <!-- Navegación -->
     <div class="ff-nav-section">Explorar</div>
     <button class="ff-nav-link active" onclick="window.location='principal'"><span class="ico">🏠</span> Inicio</button>
-    <button class="ff-nav-link active" onclick="window.location='mapa'"><span class="ico">️🗺️</span> Mapa</button>
+    <button class="ff-nav-link" onclick="window.location='mapa'"><span class="ico">📍</span> Lugares</button>
+    <button class="ff-nav-link"><span class="ico">⭐</span> Favoritos</button>
+    <button class="ff-nav-link"><span class="ico">👥</span> Comunidad</button>
 
     <div class="ff-nav-section">Mi cuenta</div>
-    <button class="ff-nav-link" onclick="window.location='perfil'"><span class="ico">⚙️</span> Ajustes (WIP)</button>
+    <button class="ff-nav-link" onclick="window.location='perfil'"><span class="ico">👤</span> Perfil</button>
+    <button class="ff-nav-link" onclick="window.location='perfil'"><span class="ico">⚙️</span> Ajustes</button>
 
-    <a href="index.jsp" class="ff-logout">Cerrar sesión</a>
+    <a href="mapa" class="ff-btn-mapa">🗺️ Ver mapa completo</a>
+    <a href="../index.jsp" class="ff-logout">Cerrar sesión</a>
 
 </div>
 
@@ -219,7 +139,7 @@
 
         <form action="principal" method="get" style="margin:0;display:flex;gap:6px;align-items:center;">
             <input type="text" name="txtBuscar" placeholder="Buscar lugares o comida..." class="ff-search-input">
-            <button type="submit" class="btn btn-sm btn-dark" style="padding:7px 13px;">Buscar</button>
+            <button type="submit" class="btn btn-sm btn-dark" style="padding:7px 13px;">🔍 Buscar</button>
         </form>
     </div>
 
@@ -231,7 +151,7 @@
     </button>
 
     <div id="contenedorFormulario" class="ff-form-container" style="display: none;">
-        <h3>Compartir un nuevo lugar o menú (WIP)</h3>
+        <h3>Compartir un nuevo lugar o menú</h3>
 
         <form action="crearpost" method="post" id="formNuevaPublicacion" enctype="multipart/form-data">
 
@@ -242,16 +162,16 @@
 
             <div style="margin-bottom: 12px;">
                 <label class="ff-label">Descripción / Precios / Menú:</label><br>
-                <textarea name="txtDescripcion" placeholder="Cuéntale a la comunidad qué venden, cuánto cuesta o tu opinión..." class="ff-input" required></textarea>
+                <textarea name="txtDescripcion" placeholder="Cuéntale a la comunidad qué venden, cuánto cuesta..." class="ff-input" required></textarea>
             </div>
 
             <div style="margin-bottom: 15px;">
-                <label class="ff-label">Establecimiento (opcional):</label><br>
+                <label class="ff-label">Establecimiento / Ubicación:</label><br>
                 <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
                     <button type="button" onclick="abrirSelectorMapa()" class="ff-btn-mapa-sel">
-                        Seleccionar ubicación
+                        📍 Seleccionar Ubicación en el Mapa
                     </button>
-                    <span id="estado-ubicacion" style="font-size: 13px; color: #64748b; font-style: italic;"></span>
+                    <span id="estado-ubicacion" style="font-size: 13px; color: #64748b; font-style: italic;">(Ninguna ubicación seleccionada)</span>
                 </div>
 
                 <input type="hidden" id="idUbicacionExistente" name="idUbicacionExistente" value="">
@@ -261,7 +181,7 @@
             </div>
 
             <div style="margin-bottom: 20px;">
-                <label class="ff-label">Subir imagen (opcional):</label><br>
+                <label class="ff-label">Imagen del Post:</label><br>
                 <input type="file" name="fileImagen" accept="image/*" style="margin-top: 5px; font-size: 14px;">
             </div>
 
@@ -276,9 +196,9 @@
         </form>
     </div>
 
-    <!--? este script fue iado jjsjdfjsdf -->
+    <!--este script fue iado jjsjdfjsdf -->
     <script>
-        // Al cargar la página, asegurar al 100% de que el display esté apagado
+        // Al cargar la página, nos aseguramos al 100% de que el display esté apagado
         window.onload = function() {
             document.getElementById("contenedorFormulario").style.display = "none";
         };
@@ -298,7 +218,7 @@
             var btnPrincipal = document.getElementById("btnCompartirPrincipal");
             var formHTML = document.getElementById("formNuevaPublicacion");
 
-            // 1. Limpia lo que el usuario haya escrito en las cajas de texto
+            // 1. Limpia todo lo que el usuario haya escrito en las cajas de texto (Reset)
             formHTML.reset();
 
             // 2. Esconde el contenedor del formulario
@@ -323,7 +243,7 @@
         {
             for (Document post : listaPosts)
             {
-                //? esto lo saqué de ia, solo lo de la fecha y objetos multimedia :D
+                //? esto lo saqué de ia D:
                 //java.util.Date fecha = post.getDate("fecha_publicacion");
                 java.util.Date fecha = post.getDate("fecha");
                 String fecha_formateada = (fecha != null) ? sdf.format(fecha) : "Reciente";
@@ -358,16 +278,16 @@
                 <span style="color: #64748b;"><%= fecha_formateada %></span>
 
                 <%
-                    //? si el post es del usuario logueado, pintar  logo de la basura en la esquina
+                    // 🕵️‍♀️ VALIDACIÓN: Si el post es del usuario logueado, pintamos la basura en la esquina exacta
                     if (userLogueado != null && userLogueado.equals(nombreAutor)) {
                 %>
                 <button type="button"
                         onclick="confirmarEliminacion('<%= post.getObjectId("_id") %>')"
                         title="Eliminar publicación"
-                        style="position: absolute; top: 0; right: 0; background: transparent; border: none; color: #ef4444; cursor: pointer; font-size: 10px; padding: 4px; display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease-in-out;"
+                        style="position: absolute; top: 0; right: 0; background: transparent; border: none; color: #ef4444; cursor: pointer; font-size: 16px; padding: 4px; display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease-in-out;"
                         onmouseover="this.style.transform='scale(1.2)'"
                         onmouseout="this.style.transform='scale(1)'">
-                    Eliminar
+                    🗑️
                 </button>
                 <%
                     }
@@ -392,7 +312,7 @@
             <div class="post-action-bar">
 
                 <%
-                    //? leer la bandera que inyecto el servlet para esta publicacion
+                    // Leemos la bandera que inyectó el Servlet para este post específico
                     String votoPrevio = post.getString("voto_usuario_sesion");
                     if (votoPrevio == null) votoPrevio = "ninguno";
 
@@ -400,39 +320,33 @@
                     boolean haVotadoFalso = "falso".equals(votoPrevio);
                 %>
                 <div class="pill-votacion">
-                    <%-- Botón Es Real --%>
                     <a href="javascript:void(0);"
                        id="btn-vigente-<%= post.getObjectId("_id") %>"
-                       class="ff-voto-btn <%= haVotadoVigente ? "ff-voto-activo" : "" %> <%= haVotadoFalso ? "ff-voto-bloqueado" : "" %>"
                        data-votado="<%= haVotadoVigente %>"
-                       data-tipo="vigente"
-                       data-id="<%= post.getObjectId("_id") %>"
-                       onclick="enviarVoto('<%= post.getObjectId("_id") %>', 'vigente', this)">
-                        <strong class="contador-votos-vigente" id="txt-vigente-<%= post.getObjectId("_id") %>"><%= post.getInteger("votosVigente", 0) %></strong>
+                       onclick="enviarVoto('<%= post.getObjectId("_id") %>', 'vigente', this)"
+                       style="text-decoration: none; display: flex; align-items: center; gap: 4px; opacity: <%= haVotadoVigente ? "0.5" : "1.0" %>; font-weight: <%= haVotadoVigente ? "bold" : "normal" %>;">
+                        <strong class="contador-votos-vigente" id="txt-vigente-<%= post.getObjectId("_id") %>" ><%= post.getInteger("votosVigente", 0) %></strong>
                         <span class="voto-real">Es real</span>
                     </a>
 
                     <span class="voto-separador">|</span>
 
-                    <%-- Botón Es Falso --%>
                     <a href="javascript:void(0);"
                        id="btn-falso-<%= post.getObjectId("_id") %>"
-                       class="ff-voto-btn <%= haVotadoFalso ? "ff-voto-activo" : "" %> <%= haVotadoVigente ? "ff-voto-bloqueado" : "" %>"
                        data-votado="<%= haVotadoFalso %>"
-                       data-tipo="falso"
-                       data-id="<%= post.getObjectId("_id") %>"
-                       onclick="enviarVoto('<%= post.getObjectId("_id") %>', 'falso', this)">
-                        <strong class="contador-votos-falso" id="txt-falso-<%= post.getObjectId("_id") %>"><%= post.getInteger("votosFalso", 0) %></strong>
+                       onclick="enviarVoto('<%= post.getObjectId("_id") %>', 'falso', this)"
+                       style="text-decoration: none; display: flex; align-items: center; gap: 4px; opacity: <%= haVotadoFalso ? "0.5" : "1.0" %>; font-weight: <%= haVotadoFalso ? "bold" : "normal" %>;">
+                        <strong class="contador-votos-falso" id="txt-falso-<%= post.getObjectId("_id") %>" ><%= post.getInteger("votosFalso", 0) %></strong>
                         <span class="voto-falso">Es falso</span>
                     </a>
                 </div>
 
                 <a href="javascript:void(0);" onclick="abrirPanelComentarios('<%= post.getObjectId("_id") %>', '<%= post.getString("titulo") %>', '<%= tieneImagen ? rutaFotoLocal : "" %>', '<%= post.getObjectId("fk_establecimiento") %>')" class="btn-action-secundario">
-                    Comentarios
+                    💬 Comentarios
                 </a>
 
                 <button type="button" onclick="compartirEnlacePost('<%= post.getObjectId("_id") %>')" class="btn-action-secundario">
-                    Reportar (Trabajo a futuro)
+                    🔗 Compartir
                 </button>
             </div>
 
@@ -444,7 +358,8 @@
         %>
 
         <div class="ff-empty-state">
-            <p style="font-size: 18px; margin-bottom: 8px;">No hay publicaciones en tu comunidad.</p>
+            <p style="font-size: 18px; margin-bottom: 8px;">Aún no hay publicaciones en tu comunidad.</p>
+            <p style="font-size: 14px; margin: 0;">¡Sé el primero en recomendar unos tacos usando la caja de arriba!</p>
         </div>
 
     </form>
@@ -487,7 +402,11 @@
     <div id="bloque-comentarios-panel" style="display: none; flex-direction: column; height: calc(100vh - 40px); gap: 15px; width: 100%; box-sizing: border-box;" class="ff-ranking-bloque">
 
         <div class="ff-panel-header">
+
             <div style="display: flex; flex-direction: column; gap: 2px; flex: 1;">
+            <span class="ff-panel-label">
+                📍 Establecimiento seleccionado
+            </span>
                 <h3 id="panel-titulo-local" class="ff-panel-titulo-local">
                     Local
                 </h3>
@@ -505,7 +424,7 @@
             <img id="panel-foto-local" src="" alt="Foto local" style="width: 100%; height: 100%; object-fit: cover;" />
         </div>
 
-        <h4 class="ff-panel-subtitulo">Comentarios:</h4>
+        <h4 class="ff-panel-subtitulo">Comentarios comunitarios</h4>
 
         <div id="contenedor-lista-comentarios" class="ff-comentarios-lista">
             <p style="color: #94a3b8; font-size: 13px; text-align: center; margin: auto;">Selecciona una publicación...</p>
@@ -523,7 +442,7 @@
                 <span onclick="insertarEmoji('👌')" style="cursor: pointer; transition: transform 0.1s ease;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">👌</span>
             </div>
 
-            <textarea id="texto-comentario" placeholder="Escribe un comentario... (Eliminar comentarios WIP)" required class="ff-textarea-comentario"></textarea>
+            <textarea id="texto-comentario" placeholder="Escribe un comentario foráneo..." required class="ff-textarea-comentario"></textarea>
 
             <button type="submit" class="ff-btn-comentar">
                 Enviar comentario
@@ -536,12 +455,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    //? esto fue iado....no le sé al javascript T.T
 
+    // 🎯 ACTUALIZA ESTAS DOS FUNCIONES EN TU SECCIÓN DE SCRIPTS
     function abrirPanelComentarios(idPost, titulo, fotoUrl, idEstablecimiento) {
         // Apagamos los dos rankings para dejar la columna limpia
         document.getElementById("bloque-top-lugares").style.display = "none";
-        document.getElementById("bloque-top-usuarios").style.display = "none";
+        document.getElementById("bloque-top-usuarios").style.display = "none"; // 👈 ¡NUEVO!
 
         // Encendemos los comentarios
         document.getElementById("bloque-comentarios-panel").style.display = "flex";
@@ -559,7 +478,7 @@
 
         // Regresamos a la vida ambos rankings
         document.getElementById("bloque-top-lugares").style.display = "block";
-        document.getElementById("bloque-top-usuarios").style.display = "block";
+        document.getElementById("bloque-top-usuarios").style.display = "block"; // 👈 ¡NUEVO!
     }
 
     // 📡 AJAX: Trae los comentarios de MongoAtlas sin recargar la pantalla
@@ -611,7 +530,8 @@
     }
 
 
-    //? contenedor formulario para publicacion
+
+
     function alternarFormulario() {
         document.getElementById("contenedorFormulario").style.display = "block";
         document.getElementById("btnCompartirPrincipal").style.display = "none";
@@ -627,7 +547,8 @@
     }
 
 
-    //? selector mapa de locales
+
+
     let mapaSeleccion;
     let markerTemporal = null;
     let marcadorElegidoData = null;
@@ -672,6 +593,8 @@
         }, 150);
     }
 
+    // 🎯 FUNCIÓN BLINDADA Y OPTIMIZADA EN YOUR home.jsp
+    // 🎯 FUNCIÓN CORREGIDA Y BLINDADA EN home.jsp
     function cargarMarcadoresExistentes() {
         fetch('mapa-pines')
             .then(response => {
@@ -679,13 +602,15 @@
                 return response.json();
             })
             .then(locales => {
-                //? para depurar en consola porque tuve errores
+                // 🕵️‍♀️ Chismoso para ver en la consola del navegador si el JSON ya llegó aquí
                 console.log("[Leaflet Debug] Arreglo recibido en JS. Tamaño: " + locales.length, locales);
 
                 if (!locales || locales.length === 0) {
                     console.log("[Leaflet] El servlet mandó un arreglo vacío.");
                     return;
                 }
+
+                // Usamos tu mapa global (asegúrate de que use el nombre correcto: 'mapaSeleccion' o 'map')
                 locales.forEach(l => {
                     // Forzamos que las coordenadas se procesen como números reales
                     const latitud = parseFloat(l.lat);
@@ -699,7 +624,7 @@
                         let contenidoPopup = `
                         <div style="font-family: sans-serif; padding: 4px; min-width: 140px;">
                             <b style="color: #0f172a; font-size: 13px; display: block; margin-bottom: 2px;">${l.nombre}</b>
-                            <span style="color: #16a34a; font-weight: 500; font-size: 11px; display: block; margin-top: 4px;">📍 Local</span>
+                            <span style="color: #16a34a; font-weight: 500; font-size: 11px; display: block; margin-top: 4px;">📍 Local Verificado</span>
                         </div>
                     `;
                         pinExistente.bindPopup(contenidoPopup);
@@ -726,7 +651,8 @@
             });
     }
 
-    //? se dispara unicamente cuando el usuario presiona el boton verde del mapa
+    // 🎯 3. FUNCIÓN AUXILIAR DE SELECCIÓN CONTROLADA
+    // Esta función se dispara únicamente cuando el usuario presiona el botón verde del mapa
     function seleccionarLocalDesdeMapa(idLocal, nombreLocal) {
         // Ocultamos la caja de texto para ingresar nombres nuevos de locales
         const inputZona = document.getElementById("zonaNuevoLocalInput");
@@ -748,7 +674,7 @@
         }
     }
 
-    function confirmarSeleccionGeografica(){
+    function confirmarSeleccionGeografica() {
         if (!marcadorElegidoData) {
             alert("Por favor, selecciona un pin existente o haz click en el mapa para registrar uno nuevo.");
             return;
@@ -790,18 +716,19 @@
         }
     }
 
-    //TODO: al final lo cambiaré para un boton de reportar asjdjasd
+
+    // 🔗 Función para copiar el enlace del post al portapapeles
     function compartirEnlacePost(idPost) {
         const urlFicticia = window.location.origin + window.location.pathname + "?postId=" + idPost;
 
         navigator.clipboard.writeText(urlFicticia).then(() => {
-            alert("WIP!");
+            alert("¡Enlace del post copiado al portapapeles! Pásaselo a tus amigos foráneos. 🍔");
         }).catch(err => {
             console.error("No se pudo copiar el enlace: ", err);
         });
     }
 
-    //? meter emojis al comentario
+    // 😀 CORREGIDO: Una sola función unificada para inyectar emojis al textarea
     function insertarEmoji(emoji) {
         const inputComentario = document.getElementById("texto-comentario");
         if (inputComentario) {
@@ -810,94 +737,63 @@
         }
     }
 
-    //? enviar voto : tuve demasiados errores aquí
+    // 🎯 FUNCIÓN JAVASCRIPT DETECTORA DE ESTADOS EN home.jsp
     function enviarVoto(idPublicacion, tipoVoto, elementoA) {
-
-        // ── Detectar si ya estaba votado ──
+        // 1. Leemos de forma estricta el atributo del botón
         const yaVotado = elementoA.getAttribute("data-votado") === "true";
-        const accion   = yaVotado ? "restar" : "sumar";
+        const accion = yaVotado ? "restar" : "sumar";
 
-        // ── Referencia al botón opuesto ──
-        const tipoOpuesto  = tipoVoto === "vigente" ? "falso" : "vigente";
+        // Candado extra: Si el usuario intenta votar "falso" pero ya tenía marcado "vigente" (o al revés),
+        // lo ideal es no permitir el doble voto simultáneo.
+        const tipoOpuesto = tipoVoto === "vigente" ? "falso" : "vigente";
         const botonOpuesto = document.getElementById(`btn-${tipoOpuesto}-${idPublicacion}`);
-        const opuestoActivo = botonOpuesto && botonOpuesto.getAttribute("data-votado") === "true";
-
-        // ── Si el opuesto está activo y el usuario intenta votar el otro: BLOQUEADO ──
-        // El botón tiene clase ff-voto-bloqueado y no debe ejecutarse
-        if (opuestoActivo && !yaVotado) {
-            // Efecto shake visual para indicar que está bloqueado
-            elementoA.classList.add("ff-voto-shake");
-            setTimeout(() => elementoA.classList.remove("ff-voto-shake"), 400);
+        if (botonOpuesto && botonOpuesto.getAttribute("data-votado") === "true") {
+            alert("¡Ya votaste en esta publicación! Desmarca tu voto actual antes de cambiar tu opinión. 🍔");
             return;
         }
 
-        // ── Feedback inmediato: deshabilitar ambos mientras el fetch viaja ──
-        elementoA.style.pointerEvents = "none";
-        if (botonOpuesto) botonOpuesto.style.pointerEvents = "none";
-
-        // ── Fetch al servlet ──
-        fetch(`votar?id=${idPublicacion}&tipo=${tipoVoto}&accion=${accion}`)
-            .then(res => {
-                if (!res.ok) throw new Error("Error en el servidor de votaciones");
-                return res.json();
+        // 2. Ejecutamos el fetch limpio hacia el servlet
+        fetch('votar?id=' + idPublicacion + '&tipo=' + tipoVoto + '&accion=' + accion)
+            .then(response => {
+                if (!response.ok) throw new Error("Error en el servidor de votaciones");
+                return response.json();
             })
             .then(data => {
-                console.log("[Votación]", data);
+                console.log("[JS Voto Real-Time]:", data);
 
-                // ── Actualizar contadores ──
+                // 3. Modificamos los números exactos usando los IDs dinámicos
                 const txtVigente = document.getElementById(`txt-vigente-${idPublicacion}`);
-                const txtFalso   = document.getElementById(`txt-falso-${idPublicacion}`);
+                const txtFalsos = document.getElementById(`txt-falso-${idPublicacion}`);
+
                 if (txtVigente) txtVigente.innerText = data.reales;
-                if (txtFalso)   txtFalso.innerText   = data.falsos;
+                if (txtFalsos) txtFalsos.innerText = data.falsos;
 
-                // ── Actualizar pts y rango en el sidebar izquierdo ──
-                const elPuntos = document.getElementById("ff-puntos-display");
-                const elRango  = document.getElementById("ff-rango-display");
-                const elXpFill = document.getElementById("ff-xp-fill");
-                const elXpLabel = document.getElementById("ff-xp-label");
-                if (elPuntos) elPuntos.textContent = data.puntos;
-                if (elRango  && data.rango) elRango.textContent = data.rango;
+                // 4. Actualizamos el perfil del alumno en la barra izquierda usando selectores nativos
+                // Modificamos el strong de los puntos y el span del rango
+                const contenedorPuntos = document.querySelector(".sidebar-left div div b") || document.querySelector(".sidebar-left strong");
+                const contenedorRango = document.querySelector(".sidebar-left span");
 
-                // Recalcular XP bar dinámicamente
-                if (elXpFill && elXpLabel) {
-                    const pts = data.puntos;
-                    let xpMin = 0, xpMax = 30, rLabel = "Explorador";
-                    if      (pts >= 500) { xpMin=500; xpMax=9999; rLabel="Leyenda UV"; }
-                    else if (pts >= 250) { xpMin=250; xpMax=500;  rLabel="Maestro Foráneo"; }
-                    else if (pts >= 100) { xpMin=100; xpMax=250;  rLabel="Foráneo Pro"; }
-                    else if (pts >= 30)  { xpMin=30;  xpMax=100;  rLabel="Foráneo Jr."; }
-                    const pct = Math.min(100, Math.round((pts - xpMin) / (xpMax - xpMin) * 100));
-                    elXpFill.style.width  = pct + "%";
-                    elXpLabel.textContent = `${pts} / ${xpMax} XP → ${rLabel}`;
+                if (contenedorPuntos) {
+                    contenedorPuntos.innerHTML = data.puntos;
+                }
+                if (contenedorRango && data.rango) {
+                    contenedorRango.innerText = data.rango;
                 }
 
-                // ── Actualizar estado visual de los botones ──
+                // 5. CAMBIO DE ESTADO Y FEEDBACK VISUAL
                 if (accion === "sumar") {
-                    // Activar el botón clickeado
                     elementoA.setAttribute("data-votado", "true");
-                    elementoA.classList.add("ff-voto-activo");
-                    // Bloquear el opuesto
-                    if (botonOpuesto) {
-                        botonOpuesto.classList.add("ff-voto-bloqueado");
-                        botonOpuesto.setAttribute("data-votado", "false");
-                    }
+                    elementoA.style.opacity = "0.5"; // Lo opacamos un poco para denotar que está "hundido/seleccionado"
+                    elementoA.style.fontWeight = "bold";
                 } else {
-                    // Desactivar el botón clickeado
                     elementoA.setAttribute("data-votado", "false");
-                    elementoA.classList.remove("ff-voto-activo");
-                    // Desbloquear el opuesto
-                    if (botonOpuesto) {
-                        botonOpuesto.classList.remove("ff-voto-bloqueado");
-                    }
+                    elementoA.style.opacity = "1.0";  // Regresa a su brillo normal
+                    elementoA.style.fontWeight = "normal";
                 }
             })
-            .catch(err => console.error("[Votación Error]:", err))
-            .finally(() => {
-                // Re-habilitar ambos botones al terminar
-                elementoA.style.pointerEvents = "";
-                if (botonOpuesto) botonOpuesto.style.pointerEvents = "";
-            });
+            .catch(err => console.error("Error al procesar votación asíncrona:", err));
     }
+
 
 
     function cargarRankingEstablecimientos() {
@@ -915,7 +811,7 @@
                 }
 
                 locales.forEach((local, indice) => {
-                    // medalla por posicion
+                    // Asignamos una medalla bonita por posición
                     let medalla = "🎖️";
                     if (indice === 0) medalla = "🥇";
                     else if (indice === 1) medalla = "🥈";
@@ -973,10 +869,13 @@
                     else if (numeroRank === 2) claseFila = 'class="rank-2"';
                     else if (numeroRank === 3) claseFila = 'class="rank-3"';
 
+                    // 🎯 CORRECCIÓN CLAVE: Mapeamos con "nombre_user" que es el campo real de tu BSON
                     const nombreUsuario = u.nombre_user || 'Anónimo';
 
+                    // Si en el futuro agregas fotos, usará u.foto_perfil, si no, usa el default
                     const fotoPerfil = u.foto_perfil || 'img/avatar-default.png';
 
+                    // Formateamos los puntos con comas para que se vea estético
                     const puntosTotales = u.puntos !== undefined ? u.puntos.toLocaleString() : '0';
 
                     let filaHTML = `
@@ -1013,7 +912,7 @@
     });
 
 
-    //? pop up de bienvenidaa
+    // 🎯 CONTROL DEL POP-UP DINÁMICO EN PASOS
     document.addEventListener("DOMContentLoaded", function() {
         const yaVisto = localStorage.getItem("forafood_tutorial_visto");
         if (!yaVisto) {
@@ -1030,6 +929,8 @@
         document.getElementById("tutorial-paso-2").style.display = "none";
         document.getElementById("tutorial-paso-1").style.display = "block";
     }
+
+    // 🎯 ACTUALIZA ESTAS FUNCIONES EN LOS SCRIPTS DE TU home.jsp
 
     // Variable global interna para recordar si el alumno subió un archivo propio válido
     let archivoSubidoListo = false;
@@ -1067,7 +968,7 @@
         }
     }
 
-    //? guardar y empezar tutorial
+    // 🚀 ESTA FUNCIÓN SE EJECUTA AL DAR CLIC AL BOTÓN VERDE "¡Guardar y empezar!"
     function finalizarTutorialYGuardarAvatar() {
         const avatarFinalDefault = document.getElementById("rutaAvatarElegido").value;
         const inputFile = document.getElementById("fileAvatarTutorial");
@@ -1077,9 +978,9 @@
         if(btnGuardar) btnGuardar.disabled = true;
 
         if (archivoSubidoListo && inputFile.files.length > 0) {
-            // El estudiante subió una foto propia personalizada
+            // 📤 ESCENARIO A: El estudiante subió una foto propia personalizada
             const formData = new FormData();
-            formData.append("nuevaFotoPerfil", inputFile.files[0]);
+            formData.append("nuevaFotoPerfil", inputFile.files[0]); // Hace match exacto con tu Perfil_Servlet.java
 
             fetch('perfil', {
                 method: 'POST',
@@ -1100,7 +1001,7 @@
                 });
         }
         else {
-            // El estudiante prefirió uno de tus avatares predeterminados del catálogo
+            // 📂 ESCENARIO B: El estudiante prefirió uno de tus avatares predeterminados del catálogo
             fetch('perfil?avatarDefault=' + encodeURIComponent(avatarFinalDefault), {
                 method: 'POST'
             })
@@ -1130,6 +1031,7 @@
         if (!inputFile.files || inputFile.files.length === 0) return;
 
         const formData = new FormData();
+        // 🎯 CORRECCIÓN: Usamos .append() en lugar de .add() para construir el Multipart de red
         formData.append("nuevaFotoPerfil", inputFile.files[0]);
 
         fetch('perfil', {
@@ -1148,6 +1050,9 @@
                 alert("Error al subir la foto. Asegúrate de que el Servlet tenga @MultipartConfig.");
             });
     }
+
+
+    // 🎯 FUNCIÓN COLAPSABLE INTELIGENTE PARA FORAFOOD
 
     // ── TOGGLE DE TEMA CLARO/OSCURO ──────────────────────────
     function toggleTheme() {
@@ -1174,28 +1079,6 @@
             if (label) label.textContent = saved === 'dark' ? 'Modo claro' : 'Modo oscuro';
         }
     })();
-
-
-    // ── POPUP DE MEDALLAS ────────────────────────────────────────────
-    function abrirPopupMedallas() {
-        const popup = document.getElementById('ff-popup-medallas');
-        if (popup) {
-            popup.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-    }
-
-    function cerrarPopupMedallas(event) {
-        if (event === null || event.target === document.getElementById('ff-popup-medallas')) {
-            document.getElementById('ff-popup-medallas').style.display = 'none';
-            document.body.style.overflow = '';
-        }
-    }
-
-    // Cerrar con Escape
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') cerrarPopupMedallas(null);
-    });
 
     function toggleSidebar(idSidebar) {
         const sidebar = document.getElementById(idSidebar);
@@ -1231,9 +1114,10 @@
         }
     }
 
-    //? confirmacion de borrado asincrono
+    // 🎯 FUNCIÓN DE CONFIRMACIÓN DE BORRADO ASÍNCRONO
     function confirmarEliminacion(idPost) {
-        if (confirm("¿Seguro que quieres eliminar esta publicación? Se borrarán todos sus votos y comentarios asociados de forma permanente (WIP).")) {
+        if (confirm("🚨 ¿Seguro que quieres eliminar esta recomendación? Se borrarán todos sus votos y comentarios asociados de forma permanente.")) {
+            // Redirige al Servlet pasándole el ID de la publicación por la URL
             window.location.href = "EliminarPublicacion?id=" + idPost;
         }
     }
@@ -1241,17 +1125,18 @@
 </script>
 
 
+
 <div id="modalSelectorMapa" style="position:fixed!important;top:0;left:0;width:100vw;height:100vh;background:rgba(20,16,8,.72);z-index:99999!important;display:none;justify-content:center;align-items:center;box-sizing:border-box;">
 
     <div class="modal-mapa-box" style="background:var(--bg-card);border:1px solid var(--border-card);width:90%;max-width:650px;height:540px;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 50px rgba(0,0,0,.3);box-sizing:border-box;">
 
-        <h3 style="margin:0;font-size:15px;color:var(--text-1);font-family:'Poppins',sans-serif;font-weight:700;"> Selecciona un local o toca una zona vacía para registrar uno nuevo</h3>
+        <h3 style="margin:0;font-size:15px;color:var(--text-1);font-family:'Poppins',sans-serif;font-weight:700;">📍 Selecciona un local o toca zona vacía para registrar uno nuevo</h3>
 
         <div id="mapa-selector" style="flex:1;width:100%;min-height:300px;border-radius:10px;border:1px solid var(--border-card);"></div>
 
         <div id="zonaNuevoLocalInput" style="background:var(--green-bg);padding:12px;border-radius:8px;border:1px solid var(--green-btn);display:none;box-sizing:border-box;">
-            <label style="font-weight:700;color:var(--green-dark);font-size:12px;font-family:'Poppins',sans-serif;text-transform:uppercase;letter-spacing:.06em;">Dale un nombre al local nuevo que quisieras agregar:</label>
-            <input type="text" id="txtNombreNuevoLocal" placeholder="Ej. Antojitos / Tortas El Inge" style="width:100%;padding:9px 12px;margin-top:6px;border:1px solid var(--border-card);border-radius:8px;box-sizing:border-box;font-size:13px;background:var(--bg-input);color:var(--text-1);font-family:'Poppins',sans-serif;outline:none;">
+            <label style="font-weight:700;color:var(--green-dark);font-size:12px;font-family:'Poppins',sans-serif;text-transform:uppercase;letter-spacing:.06em;">✨ ¡Local nuevo! Dale un nombre:</label>
+            <input type="text" id="txtNombreNuevoLocal" placeholder="Ej. Antojitos Cloroformo / Tortas El Inge" style="width:100%;padding:9px 12px;margin-top:6px;border:1px solid var(--border-card);border-radius:8px;box-sizing:border-box;font-size:13px;background:var(--bg-input);color:var(--text-1);font-family:'Poppins',sans-serif;outline:none;">
         </div>
 
         <div class="modal-mapa-actions" style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 5px;">
@@ -1296,7 +1181,6 @@
                 <div class="ff-tutorial-item">
                     <div>Hacer puntuaciones sobre locales que descubrieron otros estudiantes</div>
                 </div>
-                Te queremos recordar que esta página se encuentra en estado de DESARROLLO, por lo que es propensa a errores. Te agradecemos si nos puedes dejar tu feedback! :)
             </div>
 
             <button onclick="irAPaso2Avatar()" class="ff-btn-siguiente">
@@ -1317,23 +1201,23 @@
 
             <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:18px;background:var(--bg-root);padding:14px;border-radius:10px;border:1px solid var(--border);max-width:100%;box-sizing:border-box;">
 
-                <img src="img/avatar-default.png" onclick="seleccionarAvatarPredefinido(this, 'img/avatar-default.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid #3b82f6; box-shadow: 0 0 8px rgba(59,130,246,0.5);" title="Patito Forafood" class="img-avatar-opcion">
+                <img src="../img/avatar-default.png" onclick="seleccionarAvatarPredefinido(this, 'img/avatar-default.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid #3b82f6; box-shadow: 0 0 8px rgba(59,130,246,0.5);" title="Patito Forafood" class="img-avatar-opcion">
 
-                <img src="img/profiles/panda.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/panda.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Pandita Forafood" class="img-avatar-opcion">
+                <img src="../img/profiles/panda.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/panda.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Pandita Forafood" class="img-avatar-opcion">
 
-                <img src="img/profiles/rabbit.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/rabbit.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Conejito Forafood" class="img-avatar-opcion">
+                <img src="../img/profiles/rabbit.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/rabbit.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Conejito Forafood" class="img-avatar-opcion">
 
-                <img src="img/profiles/default.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/default.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Gatito Forafood" class="img-avatar-opcion">
+                <img src="../img/profiles/default.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/default.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Gatito Forafood" class="img-avatar-opcion">
 
-                <img src="img/profiles/bear.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/bear.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Osito Forafood" class="img-avatar-opcion">
+                <img src="../img/profiles/bear.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/bear.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Osito Forafood" class="img-avatar-opcion">
 
-                <img src="img/profiles/meerkat.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/meerkat.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Suricata Forafood" class="img-avatar-opcion">
+                <img src="../img/profiles/meerkat.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/meerkat.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Suricata Forafood" class="img-avatar-opcion">
 
-                <img src="img/profiles/dog.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/dog.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Perro Forafood" class="img-avatar-opcion">
+                <img src="../img/profiles/dog.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/dog.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Perro Forafood" class="img-avatar-opcion">
 
-                <img src="img/profiles/gorilla.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/gorilla.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Gorila Forafood" class="img-avatar-opcion">
+                <img src="../img/profiles/gorilla.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/gorilla.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Gorila Forafood" class="img-avatar-opcion">
 
-                <img src="img/profiles/lion.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/lion.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Leonsito Forafood" class="img-avatar-opcion">
+                <img src="../img/profiles/lion.png" onclick="seleccionarAvatarPredefinido(this, 'img/profiles/lion.png')" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 3px solid transparent;" title="Leonsito Forafood" class="img-avatar-opcion">
 
             </div>
 

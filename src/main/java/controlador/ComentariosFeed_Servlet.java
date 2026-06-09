@@ -18,8 +18,8 @@ import org.bson.types.ObjectId;
 import com.mongodb.client.MongoCollection;
 import DAOs.PublicacionDAO;
 
-//? este servlet se creó con ayuda de IA porque se tenía que crear un json para mandarlo a javascript
-//?.....de hecho me ayudó con  comentarios, publicación y mapa-pines servlet, sobre todo a dibujar los pines
+//! este servlet se creó con ayuda de IA porque se tenía que crear un json para mandarlo a javascript
+//!.....de hecho me ayudó con  comentarios, publicación y mapa-pines servlet, sobre todo a dibujar los pines
 @WebServlet("/comentarios")
 public class ComentariosFeed_Servlet extends HttpServlet
 {
@@ -68,8 +68,14 @@ public class ComentariosFeed_Servlet extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        request.setCharacterEncoding("UTF-8");
+        System.out.println("[ComentariosFeed_Servlet POST] Recibiendo comentario y poniendolo en la bd...");
         String id_post_string = request.getParameter("idPost");
         String texto = request.getParameter("texto");
+
+        //if (texto != null) {
+        //    texto = new String(texto.getBytes("ISO-8859-1"), "UTF-8");
+        //}
 
         HttpSession session = request.getSession();
         String nombre_autor = (String) session.getAttribute("user");
@@ -81,7 +87,7 @@ public class ComentariosFeed_Servlet extends HttpServlet
             PublicacionDAO dao = new PublicacionDAO();
             MongoCollection<Document> collection = dao.getCollection();
 
-            // crear el subdocumento del comentario :D
+            //? crear el subdocumento del comentario :D
             Document nuevoComentario = new Document()
                     .append("id_comentario", new ObjectId())
                     .append("nombre_autor", nombre_autor)
@@ -94,6 +100,13 @@ public class ComentariosFeed_Servlet extends HttpServlet
                     Filters.eq("_id", new ObjectId(id_post_string)),
                     Updates.push("comentarios", nuevoComentario)
             );
+
+            //? gamificación, medalla de comentario
+            ObjectId id_usuario_coment = (ObjectId) session.getAttribute("_id_usuario");
+            if (id_usuario_coment != null) {
+                new DAOs.UsuarioDAO().gamificacion_por_comentario(id_usuario_coment);
+            }
+
             response.setStatus(200);
         } else {
             response.setStatus(400);
