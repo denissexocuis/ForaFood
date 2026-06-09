@@ -256,7 +256,7 @@
                     onclick="cerrarModalDoc('privacidad',null)">✕</button>
         </div>
         <div class="ff-modal-doc-body">
-            <p>Tu texto del aviso de privacidad.... WIP</p>
+            <p>Tu texto del aviso de privacidad... WIP</p>
         </div>
         <div class="ff-modal-doc-footer">
             <a href="docs/aviso-privacidad.pdf" download
