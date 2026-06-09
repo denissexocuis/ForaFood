@@ -11,6 +11,9 @@ public class CorreoService
 
     public static void mandarCodigo(String correoDestino, int codigo) throws MessagingException {
 
+        System.out.println("[DEBUG-FORAFOOD] Leyendo correo: " + System.getenv("CORREO_EMISOR"));
+        System.out.println("[DEBUG-FORAFOOD] Leyendo password: " + System.getenv("CORREO_PASSWORD"));
+
         String correoOrigen = System.getenv("CORREO");
         String password = System.getenv("CORREO_PASSWORD");
 
