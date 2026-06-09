@@ -11,7 +11,7 @@ public class CorreoService
 
     public static void mandarCodigo(String correoDestino, int codigo) throws MessagingException {
 
-        String correoOrigen = System.getenv("CORREO_EMISOR");
+        String correoOrigen = System.getenv("CORREO");
         String password = System.getenv("CORREO_PASSWORD");
 
         Properties props = new Properties();
@@ -21,8 +21,8 @@ public class CorreoService
         //props.put("mail.smtp.port", "587"); // local host
 
         // deployment
-        props.put("mail.smtp.ssl.enable", "true");
-        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.ssl.enable", "true"); //  activa SSL obligatorio
         props.put("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 
