@@ -21,8 +21,8 @@ public class CorreoService
         //props.put("mail.smtp.port", "587"); // local host
 
         // deployment
-        props.put("mail.smtp.port", "465");
-        props.put("mail.smtp.ssl.enable", "true"); //  activa SSL obligatorio
+        props.put("mail.smtp.ssl.enable", "true");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
         props.put("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 
