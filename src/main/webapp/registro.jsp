@@ -171,6 +171,10 @@
                 <p style="font-size:14px;font-weight:700;color:var(--text-1);margin-bottom:20px;"
                    id="correoMostrado"></p>
 
+                <p style="font-size:13px;color:var(--text-2);margin-bottom:4px;">
+                    Checa tu carpeta de spam si es necesario.
+                </p>
+
                 <div class="ff-code-inputs">
                     <input type="text" class="ff-code-digit" maxlength="1"
                            inputmode="numeric" oninput="avanzarDigito(this,0)">
@@ -232,7 +236,7 @@
 
                 <button type="submit" class="ff-btn ff-btn-primary"
                         id="btnRegistrarse" disabled>
-                    🎉 Crear mi cuenta
+                    Crear mi cuenta
                 </button>
                 <button type="button" class="ff-btn ff-btn-ghost"
                         onclick="anteriorPaso()">← Atrás</button>
@@ -406,7 +410,7 @@
 
         irAPaso(2);
         // Llamar al endpoint que envía el código
-        fetch('enviarCodigo?correo=' + encodeURIComponent(ci)).catch(()=>{});
+        fetch('registro?accion=mandarCodigo&correo=' + encodeURIComponent(ci)).catch(()=>{});
     }
 
     function mostrarError(idErr, idInput, show) {
@@ -440,7 +444,7 @@
         }
         document.getElementById('err-codigo').classList.remove('show');
         // Llamar al endpoint de verificación
-        fetch('verificarCodigo?codigo=' + codigo)
+        fetch('registro?accion=verificarCodigo&codigo=' + codigo)
             .then(r => r.json())
             .then(data => {
                 if (data.ok) {
