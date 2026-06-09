@@ -1,23 +1,21 @@
-# compilar con maven
-FROM maven:3.8.5-openjdk-17 AS builder
+# compilar usando maven con java 8
+FROM maven:3.6.3-openjdk-8 AS builder
 
-# configurar el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# copiar el archivo de configuración de Maven y el código fuente
+# copiar el pom.xml y el codigo
 COPY pom.xml .
 COPY src ./src
 
-# generar el .war
+# compilar el proyecto para el .war
 RUN mvn clean package -DskipTests
 
-# levantar servidor tomcat
-FROM tomcat:9.0-jdk17-corretto
+FROM tomcat:9.0-jdk8-corretto
 
 # limpiar las aplicaciones por defecto de Tomcat
 RUN rm -rf /usr/local/tomcat/webapps/*
 
-# copiar .war generado
+# copiar el archivo .war
 COPY --from=builder /app/target/ForaFood.war /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 8080
