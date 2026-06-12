@@ -16,15 +16,15 @@ public class CorreoService
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
-       // props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         //props.put("mail.smtp.port", "587"); // local host
 
         // deployment
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.starttls.required", "true"); // Obliga a usar TLS seguro
-        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.ssl.enable", "true"); //  activa SSL obligatorio
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 
         Session session = Session.getInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
