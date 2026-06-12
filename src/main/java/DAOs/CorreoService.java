@@ -32,7 +32,7 @@ public class CorreoService
         props.put("mail.smtp.quitwait", "false");
 
         props.put("mail.smtp.user", correoOrigen);
-        props.put("mail.json.login", correoOrigen);
+        props.put("mail.smtp.password", password);
 
         Session session = Session.getDefaultInstance(props, new Authenticator() {
             @Override
@@ -48,7 +48,7 @@ public class CorreoService
         //    }
         //});
 
-        session.setDebug(true);
+        //session.setDebug(true);
 
         Message mensaje = new MimeMessage(session);
         mensaje.setFrom(new InternetAddress(correoOrigen));
