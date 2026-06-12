@@ -21,8 +21,6 @@ public class CorreoService
         //props.put("mail.smtp.port", "587"); // local host
 
         // deployment
-        System.out.println("[PROBANDO-ENTORNO] Correo recuperado: " + correoOrigen);
-
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "465");
@@ -33,14 +31,17 @@ public class CorreoService
         props.put("mail.smtp.socketFactory.fallback", "false");
         props.put("mail.smtp.quitwait", "false");
 
+        props.put("mail.smtp.user", correoOrigen);
+        props.put("mail.json.login", correoOrigen);
 
-        Session session = Session.getInstance(props, new Authenticator() {
+        Session session = Session.getDefaultInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(correoOrigen, password);
             }
         });
 
+        // localhost
         //Session session = Session.getInstance(props, new Authenticator() {
         //    protected PasswordAuthentication getPasswordAuthentication() {
         //        return new PasswordAuthentication(correoOrigen, password);
